@@ -13,6 +13,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'BhagyaLaxmi Dairy App', theme: ThemeData(), home: login());
+        title: 'BhagyaLaxmi Dairy App', theme: ThemeData(), home: verify_otp());
   }
 }

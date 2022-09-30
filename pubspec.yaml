@@ -38,6 +38,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   syncfusion_flutter_charts: ^20.2.50
   carousel_slider: ^4.1.1
+  flutter_feather_icons: ^2.0.0+1
+  otp_text_field: ^1.1.3
 
 dev_dependencies:
   flutter_test:
