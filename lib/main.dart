@@ -1,4 +1,3 @@
-
 import 'package:bl_dairy_app/view/screens/auth/login.dart';
 import 'package:bl_dairy_app/view/screens/auth/verify_otp.dart';
 import 'package:bl_dairy_app/view/screens/home.dart';
@@ -14,11 +13,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BhagyaLaxmi Dairy App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Home()
-    );
+        title: 'BhagyaLaxmi Dairy App', theme: ThemeData(), home: login());
   }
 }
