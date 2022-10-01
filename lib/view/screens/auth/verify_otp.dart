@@ -75,11 +75,12 @@ class verify_otp extends StatelessWidget {
                           ),
                           Row(children: [
                             Text(
-<<<<<<< HEAD
+
                               'We have sent you a One Time Passowrd On +91 $number |',
-=======
-                              'We have sent you a OTP On +91 $number |',
->>>>>>> 100c7f58b344e6df82b36a3c73eec27411794cb2
+
+
+
+
                               style: TextStyle(
                                 color: MyColors.white,
                                 fontSize: 15,

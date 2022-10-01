@@ -1,10 +1,40 @@
+import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/view/widgets/SlideShower.dart';
 import 'package:bl_dairy_app/view/widgets/main_chart.dart';
 import 'package:flutter/material.dart';
 
-class Dashboard_Scren extends StatelessWidget {
+import '../../model/BookOrderModel.dart';
+
+class Dashboard_Scren extends StatefulWidget {
   const Dashboard_Scren({Key? key}) : super(key: key);
 
+  @override
+  State<Dashboard_Scren> createState() => _Dashboard_ScrenState();
+}
+
+class _Dashboard_ScrenState extends State<Dashboard_Scren> {
+  List<Order> dashOrderList = <Order>[];
+
+
+  GetOrders() async{
+
+   await  BookOrderController().fetchOrder();
+    setState(() {
+      dashOrderList = BookOrderController().orderList;
+    });
+
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+
+
+
+    super.initState();
+GetOrders();
+
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +95,7 @@ SizedBox(height: 15,),
                           children: <Widget>[
                             Text("Order Name" , style: TextStyle(fontWeight: FontWeight.w600),),
 
-                            Text("Order Amount" , style: TextStyle(fontWeight: FontWeight.w600),),
+                            Text("Order Book Date" , style: TextStyle(fontWeight: FontWeight.w600),),
 
                           ]
                       ),
@@ -74,12 +104,14 @@ SizedBox(height: 15,),
                       height: 300,
                       child: ListView.builder(
                         shrinkWrap: true,
-                          itemCount: 12,
+                          itemCount: dashOrderList.length,
                           itemBuilder: (context, index){
+                          final order = dashOrderList[index];
                             return   ListTile(
-                              title: Text("Order Title"),
+                              onTap: (){},
+                              title: Text( order.CustomerName),
                               leading: Text("${index+1}"),
-                              trailing: Text("Rs.${index*137}"),
+                              trailing: Text("${order.OrderBookDate}"),
                             );
                           }
 
@@ -405,7 +437,7 @@ SizedBox(height: 10,),
 
           SizedBox(height: 40,),
         ],
-      
+
       ),
     ),
   ),
