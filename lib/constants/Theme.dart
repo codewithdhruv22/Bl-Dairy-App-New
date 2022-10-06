@@ -5,6 +5,10 @@ class MyColors {
 
   static const Color white = Color(0xFFFFFFFF);
 
+  static const Color red = Color.fromARGB(255, 211, 65, 65);
+
+  static const Color green = Color.fromARGB(255, 33, 177, 93);
+
   static const Color defaultColor = Color.fromRGBO(136, 136, 136, 1.0);
 
   static const Color primary = Color.fromARGB(255, 72, 100, 212);

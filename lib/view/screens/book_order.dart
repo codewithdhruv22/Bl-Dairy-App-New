@@ -1,6 +1,6 @@
+import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/model/BookOrderModel.dart';
-import 'package:bl_dairy_app/view/widgets/Custom_TextFiled.dart';
 import 'package:flutter/material.dart';
 
 class BookOrderScreen extends StatefulWidget {
@@ -26,45 +26,62 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomTextFiled(
-                  textEditingController: fullNameController,
-                  hintText: "Full Name",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomTextFiled(
-                  textEditingController: fullNameController,
-                  hintText: "Contanct Details",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomTextFiled(
-                  textEditingController: fullNameController,
-                  hintText: "Advance Payement",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomTextFiled(
-                  textEditingController: fullNameController,
-                  hintText: "Remark",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                    ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                    labelStyle: TextStyle(fontSize: 14),
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 5,
-                      right: 5,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                    labelStyle: TextStyle(fontSize: 14),
+                    labelText: 'Mobile Number',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                    labelStyle: TextStyle(fontSize: 14),
+                    labelText: 'Advance',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                    labelStyle: TextStyle(fontSize: 14),
+                    labelText: 'Remark',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Material(
+                  elevation: 3,
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
                     ),
+                    padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -72,11 +89,11 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                         ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
+                            backgroundColor: MyColors.green,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                                borderRadius: BorderRadius.circular(5)),
                           ),
-                          child: const Text('add +'),
+                          child: const Text('   Add +   '),
                         )
                       ],
                     ),
