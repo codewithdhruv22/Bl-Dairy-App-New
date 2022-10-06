@@ -1,5 +1,7 @@
-import 'package:bl_dairy_app/constants.dart';
+ 
 import 'package:flutter/material.dart';
+
+import '../../constants/constants.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -9,7 +11,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int pageIdx = 0;
 
   @override
@@ -18,22 +19,25 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
-        onTap: (index){
+        onTap: (index) {
           setState(() {
             pageIdx = index;
           });
-
-
         },
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
         currentIndex: pageIdx,
-
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home, size : 25 ) , label : 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.report, size : 25 ) , label : 'Report'),
-          BottomNavigationBarItem(icon: Icon(Icons.add, size : 25 ) , label : 'Add Ledger'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart, size : 25 ) , label : 'Book Order'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings, size : 25 ) , label : 'Settings'),
-
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home, size: 25), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.report, size: 25), label: 'Report'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add, size: 25), label: 'Add Ledger'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart, size: 25), label: 'Book Order'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings, size: 25), label: 'Settings'),
         ],
       ),
       body: pageIndex[pageIdx],

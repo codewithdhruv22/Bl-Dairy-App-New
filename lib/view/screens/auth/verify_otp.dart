@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bl_dairy_app/view/constants/Theme.dart';
+import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
