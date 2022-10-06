@@ -202,10 +202,9 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                     child: ElevatedButton.icon(
                                                       onPressed: () {},
                                                       icon: const Icon(
-                                                        Icons.delete,
+                                                        Icons.add,
                                                       ),
-                                                      label:
-                                                          const Text('Deleted'),
+                                                      label: const Text('Add'),
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
