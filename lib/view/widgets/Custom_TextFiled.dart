@@ -13,7 +13,7 @@ class CustomTextFiled extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return SizedBox(
       height: size.height * 0.05,
-      width: size.width - 15,
+      width: size.width,
       child: TextField(
         controller: textEditingController,
         decoration: InputDecoration(
