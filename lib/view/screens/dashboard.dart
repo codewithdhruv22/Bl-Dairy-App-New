@@ -2,7 +2,6 @@ import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/view/widgets/SlideShower.dart';
 import 'package:bl_dairy_app/view/widgets/main_chart.dart';
 import 'package:flutter/material.dart';
-
 import '../../model/BookOrderModel.dart';
 
 class Dashboard_Scren extends StatefulWidget {
@@ -13,17 +12,18 @@ class Dashboard_Scren extends StatefulWidget {
 }
 
 class _Dashboard_ScrenState extends State<Dashboard_Scren> {
-  List<Order> dashOrderList = <Order>[];
-
+  late List<Order> dashOrderList;
+bool loading = true;
 
   GetOrders() async{
 
-   await  BookOrderController().fetchOrder();
-    setState(() {
-      dashOrderList = BookOrderController().orderList;
-    });
-
-  }
+   await  BookOrderController.fetchOrder().then((allOrders){
+     setState(() {
+       dashOrderList = allOrders!;
+       loading = false;
+     });
+   });
+   }
   @override
   void initState() {
     // TODO: implement initState
@@ -37,7 +37,7 @@ GetOrders();
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Scaffold(body: Center(child: CircularProgressIndicator(),),) :Scaffold(
 backgroundColor: Color(0xB3DDDCDC),
 body: SafeArea(
   child:   SingleChildScrollView(
@@ -106,9 +106,71 @@ SizedBox(height: 15,),
                         shrinkWrap: true,
                           itemCount: dashOrderList.length,
                           itemBuilder: (context, index){
-                          final order = dashOrderList[index];
+                          final order = dashOrderList![index];
                             return   ListTile(
-                              onTap: (){},
+                              onTap: (){
+                                print(order.MobileNumber);
+                                print(order.OrderBookDate);
+                                print(order.CustomerName);
+                                print(order.items);
+                                print(order.Advance);
+                                print(order.Note);
+                                print(order.OrderDelivaryDate);
+
+
+
+                                showDialog<String>(
+
+                                    context: context,
+                                    builder: (BuildContext context){
+
+
+                                      return AlertDialog(
+                                          title:  Text("Order Detials"),
+
+                                          content:  SizedBox(
+                                            width: MediaQuery.of(context).size.width-50,
+                                            height: 200,
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  Text(order.CustomerName),
+                                                  Text(order.MobileNumber),
+                                                  Text(order.OrderBookDate),
+                                                  Text(order.OrderDelivaryDate),
+                                                  Text(order.Note),
+                                                  Text(order.Advance),
+                                                  SizedBox(height: 20,),
+                                                  Text("Item Details"),
+                                                  Container(
+                                                    height: 200,
+                                                    child: ListView.builder(
+                                              itemCount: order.items.length,
+                                              itemBuilder: (context , index){
+                                                final item = order.items[index];
+                                                      return ListTile(
+                                                        leading: Text(item.itemName),
+                                                        title: Text(item.itemQty.toString()),
+                                                        trailing: Text(item.itemRate.toString()),
+
+                                                      );
+                                                    }
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(onPressed: (){
+                                              Navigator.pop(context);
+                                            }, child: Text("Close"))
+                                          ],
+                                        );
+
+                                    }
+                                );
+                              },
                               title: Text( order.CustomerName),
                               leading: Text("${index+1}"),
                               trailing: Text("${order.OrderBookDate}"),

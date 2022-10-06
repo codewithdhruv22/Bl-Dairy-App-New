@@ -2,25 +2,23 @@ import 'package:bl_dairy_app/model/BookOrderModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookOrderController{
-late List<Order> orderList;
-fetchOrder() async{
-  FirebaseFirestore.instance.collection("BookOrder").snapshots().map((QuerySnapshot query){
-    for (var element in query.docs){
-      orderList.add(Order.fromSnap(element));
-      print(orderList);
-    }
+static Future<List<Order>?> fetchOrder() async{
 
-
+List<Order> all_orders = [];
+  await FirebaseFirestore.instance.collection("BookOrder").get().then((querSnapshots){
+    querSnapshots.docs.forEach((order) {
+      all_orders.add(Order.fromSnap(order));
+    });
   });
+  return all_orders;
+  
+}
 
-  // fetchComment() async{
-  //   _comments.bindStream(FirebaseFirestore.instance.collection("videos").doc(_postID).collection("comments").snapshots().map((QuerySnapshot query){
-  //     List<Comment> retVal = [];
-  //     for (var element in query.docs){
-  //       retVal.add(Comment.fromSnap(element));
-  //     }
-  //     return retVal;
-  //   }));
-  // }
+
+
+static addOrder(Order myOrder) async{
+  await FirebaseFirestore.instance.collection("BookOrder").add(myOrder.toJson()).then((_){
+    print("DATA ADDED SUCCESSFULLY");
+  });
 }
 }

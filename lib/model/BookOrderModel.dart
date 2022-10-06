@@ -4,7 +4,7 @@ class Order {
 
   String CustomerName;
   String MobileNumber;
-  int Advance;
+  String Advance;
   String Note;
   String OrderBookDate;
   String OrderDelivaryDate;
@@ -38,13 +38,14 @@ class Order {
   static Order fromSnap(DocumentSnapshot snap){
     var snapshot = snap.data() as Map<String , dynamic>;
    return Order(
-       CustomerName : snapshot["CustomerName"],
-     Advance : snapshot["Advance"],
-     MobileNumber : snapshot["MobileNumber"],
-     Note : snapshot["Note"],
-     OrderBookDate : snapshot["OrderBookDate"],
-     OrderDelivaryDate : snapshot["OrderBookDate"],
-     items : snapshot["items"],
+       CustomerName : snapshot["CustomerName"] ?? "NO DATA",
+     Advance : snapshot["Advance"] ?? "NO DATA",
+     MobileNumber : snapshot["MobileNumber"] ?? "NO DATA",
+     Note : snapshot["Note"] ?? "NO DATA",
+     OrderBookDate : snapshot["OrderBookDate"] ?? "NO DATA",
+     OrderDelivaryDate : snapshot["OrderBookDate"] ?? "NO DATA",
+     // items : snapshot["items"],
+     items : [],
    );
   }
 }

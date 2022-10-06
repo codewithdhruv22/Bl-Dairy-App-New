@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home, size : 25 ) , label : 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.report, size : 25 ) , label : 'Report'),
-          BottomNavigationBarItem(icon: Icon(Icons.people, size : 25 ) , label : 'Attendance'),
+          BottomNavigationBarItem(icon: Icon(Icons.add, size : 25 ) , label : 'Add Ledger'),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart, size : 25 ) , label : 'Book Order'),
           BottomNavigationBarItem(icon: Icon(Icons.settings, size : 25 ) , label : 'Settings'),
 

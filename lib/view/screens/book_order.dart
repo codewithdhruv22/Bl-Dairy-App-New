@@ -1,10 +1,19 @@
+import 'package:bl_dairy_app/controller/book_order.dart';
+import 'package:bl_dairy_app/model/BookOrderModel.dart';
 import 'package:flutter/material.dart';
 
 class BookOrderScreen extends StatelessWidget {
   const BookOrderScreen({Key? key}) : super(key: key);
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -35,7 +44,11 @@ Text("Order"),
               Text("Order No.4"),
               TextFormField(),
               Text("REVIEW ORDER DETAILS AND THEN BOOK IT"),
-              ElevatedButton(onPressed: (){}, child: Text("Book Order"))
+              ElevatedButton(onPressed: (){
+
+
+                BookOrderController.addOrder(Order(CustomerName: "DEMO", MobileNumber: "999", Advance: "1000", Note: "DEMO NOTE", OrderBookDate: "DEMO DATE", OrderDelivaryDate: "DEMO DATE", items: []));
+              }, child: Text("Book Order"))
             ],
           ),
         ),
