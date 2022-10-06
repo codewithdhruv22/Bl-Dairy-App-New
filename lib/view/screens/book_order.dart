@@ -2,6 +2,7 @@ import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/model/BookOrderModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class BookOrderScreen extends StatefulWidget {
@@ -47,7 +48,6 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-<<<<<<< HEAD
                 TextFormField(
                   decoration: const InputDecoration(
                     contentPadding:
@@ -55,52 +55,19 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                     labelStyle: TextStyle(fontSize: 14),
                     labelText: 'Name',
                     border: OutlineInputBorder(),
-=======
-                CustomTextFiled(
-                  textEditingController: fullNameController,
-                  hintText: "Name",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomTextFiled(
-                  textEditingController: mobileNumberController,
-                  hintText: "Mobile Number",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomTextFiled(
-                  textEditingController: advancePaymentController,
-                  hintText: "Advance Payement",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomTextFiled(
-                  textEditingController: remarkController,
-                  hintText: "Remark",
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                    ),
->>>>>>> 952e67adeba14676c033cc2df4ec4945a94b5b06
                   ),
                 ),
                 const SizedBox(
                   height: 12,
                 ),
                 TextFormField(
+                  maxLength: 10,
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                     labelStyle: TextStyle(fontSize: 14),
                     labelText: 'Mobile Number',
+                    helperText: 'Without Country Code',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -112,7 +79,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                     labelStyle: TextStyle(fontSize: 14),
-                    labelText: 'Advance',
+                    labelText: 'Advance Payment',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -164,55 +131,98 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                           child: Column(
                                             children: <Widget>[
                                               Align(
-                                                alignment: Alignment.topLeft,
+                                                alignment:
+                                                    Alignment.centerRight,
                                                 child: IconButton(
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                   },
-                                                  icon: const Icon(Icons.close),
+                                                  icon: const Icon(
+                                                      FeatherIcons.x),
                                                 ),
                                               ),
                                               const SizedBox(
                                                 height: 10,
                                               ),
-                                              CustomTextFiled(
-                                                textEditingController:
-                                                    bProductNameController,
-                                                hintText: 'Product Name',
+                                              TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          vertical: 0,
+                                                          horizontal: 15),
+                                                  labelStyle:
+                                                      TextStyle(fontSize: 14),
+                                                  labelText: 'Remark',
+                                                  border: OutlineInputBorder(),
+                                                ),
                                               ),
                                               const SizedBox(
                                                 height: 20,
                                               ),
                                               Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  SizedBox(
-                                                    width: 132,
-                                                    child: CustomTextFiled(
-                                                      textEditingController:
-                                                          bQuantityController,
-                                                      hintText: 'Quantity',
+                                                  Expanded(
+                                                    child: TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        contentPadding:
+                                                            EdgeInsets
+                                                                .symmetric(
+                                                                    vertical: 0,
+                                                                    horizontal:
+                                                                        15),
+                                                        labelStyle: TextStyle(
+                                                            fontSize: 14),
+                                                        labelText: 'Quantity',
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                      ),
                                                     ),
                                                   ),
                                                   const SizedBox(
                                                     width: 8,
                                                   ),
-                                                  SizedBox(
-                                                    width: 100,
-                                                    child: CustomTextFiled(
-                                                      textEditingController:
-                                                          bRateController,
-                                                      hintText: 'Rate',
+                                                  Expanded(
+                                                    child: TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        contentPadding:
+                                                            EdgeInsets
+                                                                .symmetric(
+                                                                    vertical: 0,
+                                                                    horizontal:
+                                                                        15),
+                                                        labelStyle: TextStyle(
+                                                            fontSize: 14),
+                                                        labelText: 'Rate',
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                      ),
                                                     ),
                                                   ),
                                                   const SizedBox(
                                                     width: 8,
                                                   ),
-                                                  SizedBox(
-                                                    width: 100,
-                                                    child: CustomTextFiled(
-                                                      textEditingController:
-                                                          bAmountController,
-                                                      hintText: 'Amount',
+                                                  Expanded(
+                                                    child: TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        contentPadding:
+                                                            EdgeInsets
+                                                                .symmetric(
+                                                                    vertical: 0,
+                                                                    horizontal:
+                                                                        15),
+                                                        labelStyle: TextStyle(
+                                                            fontSize: 14),
+                                                        labelText: 'Amount',
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -226,47 +236,52 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  SizedBox(
-                                                    height: 50,
-                                                    width: 170,
+                                                  Expanded(
                                                     child: ElevatedButton.icon(
                                                       onPressed: () {},
                                                       icon: const Icon(
-                                                        Icons.delete,
+                                                        FeatherIcons.trash2,
+                                                        size: 18,
                                                       ),
                                                       label:
-                                                          const Text('Deleted'),
+                                                          const Text('Delete'),
                                                       style: ElevatedButton
                                                           .styleFrom(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                0, 4, 0, 4),
                                                         backgroundColor:
-                                                            Colors.red,
+                                                            MyColors.red,
                                                         shape:
                                                             RoundedRectangleBorder(
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(10),
+                                                                  .circular(5),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    height: 50,
-                                                    width: 170,
+                                                  const SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  Expanded(
                                                     child: ElevatedButton.icon(
                                                       onPressed: () {},
                                                       icon: const Icon(
-                                                        Icons.add,
+                                                        FeatherIcons.plus,
+                                                        size: 18,
                                                       ),
                                                       label: const Text('Add'),
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
-                                                            Colors.green,
+                                                            MyColors.green,
                                                         shape:
                                                             RoundedRectangleBorder(
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(10),
+                                                                  .circular(5),
                                                         ),
                                                       ),
                                                     ),
