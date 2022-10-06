@@ -115,7 +115,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                             VxBottomSheet.bottomSheetView(
                               context,
                               roundedFromTop: true,
-                              isDismissible: false,
+                              isDismissible: true,
                               backgroundColor: Colors.white,
                               isSafeAreaFromBottom: true,
                               child: SizedBox(
@@ -138,11 +138,14 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                     Navigator.pop(context);
                                                   },
                                                   icon: const Icon(
-                                                      FeatherIcons.x),
+                                                    FeatherIcons.x,
+                                                    color:
+                                                        MyColors.defaultColor,
+                                                  ),
                                                 ),
                                               ),
                                               const SizedBox(
-                                                height: 10,
+                                                height: 5,
                                               ),
                                               TextFormField(
                                                 decoration:
@@ -153,7 +156,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                           horizontal: 15),
                                                   labelStyle:
                                                       TextStyle(fontSize: 14),
-                                                  labelText: 'Remark',
+                                                  labelText: 'Product',
                                                   border: OutlineInputBorder(),
                                                 ),
                                               ),
@@ -238,7 +241,9 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                 children: [
                                                   Expanded(
                                                     child: ElevatedButton.icon(
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
                                                       icon: const Icon(
                                                         FeatherIcons.trash2,
                                                         size: 18,

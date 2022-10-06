@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'BhagyaLaxmi Dairy App',
         theme: ThemeData(
-          fontFamily: GoogleFonts.montserrat().fontFamily,
+          fontFamily: GoogleFonts.poppins().fontFamily,
         ),
         home: const Home());
   }
