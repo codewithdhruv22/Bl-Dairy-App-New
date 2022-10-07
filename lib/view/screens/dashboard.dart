@@ -83,6 +83,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+<<<<<<< HEAD
                                 const Padding(
                                   padding: EdgeInsets.only(left: 15),
                                   child: Text(
@@ -170,6 +171,164 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                             Text(order.Advance),
                                                             const SizedBox(
                                                               height: 20,
+=======
+                                ExpansionTile(
+                                  tilePadding:
+                                      const EdgeInsets.fromLTRB(2, 0, 2, 0),
+                                  title: const Text('Pending Orders'),
+                                  // trailing: Icon(
+                                  //   _customTileExpanded
+                                  //       ? FeatherIcons.chevronUp
+                                  //       : FeatherIcons.chevronDown,
+                                  // ),
+                                  children: [
+                                    SizedBox(
+                                      height: 300,
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: dashOrderList.length,
+                                          itemBuilder: (context, index) {
+                                            final order = dashOrderList[index];
+                                            return ListTile(
+                                              onTap: () {
+                                                VxBottomSheet.bottomSheetView(
+                                                  context,
+                                                  isDismissible: true,
+                                                  backgroundColor: Colors.white,
+                                                  isSafeAreaFromBottom: true,
+                                                  child: Expanded(
+                                                    // height: 300,
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        SingleChildScrollView(
+                                                          child: Expanded(
+                                                            child: Column(
+                                                              children: <
+                                                                  Widget>[
+                                                                Material(
+                                                                  elevation: 2,
+                                                                  child: Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerRight,
+                                                                    child:
+                                                                        IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      icon:
+                                                                          const Icon(
+                                                                        FeatherIcons
+                                                                            .x,
+                                                                        color: MyColors
+                                                                            .defaultColor,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .fromLTRB(
+                                                                          10,
+                                                                          0,
+                                                                          10,
+                                                                          0),
+                                                                  child: Column(
+                                                                    children: [
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          CustomTextFiled(
+                                                                              label: "Customer Name",
+                                                                              value: order.CustomerName),
+                                                                          const Expanded(
+                                                                              child: SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          )),
+                                                                          CustomTextFiled(
+                                                                              label: 'Number',
+                                                                              value: order.MobileNumber),
+                                                                          const Expanded(
+                                                                              child: SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ))
+                                                                        ],
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          CustomTextFiled(
+                                                                              label: "Order Date",
+                                                                              value: order.OrderBookDate),
+                                                                          const Expanded(
+                                                                              child: SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          )),
+                                                                          CustomTextFiled(
+                                                                              label: 'Dilivery Date',
+                                                                              value: order.OrderDelivaryDate),
+                                                                          const Expanded(
+                                                                              child: SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          )),
+                                                                          CustomTextFiled(
+                                                                              label: 'Advance Payment',
+                                                                              value: order.OrderDelivaryDate),
+                                                                        ],
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          CustomTextFiled(
+                                                                              label: "Notes",
+                                                                              value: order.Note),
+                                                                        ],
+                                                                      ),
+                                                                      const Divider(),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: const [
+                                                                          Text(
+                                                                              'Order Name'),
+                                                                          Text(
+                                                                              'Quanitiy'),
+                                                                          Text(
+                                                                              'Rate'),
+                                                                          Text(
+                                                                              'Amount'),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ],
+>>>>>>> c4c21eb3d2aa55768c431fd22e76f38677013438
                                                             ),
                                                             const Text(
                                                                 "Item Details"),
