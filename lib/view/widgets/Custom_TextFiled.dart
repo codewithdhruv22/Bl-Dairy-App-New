@@ -13,15 +13,22 @@ class CustomTextFiled extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 10, color: MyColors.defaultColor),
+    return SizedBox(
+      height: 36,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style:
+                  const TextStyle(fontSize: 10, color: MyColors.defaultColor),
+            ),
+            Text(value)
+          ],
         ),
-        Text(value)
-      ],
+      ),
     );
   }
 }
