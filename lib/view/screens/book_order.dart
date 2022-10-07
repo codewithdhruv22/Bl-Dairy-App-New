@@ -3,16 +3,17 @@ import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/model/BookOrderModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class BookOrderScreen extends StatefulWidget {
+class BookOrderScreen extends ConsumerStatefulWidget {
   const BookOrderScreen({Key? key}) : super(key: key);
 
   @override
-  State<BookOrderScreen> createState() => _BookOrderScreenState();
+  ConsumerState<BookOrderScreen> createState() => _BookOrderScreenState();
 }
 
-class _BookOrderScreenState extends State<BookOrderScreen> {
+class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController advancePaymentController = TextEditingController();
@@ -22,6 +23,23 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
   TextEditingController bQuantityController = TextEditingController();
   TextEditingController bRateController = TextEditingController();
   TextEditingController bAmountController = TextEditingController();
+
+  final _dateProvider = StateProvider<DateTime>((ref) {
+    return DateTime(2020, 11, 17);
+  });
+  void _selectDate(WidgetRef ref) async {
+    final DateTime? newDate = await showDatePicker(
+      context: context,
+      initialDate: ref.watch(_dateProvider),
+      firstDate: DateTime(2017, 1),
+      lastDate: DateTime(2022, 7),
+      helpText: 'Select a date',
+    );
+    if (newDate != null) {
+      ref.read(_dateProvider.notifier).state = newDate;
+    }
+  }
+
   @override
   void dispose() {
     fullNameController.dispose();
@@ -37,6 +55,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final date = ref.watch(_dateProvider.notifier).state;
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -62,6 +81,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                 ),
                 TextFormField(
                   maxLength: 10,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -74,14 +94,48 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                 const SizedBox(
                   height: 12,
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                    labelStyle: TextStyle(fontSize: 14),
-                    labelText: 'Advance Payment',
-                    border: OutlineInputBorder(),
-                  ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: 50,
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          // contentPadding:
+                          //     EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                          // labelStyle: TextStyle(fontSize: 14),
+                          labelText: 'Advance Payment',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    InkWell(
+                      onTap: () => _selectDate(ref),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black,
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "${date.day}-${date.month}-${date.year}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 12,
@@ -148,7 +202,6 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                 height: 5,
                                               ),
                                               TextFormField(
-
                                                 decoration:
                                                     const InputDecoration(
                                                   contentPadding:
@@ -160,10 +213,9 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                   labelText: 'Product',
                                                   border: OutlineInputBorder(),
                                                 ),
-
-                                                onChanged: (value){
-
-                                                  BookOrderController.fetchItems(value);
+                                                onChanged: (value) {
+                                                  BookOrderController
+                                                      .fetchItems(value);
                                                 },
                                               ),
                                               const SizedBox(
@@ -436,6 +488,38 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
     );
   }
 }
+
+
+    // InkWell(
+    //                   onTap:()=> _selectDate(ref),
+    //                   child: SizedBox(
+    //                     width: MediaQuery.of(context).size.width * 0.4,
+    //                     child: Container(
+    //                       height: 45,
+    //                       decoration: BoxDecoration(
+    //                         border: Border.all(
+    //                           color: Colors.black,
+    //                         ),
+    //                         borderRadius: BorderRadius.circular(5),
+    //                       ),
+    //                       child: Center(
+    //                         child: Text(
+    //                           "${_date.day}-${_date.month}-${_date.year}",
+    //                           style: const TextStyle(
+    //                             fontSize: 16,
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+
+
+
+
+
+
+
 
 // ElevatedButton(
 //                 onPressed: () {
