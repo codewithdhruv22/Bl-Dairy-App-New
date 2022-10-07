@@ -2,7 +2,11 @@ import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/view/widgets/SlideShower.dart';
 import 'package:bl_dairy_app/view/widgets/main_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:velocity_x/velocity_x.dart';
+import '../../constants/Theme.dart';
 import '../../model/BookOrderModel.dart';
+import '../widgets/Custom_TextFiled.dart';
 
 class Dashboard_Scren extends StatefulWidget {
   const Dashboard_Scren({Key? key}) : super(key: key);
@@ -30,6 +34,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
     GetOrders();
   }
 
+  bool _customTileExpanded = false;
   @override
   Widget build(BuildContext context) {
     return loading
@@ -50,6 +55,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                       const SizedBox(
                         height: 60,
                       ),
+                      // container for Dashboard Title
                       Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,6 +75,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                       const SizedBox(
                         height: 15,
                       ),
+                      // container for Peinding order
                       Container(
                         child: Material(
                           elevation: 4,
@@ -83,142 +90,263 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: Text(
-                                    "Pending Orders",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                const CustomTextFiled(
+                                  label: 'hello',
+                                  value: 'Ashvin choudhry',
                                 ),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: Text(
-                                    "Sample Text Sample Text Sample Text",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                ListTile(
-                                  onTap: null,
-                                  leading: const CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                  ),
-                                  title: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const <Widget>[
-                                        Text(
-                                          "Order Name",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        Text(
-                                          "Order Book Date",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ]),
-                                ),
-                                SizedBox(
-                                  height: 300,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: dashOrderList.length,
-                                      itemBuilder: (context, index) {
-                                        final order = dashOrderList[index];
-                                        return ListTile(
-                                          onTap: () {
-                                            print(order.MobileNumber);
-                                            print(order.OrderBookDate);
-                                            print(order.CustomerName);
-                                            print(order.items);
-                                            print(order.Advance);
-                                            print(order.Note);
-                                            print(order.OrderDelivaryDate);
-
-                                            showDialog<String>(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: const Text(
-                                                        "Order Detials"),
-                                                    content: SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width -
-                                                              50,
-                                                      height: 200,
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        child: Column(
-                                                          children: [
-                                                            Text(order
-                                                                .CustomerName),
-                                                            Text(order
-                                                                .MobileNumber),
-                                                            Text(order
-                                                                .OrderBookDate),
-                                                            Text(order
-                                                                .OrderDelivaryDate),
-                                                            Text(order.Note),
-                                                            Text(order.Advance),
-                                                            const SizedBox(
-                                                              height: 20,
+                                ExpansionTile(
+                                  title: const Text('Pending Orders'),
+                                  // trailing: Icon(
+                                  //   _customTileExpanded
+                                  //       ? FeatherIcons.chevronUp
+                                  //       : FeatherIcons.chevronDown,
+                                  // ),
+                                  children: [
+                                    SizedBox(
+                                      height: 300,
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: dashOrderList.length,
+                                          itemBuilder: (context, index) {
+                                            final order = dashOrderList[index];
+                                            return ListTile(
+                                              onTap: () {
+                                                VxBottomSheet.bottomSheetView(
+                                                  context,
+                                                  isDismissible: true,
+                                                  backgroundColor: Colors.white,
+                                                  isSafeAreaFromBottom: true,
+                                                  child: Expanded(
+                                                    // height: 300,
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        SingleChildScrollView(
+                                                          child: Expanded(
+                                                            child: Column(
+                                                              children: <
+                                                                  Widget>[
+                                                                Material(
+                                                                  elevation: 2,
+                                                                  child: Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerRight,
+                                                                    child:
+                                                                        IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      icon:
+                                                                          const Icon(
+                                                                        FeatherIcons
+                                                                            .x,
+                                                                        color: MyColors
+                                                                            .defaultColor,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .fromLTRB(
+                                                                          10,
+                                                                          0,
+                                                                          10,
+                                                                          0),
+                                                                  child: Column(
+                                                                    children: [
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          CustomTextFiled(
+                                                                              label: "Customer Name",
+                                                                              value: order.CustomerName),
+                                                                          const Expanded(
+                                                                              child: SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          )),
+                                                                          CustomTextFiled(
+                                                                              label: 'Number',
+                                                                              value: order.MobileNumber),
+                                                                          const Expanded(
+                                                                              child: SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ))
+                                                                        ],
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          CustomTextFiled(
+                                                                              label: "Order Date",
+                                                                              value: order.OrderBookDate),
+                                                                          const Expanded(
+                                                                              child: SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          )),
+                                                                          CustomTextFiled(
+                                                                              label: 'Dilivery Date',
+                                                                              value: order.OrderDelivaryDate),
+                                                                          const Expanded(
+                                                                              child: SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          )),
+                                                                          CustomTextFiled(
+                                                                              label: 'Advance Payment',
+                                                                              value: order.OrderDelivaryDate),
+                                                                        ],
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          CustomTextFiled(
+                                                                              label: "Notes",
+                                                                              value: order.Note),
+                                                                        ],
+                                                                      ),
+                                                                      const Divider(),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: const [
+                                                                          Text(
+                                                                              'Order Name'),
+                                                                          Text(
+                                                                              'Quanitiy'),
+                                                                          Text(
+                                                                              'Rate'),
+                                                                          Text(
+                                                                              'Amount'),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ],
                                                             ),
-                                                            const Text(
-                                                                "Item Details"),
-                                                            SizedBox(
-                                                              height: 200,
-                                                              child: ListView
-                                                                  .builder(
-                                                                      itemCount: order
-                                                                          .items
-                                                                          .length,
-                                                                      itemBuilder:
-                                                                          (context,
-                                                                              index) {
-                                                                        final item =
-                                                                            order.items[index];
-                                                                        return ListTile(
-                                                                          leading:
-                                                                              Text(item.itemName),
-                                                                          title: Text(item
-                                                                              .itemQty
-                                                                              .toString()),
-                                                                          trailing: Text(item
-                                                                              .itemRate
-                                                                              .toString()),
-                                                                        );
-                                                                      }),
-                                                            )
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: const Text(
-                                                              "Close"))
-                                                    ],
-                                                  );
-                                                });
-                                          },
-                                          title: Text(order.CustomerName),
-                                          leading: Text("${index + 1}"),
-                                          trailing: Text(order.OrderBookDate),
-                                        );
-                                      }),
-                                )
+                                                  ),
+                                                );
+
+                                                // print(order.MobileNumber);
+                                                // print(order.OrderBookDate);
+                                                // print(order.CustomerName);
+                                                // print(order.items);
+                                                // print(order.Advance);
+                                                // print(order.Note);
+                                                // print(order.OrderDelivaryDate);
+
+                                                // showDialog<String>(
+                                                //     context: context,
+                                                //     builder:
+                                                //         (BuildContext context) {
+                                                //       return const Text('data');
+                                                //       // return AlertDialog(
+                                                //       //   title: const Text(
+                                                //       //       "Order Detials"),
+                                                //       //   content: SizedBox(
+                                                //       //     width: MediaQuery.of(
+                                                //       //                 context)
+                                                //       //             .size
+                                                //       //             .width -
+                                                //       //         50,
+                                                //       //     height: 200,
+                                                //       //     child:
+                                                //       //         SingleChildScrollView(
+                                                //       //       child: Column(
+                                                //       //         children: [
+                                                //       //           Text(order
+                                                //       //               .CustomerName),
+                                                //       //           Text(order
+                                                //       //               .MobileNumber),
+                                                //       //           Text(order
+                                                //       //               .OrderBookDate),
+                                                //       //           Text(order
+                                                //       //               .OrderDelivaryDate),
+                                                //       //           Text(
+                                                //       //               order.Note),
+                                                //       //           Text(order
+                                                //       //               .Advance),
+                                                //       //           const SizedBox(
+                                                //       //             height: 20,
+                                                //       //           ),
+                                                //       //           const Text(
+                                                //       //               "Item Details"),
+                                                //       //           SizedBox(
+                                                // //       //             height: 200,
+                                                //                   child: ListView
+                                                //                       .builder(
+                                                //                           itemCount: order
+                                                //                               .items
+                                                //                               .length,
+                                                //                           itemBuilder:
+                                                //                               (context, index) {
+                                                //                             final item =
+                                                //                                 order.items[index];
+                                                //                             return ListTile(
+                                                //                               leading: Text(item.itemName),
+                                                //                               title: Text(item.itemQty.toString()),
+                                                //                               trailing: Text(item.itemRate.toString()),
+                                                //                             );
+                                                //                           }),
+                                                //       //           )
+                                                //       //         ],
+                                                //       //       ),
+                                                //       //     ),
+                                                //       //   ),
+                                                //       //   actions: <Widget>[
+                                                //       //     TextButton(
+                                                //       //         onPressed: () {
+                                                //       //           Navigator.pop(
+                                                //       //               context);
+                                                //       //         },
+                                                //       //         child: const Text(
+                                                //       //             "Close"))
+                                                //       //   ],
+                                                //       // );
+                                                //     });
+                                              },
+                                              title: Text(order.CustomerName),
+                                              leading: Text("${index + 1}"),
+                                              trailing:
+                                                  Text(order.OrderBookDate),
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                  onExpansionChanged: (bool expanded) {
+                                    setState(
+                                        () => _customTileExpanded = expanded);
+                                  },
+                                ),
                               ],
                             ),
                           ),
