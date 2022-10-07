@@ -163,47 +163,28 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         MainAxisAlignment
                                                                             .start,
                                                                     children: [
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.4,
-                                                                        child:
-                                                                            Center(
+                                                                      CustomTextFiled(
+                                                                          label:
+                                                                              "Customer Name",
+                                                                          value:
+                                                                              order.CustomerName),
+                                                                      const Expanded(
                                                                           child:
-                                                                              CustomTextFiled(
-                                                                            label:
-                                                                                "Customer Name",
-                                                                            value:
-                                                                                order.CustomerName,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
+                                                                              SizedBox(
                                                                         width:
                                                                             10,
-                                                                      ),
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.5,
-                                                                        child:
-                                                                            Center(
-                                                                          child: CustomTextFiled(
-                                                                              label: 'Number',
-                                                                              value: order.MobileNumber),
-                                                                        ),
-                                                                      ),
+                                                                      )),
+                                                                      CustomTextFiled(
+                                                                          label:
+                                                                              'Number',
+                                                                          value:
+                                                                              order.MobileNumber),
                                                                       const Expanded(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              10,
-                                                                        ),
-                                                                      )
+                                                                          child:
+                                                                              SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ))
                                                                     ],
                                                                   ),
                                                                   const SizedBox(
@@ -214,61 +195,33 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         MainAxisAlignment
                                                                             .start,
                                                                     children: [
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.33,
-                                                                        child:
-                                                                            Center(
-                                                                          child: CustomTextFiled(
-                                                                              label: "Order Date",
-                                                                              value: order.OrderBookDate),
-                                                                        ),
-                                                                      ),
+                                                                      CustomTextFiled(
+                                                                          label:
+                                                                              "Order Date",
+                                                                          value:
+                                                                              order.OrderBookDate),
                                                                       const Expanded(
                                                                           child:
                                                                               SizedBox(
                                                                         width:
                                                                             10,
                                                                       )),
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.3,
-                                                                        child:
-                                                                            Center(
-                                                                          child: CustomTextFiled(
-                                                                              label: 'Dilivery Date',
-                                                                              value: order.OrderDelivaryDate),
-                                                                        ),
-                                                                      ),
+                                                                      CustomTextFiled(
+                                                                          label:
+                                                                              'Dilivery Date',
+                                                                          value:
+                                                                              order.OrderDelivaryDate),
                                                                       const Expanded(
                                                                           child:
                                                                               SizedBox(
                                                                         width:
                                                                             10,
                                                                       )),
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.3,
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              CustomTextFiled(
-                                                                            label:
-                                                                                'Advance Payment',
-                                                                            value:
-                                                                                order.OrderDelivaryDate,
-                                                                          ),
-                                                                        ),
-                                                                      ),
+                                                                      CustomTextFiled(
+                                                                          label:
+                                                                              'Advance Payment',
+                                                                          value:
+                                                                              order.OrderDelivaryDate),
                                                                     ],
                                                                   ),
                                                                   const SizedBox(
@@ -279,26 +232,11 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         MainAxisAlignment
                                                                             .start,
                                                                     children: [
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width /
-                                                                            1.2,
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.symmetric(
-                                                                            horizontal:
-                                                                                3,
-                                                                            vertical:
-                                                                                2,
-                                                                          ),
-                                                                          child: CustomTextFiled(
-                                                                              label: "Notes",
-                                                                              value: order.Note),
-                                                                        ),
-                                                                      ),
+                                                                      CustomTextFiled(
+                                                                          label:
+                                                                              "Notes",
+                                                                          value:
+                                                                              order.Note),
                                                                     ],
                                                                   ),
                                                                   const Divider(),

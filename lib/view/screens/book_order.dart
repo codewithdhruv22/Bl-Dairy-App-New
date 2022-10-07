@@ -121,7 +121,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                           height: 45,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: Colors.black,
+                              color: MyColors.defaultColor,
                             ),
                             borderRadius: BorderRadius.circular(5),
                           ),
@@ -170,19 +170,17 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                             VxBottomSheet.bottomSheetView(
                               context,
                               elevation: 20,
-                              roundedFromTop: true,
+                              roundedFromTop: false,
                               isDismissible: true,
                               backgroundColor: Colors.white,
                               isSafeAreaFromBottom: true,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                ),
-                                child: SizedBox(
-                                  height: MediaQuery.of(context).size.height,
-                                  child: Column(
-                                    children: <Widget>[
-                                      Align(
+                              child: SizedBox(
+                                height: MediaQuery.of(context).size.height,
+                                child: Column(
+                                  children: [
+                                    Material(
+                                      elevation: 2,
+                                      child: Align(
                                         alignment: Alignment.centerRight,
                                         child: IconButton(
                                           onPressed: () {
@@ -194,143 +192,165 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      TextFormField(
-                                        decoration: const InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 15),
-                                          labelStyle: TextStyle(fontSize: 14),
-                                          labelText: 'Product',
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        onChanged: (value) {
-                                          BookOrderController.fetchItems(value);
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: TextFormField(
-                                              decoration: const InputDecoration(
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 0,
-                                                        horizontal: 15),
-                                                labelStyle:
-                                                    TextStyle(fontSize: 14),
-                                                labelText: 'Quantity',
-                                                border: OutlineInputBorder(),
-                                              ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      child: Column(
+                                        children: <Widget>[
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 0,
+                                                      horizontal: 15),
+                                              labelStyle:
+                                                  TextStyle(fontSize: 14),
+                                              labelText: 'Product',
+                                              border: OutlineInputBorder(),
                                             ),
+                                            onChanged: (value) {
+                                              BookOrderController.fetchItems(
+                                                  value);
+                                            },
                                           ),
                                           const SizedBox(
-                                            width: 8,
+                                            height: 20,
                                           ),
-                                          Expanded(
-                                            child: TextFormField(
-                                              decoration: const InputDecoration(
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 0,
-                                                        horizontal: 15),
-                                                labelStyle:
-                                                    TextStyle(fontSize: 14),
-                                                labelText: 'Rate',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Expanded(
-                                            child: TextFormField(
-                                              decoration: const InputDecoration(
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 0,
-                                                        horizontal: 15),
-                                                labelStyle:
-                                                    TextStyle(fontSize: 14),
-                                                labelText: 'Amount',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      //
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: SizedBox(
-                                              height: size.height * 0.06,
-                                              width: size.width * 0.4,
-                                              child: ElevatedButton.icon(
-                                                onPressed: () {
-                                                  // Navigator.pop(context);
-                                                },
-                                                icon: const Icon(
-                                                  FeatherIcons.trash2,
-                                                  size: 18,
-                                                ),
-                                                label: const Text('Delete'),
-                                                style: ElevatedButton.styleFrom(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 4, 0, 4),
-                                                  backgroundColor: MyColors.red,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: TextFormField(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 15),
+                                                    labelStyle:
+                                                        TextStyle(fontSize: 14),
+                                                    labelText: 'Quantity',
+                                                    border:
+                                                        OutlineInputBorder(),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          Expanded(
-                                            child: SizedBox(
-                                              height: size.height * 0.06,
-                                              width: size.width * 0.4,
-                                              child: ElevatedButton.icon(
-                                                onPressed: () {},
-                                                icon: const Icon(
-                                                  FeatherIcons.plus,
-                                                  size: 18,
-                                                ),
-                                                label: const Text('Add'),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      MyColors.green,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Expanded(
+                                                child: TextFormField(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 15),
+                                                    labelStyle:
+                                                        TextStyle(fontSize: 14),
+                                                    labelText: 'Rate',
+                                                    border:
+                                                        OutlineInputBorder(),
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Expanded(
+                                                child: TextFormField(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 15),
+                                                    labelStyle:
+                                                        TextStyle(fontSize: 14),
+                                                    labelText: 'Amount',
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          //
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: SizedBox(
+                                                  height: size.height * 0.06,
+                                                  width: size.width * 0.4,
+                                                  child: ElevatedButton.icon(
+                                                    onPressed: () {
+                                                      // Navigator.pop(context);
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.trash2,
+                                                      size: 18,
+                                                    ),
+                                                    label: const Text('Delete'),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(0, 4, 0, 4),
+                                                      backgroundColor:
+                                                          MyColors.red,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Expanded(
+                                                child: SizedBox(
+                                                  height: size.height * 0.06,
+                                                  width: size.width * 0.4,
+                                                  child: ElevatedButton.icon(
+                                                    onPressed: () {},
+                                                    icon: const Icon(
+                                                      FeatherIcons.plus,
+                                                      size: 18,
+                                                    ),
+                                                    label: const Text('Add'),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          MyColors.green,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             );
