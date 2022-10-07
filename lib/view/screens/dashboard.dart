@@ -254,6 +254,24 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                           'Amount'),
                                                                     ],
                                                                   ),
+                                                                  SizedBox(
+                                                                    height: 200,
+                                                                    child: ListView.builder(
+shrinkWrap: true,
+                                                                        itemCount: 10,
+
+                                                                        //
+                                                                        itemBuilder: (index , context){
+                                                                     return ListTile(
+                                                                        leading: Text("DUDH"),
+                                                                        title: Text("45"),
+                                                                        subtitle: Text("Rs.34/Kg"),
+                                                                        trailing: Text("Rs.1120")
+                                                                        ,
+                                                                      );
+
+                                                                    }),
+                                                                  )
                                                                 ],
                                                               ),
                                                             )
