@@ -187,12 +187,12 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             order.items[index];
                                                                         return ListTile(
                                                                           leading:
-                                                                              Text(item.ProductCategory),
+                                                                              Text(item.itemName),
                                                                           title: Text(item
-                                                                              .ProductName
+                                                                              .itemQty
                                                                               .toString()),
                                                                           trailing: Text(item
-                                                                              .ProductName
+                                                                              .itemRate
                                                                               .toString()),
                                                                         );
                                                                       }),

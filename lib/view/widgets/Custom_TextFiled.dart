@@ -1,35 +1,28 @@
+import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFiled extends StatelessWidget {
-  final TextEditingController textEditingController;
-  final String hintText;
+  final String label;
+  final String value;
 
-  const CustomTextFiled(
-      {Key? key, required this.textEditingController, required this.hintText})
-      : super(key: key);
+  const CustomTextFiled({
+    Key? key,
+    required this.label,
+    required this.value,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SizedBox(
-      height: size.height * 0.05,
-      width: size.width,
-      child: TextField(
-        controller: textEditingController,
-        decoration: InputDecoration(
-          hintText: hintText,
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(4.0),
-            ),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(4.0),
-            ),
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 10, color: MyColors.defaultColor),
         ),
-      ),
+        Text(value)
+      ],
     );
   }
 }
