@@ -118,14 +118,12 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                     children: <Widget>[
                                                       SingleChildScrollView(
                                                         child: Column(
-                                                          children: <
-                                                              Widget>[
+                                                          children: <Widget>[
                                                             Material(
                                                               elevation: 2,
                                                               child: Align(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .centerRight,
+                                                                alignment: Alignment
+                                                                    .centerRight,
                                                                 child:
                                                                     IconButton(
                                                                   onPressed:
@@ -157,77 +155,94 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                               child: Column(
                                                                 children: [
                                                                   const SizedBox(
-                                                                    height:
-                                                                        10,
+                                                                    height: 10,
                                                                   ),
                                                                   Row(
                                                                     mainAxisAlignment:
-                                                                        MainAxisAlignment.start,
+                                                                        MainAxisAlignment
+                                                                            .start,
                                                                     children: [
                                                                       CustomTextFiled(
-                                                                          label: "Customer Name",
-                                                                          value: order.CustomerName),
+                                                                          label:
+                                                                              "Customer Name",
+                                                                          value:
+                                                                              order.CustomerName),
                                                                       const Expanded(
-                                                                          child: SizedBox(
+                                                                          child:
+                                                                              SizedBox(
                                                                         width:
                                                                             10,
                                                                       )),
                                                                       CustomTextFiled(
-                                                                          label: 'Number',
-                                                                          value: order.MobileNumber),
+                                                                          label:
+                                                                              'Number',
+                                                                          value:
+                                                                              order.MobileNumber),
                                                                       const Expanded(
-                                                                          child: SizedBox(
+                                                                          child:
+                                                                              SizedBox(
                                                                         width:
                                                                             10,
                                                                       ))
                                                                     ],
                                                                   ),
                                                                   const SizedBox(
-                                                                    height:
-                                                                        10,
+                                                                    height: 10,
                                                                   ),
                                                                   Row(
                                                                     mainAxisAlignment:
-                                                                        MainAxisAlignment.start,
+                                                                        MainAxisAlignment
+                                                                            .start,
                                                                     children: [
                                                                       CustomTextFiled(
-                                                                          label: "Order Date",
-                                                                          value: order.OrderBookDate),
+                                                                          label:
+                                                                              "Order Date",
+                                                                          value:
+                                                                              order.OrderBookDate),
                                                                       const Expanded(
-                                                                          child: SizedBox(
+                                                                          child:
+                                                                              SizedBox(
                                                                         width:
                                                                             10,
                                                                       )),
                                                                       CustomTextFiled(
-                                                                          label: 'Dilivery Date',
-                                                                          value: order.OrderDelivaryDate),
+                                                                          label:
+                                                                              'Dilivery Date',
+                                                                          value:
+                                                                              order.OrderDelivaryDate),
                                                                       const Expanded(
-                                                                          child: SizedBox(
+                                                                          child:
+                                                                              SizedBox(
                                                                         width:
                                                                             10,
                                                                       )),
                                                                       CustomTextFiled(
-                                                                          label: 'Advance Payment',
-                                                                          value: order.OrderDelivaryDate),
+                                                                          label:
+                                                                              'Advance Payment',
+                                                                          value:
+                                                                              order.OrderDelivaryDate),
                                                                     ],
                                                                   ),
                                                                   const SizedBox(
-                                                                    height:
-                                                                        10,
+                                                                    height: 10,
                                                                   ),
                                                                   Row(
                                                                     mainAxisAlignment:
-                                                                        MainAxisAlignment.start,
+                                                                        MainAxisAlignment
+                                                                            .start,
                                                                     children: [
                                                                       CustomTextFiled(
-                                                                          label: "Notes",
-                                                                          value: order.Note),
+                                                                          label:
+                                                                              "Notes",
+                                                                          value:
+                                                                              order.Note),
                                                                     ],
                                                                   ),
                                                                   const Divider(),
                                                                   Row(
                                                                     mainAxisAlignment:
-                                                                        MainAxisAlignment.spaceBetween,
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
                                                                     children: const [
                                                                       Text(
                                                                           'Order Name'),
