@@ -37,6 +37,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
   bool _customTileExpanded = false;
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return loading
         ? const Scaffold(
             body: Center(
@@ -249,28 +250,35 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                       Text(
                                                                           'Quanitiy'),
                                                                       Text(
-                                                                          'Rate'),
-                                                                      Text(
                                                                           'Amount'),
                                                                     ],
                                                                   ),
                                                                   SizedBox(
                                                                     height: 200,
-                                                                    child: ListView.builder(
-shrinkWrap: true,
-                                                                        itemCount: 10,
+                                                                    child: ListView
+                                                                        .builder(
+                                                                      shrinkWrap:
+                                                                          true,
+                                                                      itemCount:
+                                                                          10,
 
-                                                                        //
-                                                                        itemBuilder: (index , context){
-                                                                     return ListTile(
-                                                                        leading: Text("DUDH"),
-                                                                        title: Text("45"),
-                                                                        subtitle: Text("Rs.34/Kg"),
-                                                                        trailing: Text("Rs.1120")
-                                                                        ,
-                                                                      );
-
-                                                                    }),
+                                                                      //
+                                                                      itemBuilder:
+                                                                          (index,
+                                                                              context) {
+                                                                        return const ListTile(
+                                                                          leading:
+                                                                              Text("DUDH"),
+                                                                          title:
+                                                                              Center(
+                                                                            child:
+                                                                                Text("45"),
+                                                                          ),
+                                                                          trailing:
+                                                                              Text("Rs.1120"),
+                                                                        );
+                                                                      },
+                                                                    ),
                                                                   )
                                                                 ],
                                                               ),
@@ -781,5 +789,20 @@ shrinkWrap: true,
               ),
             ),
           );
+  }
+
+  Widget borderContainer(
+      {required Widget child, required double height, required double width}) {
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
+        ),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: child,
+    );
   }
 }
