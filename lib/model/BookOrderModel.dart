@@ -54,23 +54,32 @@ class Order {
 
 class OrderItem{
 
-  String itemName;
-  int itemQty;
-  int itemRate;
+  String ProductCategory;
+  String ProductName;
+
 
   OrderItem({
 
-    required this.itemName,
-    required this.itemQty,
-    required this.itemRate
+    required this.ProductCategory,
+    required this.ProductName,
+
 
   });
 
   Map<String , dynamic> toJson()=>{
-    "itemName" : itemName,
-    "itemQty" : itemQty,
-    "itemNate" : itemRate
+    "ProductCategory" : ProductCategory,
+    "ProductName" : ProductName,
+
   };
 
+
+
+  static OrderItem fromSnap(DocumentSnapshot snap){
+    var snapshot = snap.data() as Map<String , dynamic>;
+    return OrderItem(
+      ProductCategory : snapshot["ProductCategory"] ?? "NO DATA",
+      ProductName : snapshot["ProductName"] ?? "NO DATA",
+    );
+  }
 
 }

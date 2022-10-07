@@ -148,6 +148,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                 height: 5,
                                               ),
                                               TextFormField(
+
                                                 decoration:
                                                     const InputDecoration(
                                                   contentPadding:
@@ -159,6 +160,11 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                   labelText: 'Product',
                                                   border: OutlineInputBorder(),
                                                 ),
+
+                                                onChanged: (value){
+
+                                                  BookOrderController.fetchItems(value);
+                                                },
                                               ),
                                               const SizedBox(
                                                 height: 20,
