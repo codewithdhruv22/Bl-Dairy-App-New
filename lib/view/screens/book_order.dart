@@ -3,16 +3,17 @@ import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/model/BookOrderModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class BookOrderScreen extends StatefulWidget {
+class BookOrderScreen extends ConsumerStatefulWidget {
   const BookOrderScreen({Key? key}) : super(key: key);
 
   @override
-  State<BookOrderScreen> createState() => _BookOrderScreenState();
+  ConsumerState<BookOrderScreen> createState() => _BookOrderScreenState();
 }
 
-class _BookOrderScreenState extends State<BookOrderScreen> {
+class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController advancePaymentController = TextEditingController();
@@ -22,6 +23,23 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
   TextEditingController bQuantityController = TextEditingController();
   TextEditingController bRateController = TextEditingController();
   TextEditingController bAmountController = TextEditingController();
+
+  final _dateProvider = StateProvider<DateTime>((ref) {
+    return DateTime(2020, 11, 17);
+  });
+  void _selectDate(WidgetRef ref) async {
+    final DateTime? newDate = await showDatePicker(
+      context: context,
+      initialDate: ref.watch(_dateProvider),
+      firstDate: DateTime(2017, 1),
+      lastDate: DateTime(2022, 7),
+      helpText: 'Select a date',
+    );
+    if (newDate != null) {
+      ref.read(_dateProvider.notifier).state = newDate;
+    }
+  }
+
   @override
   void dispose() {
     fullNameController.dispose();
@@ -42,6 +60,8 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
   int grandTotal = 0;
   @override
   Widget build(BuildContext context) {
+    final date = ref.watch(_dateProvider.notifier).state;
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -67,6 +87,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                 ),
                 TextField(controller : mobileNumberController,
                   maxLength: 10,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -79,6 +100,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                 const SizedBox(
                   height: 12,
                 ),
+<<<<<<< HEAD
                 TextField(controller :advancePaymentController,
                   decoration: const InputDecoration(
                     contentPadding:
@@ -87,6 +109,50 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                     labelText: 'Advance Payment',
                     border: OutlineInputBorder(),
                   ),
+=======
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: 50,
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                          labelStyle: TextStyle(fontSize: 14),
+                          labelText: 'Advance Payment',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    InkWell(
+                      onTap: () => _selectDate(ref),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: Container(
+                          height: 49,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: MyColors.defaultColor,
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "${date.day}-${date.month}-${date.year}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+>>>>>>> 1f8923655faab0ae50e774cc7c241f58ce73acc0
                 ),
                 const SizedBox(
                   height: 12,
@@ -119,18 +185,20 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                           onPressed: () {
                             VxBottomSheet.bottomSheetView(
                               context,
+                              elevation: 20,
                               roundedFromTop: true,
                               isDismissible: true,
                               backgroundColor: Colors.white,
                               isSafeAreaFromBottom: true,
-                              child: SizedBox(
-                                height: 300,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                  ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
+                                child: SizedBox(
+                                  height: MediaQuery.of(context).size.height,
                                   child: Column(
                                     children: <Widget>[
+<<<<<<< HEAD
                                       SingleChildScrollView(
                                         child: Expanded(
                                           child: Column(
@@ -346,8 +414,154 @@ bAmountController.clear();
                                                 ],
                                               ),
                                             ],
+=======
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: const Icon(
+                                            FeatherIcons.x,
+                                            color: MyColors.defaultColor,
+>>>>>>> 1f8923655faab0ae50e774cc7c241f58ce73acc0
                                           ),
                                         ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      TextFormField(
+                                        decoration: const InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 0, horizontal: 15),
+                                          labelStyle: TextStyle(fontSize: 14),
+                                          labelText: 'Product',
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        onChanged: (value) {
+                                          BookOrderController.fetchItems(value);
+                                        },
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: TextFormField(
+                                              decoration: const InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 15),
+                                                labelStyle:
+                                                    TextStyle(fontSize: 14),
+                                                labelText: 'Quantity',
+                                                border: OutlineInputBorder(),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Expanded(
+                                            child: TextFormField(
+                                              decoration: const InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 15),
+                                                labelStyle:
+                                                    TextStyle(fontSize: 14),
+                                                labelText: 'Rate',
+                                                border: OutlineInputBorder(),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Expanded(
+                                            child: TextFormField(
+                                              decoration: const InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 15),
+                                                labelStyle:
+                                                    TextStyle(fontSize: 14),
+                                                labelText: 'Amount',
+                                                border: OutlineInputBorder(),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      //
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: SizedBox(
+                                              height: size.height * 0.06,
+                                              width: size.width * 0.4,
+                                              child: ElevatedButton.icon(
+                                                onPressed: () {
+                                                  // Navigator.pop(context);
+                                                },
+                                                icon: const Icon(
+                                                  FeatherIcons.trash2,
+                                                  size: 18,
+                                                ),
+                                                label: const Text('Delete'),
+                                                style: ElevatedButton.styleFrom(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 4, 0, 4),
+                                                  backgroundColor: MyColors.red,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 20,
+                                          ),
+                                          Expanded(
+                                            child: SizedBox(
+                                              height: size.height * 0.06,
+                                              width: size.width * 0.4,
+                                              child: ElevatedButton.icon(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                  FeatherIcons.plus,
+                                                  size: 18,
+                                                ),
+                                                label: const Text('Add'),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      MyColors.green,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -480,6 +694,38 @@ bAmountController.clear();
     );
   }
 }
+
+
+    // InkWell(
+    //                   onTap:()=> _selectDate(ref),
+    //                   child: SizedBox(
+    //                     width: MediaQuery.of(context).size.width * 0.4,
+    //                     child: Container(
+    //                       height: 45,
+    //                       decoration: BoxDecoration(
+    //                         border: Border.all(
+    //                           color: Colors.black,
+    //                         ),
+    //                         borderRadius: BorderRadius.circular(5),
+    //                       ),
+    //                       child: Center(
+    //                         child: Text(
+    //                           "${_date.day}-${_date.month}-${_date.year}",
+    //                           style: const TextStyle(
+    //                             fontSize: 16,
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+
+
+
+
+
+
+
 
 // ElevatedButton(
 //                 onPressed: () {
