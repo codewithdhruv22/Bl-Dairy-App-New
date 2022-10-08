@@ -35,6 +35,11 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
     super.dispose();
   }
 
+
+
+  List<OrderModel> OrderItemLocal = [];
+  List<Map<String , dynamic>> databaseOrderItem = [];
+  int grandTotal = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +53,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextFormField(
+                TextField(controller : fullNameController,
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -60,7 +65,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                 const SizedBox(
                   height: 12,
                 ),
-                TextFormField(
+                TextField(controller : mobileNumberController,
                   maxLength: 10,
                   decoration: const InputDecoration(
                     contentPadding:
@@ -74,7 +79,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                 const SizedBox(
                   height: 12,
                 ),
-                TextFormField(
+                TextField(controller :advancePaymentController,
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -86,7 +91,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                 const SizedBox(
                   height: 12,
                 ),
-                TextFormField(
+                TextField(controller : remarkController,
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -147,7 +152,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                               const SizedBox(
                                                 height: 5,
                                               ),
-                                              TextFormField(
+                                              TextField(controller : bProductNameController,
 
                                                 decoration:
                                                     const InputDecoration(
@@ -175,7 +180,12 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                         .spaceBetween,
                                                 children: [
                                                   Expanded(
-                                                    child: TextFormField(
+                                                    child: TextField(controller : bQuantityController,
+                                                  onChanged: (value){
+                                                    setState(() {
+                                                      bAmountController.text =    (int.parse(bRateController.text)*int.parse(bQuantityController.text)).toString();
+                                                    });
+                                                  },
                                                       decoration:
                                                           const InputDecoration(
                                                         contentPadding:
@@ -196,7 +206,13 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                     width: 8,
                                                   ),
                                                   Expanded(
-                                                    child: TextFormField(
+                                                    child: TextField(
+                                                      onChanged: (value){
+                                                        setState(() {
+
+                                                        bAmountController.text =    (int.parse(bRateController.text)*int.parse(bQuantityController.text)).toString();
+                                                        });
+                                                      },
                                                       decoration:
                                                           const InputDecoration(
                                                         contentPadding:
@@ -208,16 +224,20 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                         labelStyle: TextStyle(
                                                             fontSize: 14),
                                                         labelText: 'Rate',
+                                                        
                                                         border:
                                                             OutlineInputBorder(),
+                                                            
                                                       ),
+                                                      controller: bRateController,
                                                     ),
                                                   ),
                                                   const SizedBox(
                                                     width: 8,
                                                   ),
                                                   Expanded(
-                                                    child: TextFormField(
+                                                    child: TextField(controller : bAmountController,
+
                                                       decoration:
                                                           const InputDecoration(
                                                         contentPadding:
@@ -248,6 +268,10 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                   Expanded(
                                                     child: ElevatedButton.icon(
                                                       onPressed: () {
+                                                        bRateController.clear();
+                                                        bQuantityController.clear();
+                                                        bProductNameController.clear();
+                                                        bAmountController.clear();
                                                         Navigator.pop(context);
                                                       },
                                                       icon: const Icon(
@@ -278,7 +302,29 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                                                   ),
                                                   Expanded(
                                                     child: ElevatedButton.icon(
-                                                      onPressed: () {},
+                                                      onPressed: () {
+
+                                                       int amount  =  int.parse(bRateController.text)*int.parse(bQuantityController.text);
+                                                       grandTotal += amount;
+setState(() {
+
+                                                          OrderItemLocal.add(OrderModel(Rate: int.parse(bRateController.text), Quantity: int.parse(bQuantityController.text), Amount: amount, OrderName:  bProductNameController.text));
+                                                          databaseOrderItem.add(
+                                                              {
+                                                                "Rate" :  int.parse(bRateController.text),
+                                                                "Quantity" : int.parse(bQuantityController.text),
+                                                                "Amount" : amount,
+                                                                "OrderName" : bProductNameController.text
+
+                                                              } );
+});
+
+bRateController.clear();
+bQuantityController.clear();
+bProductNameController.clear();
+bAmountController.clear();
+                                                        Navigator.pop(context);
+                                                      },
                                                       icon: const Icon(
                                                         FeatherIcons.plus,
                                                         size: 18,
@@ -361,47 +407,45 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                       thickness: 0.5,
                       color: Colors.grey,
                     ),
+                    ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                    itemCount: OrderItemLocal.length,
+                    separatorBuilder: (context , index){
+
+                      return  Divider(
+                        thickness: 0.5,
+                        color: Colors.grey,
+                      );
+                    }
+                    , itemBuilder: (context , index){
+
+
+                        final item = OrderItemLocal[index];
+                      return  ListTile(
+                        title: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children:  [
+                            Text(item.OrderName),
+
+                            Text(item.Quantity.toString()),
+                            Text(item.Rate.toString()),
+                            Text(item.Amount.toString()),
+                          ],
+                        ),
+                      );
+                    }),
+
                     ListTile(
                       title: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('Ice Creame'),
-                          Text('500'),
-                          Text('10'),
-                          Text('5000'),
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      thickness: 0.5,
-                      color: Colors.grey,
-                    ),
-                    ListTile(
-                      title: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('Milk Packet'),
-                          Text('300'),
-                          Text('20'),
-                          Text('6000'),
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      thickness: 0.5,
-                      color: Colors.grey,
-                    ),
-                    ListTile(
-                      title: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children:  [
                           Text('Grand Total'),
                           Text('--'),
                           Text('--'),
-                          Text('11000'),
+                          Text(grandTotal.toString()),
                         ],
                       ),
                     ),
@@ -422,7 +466,7 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
                         Note: "DEMO NOTE",
                         OrderBookDate: "DEMO DATE",
                         OrderDelivaryDate: "DEMO DATE",
-                        items: [],
+                        items: databaseOrderItem,
                       ));
                     },
                     child: const Text("Book Order"),
@@ -453,11 +497,31 @@ class _BookOrderScreenState extends State<BookOrderScreen> {
 //               )
 
 // const Text("Order No.1"),
-//             TextFormField(),
+//             TextField(controller : //ADDCONTROLLER),
 //             const Text("Order No.2"),
-//             TextFormField(),
+//             TextField(controller : //ADDCONTROLLER),
 //             const Text("Order No.3"),
-//             TextFormField(),
+//             TextField(controller : //ADDCONTROLLER),
 //             const Text("Order No.4"),
-//             TextFormField(),
+//             TextField(controller : //ADDCONTROLLER),
 //             const Text("REVIEW ORDER DETAILS AND THEN BOOK IT"),
+
+
+class OrderModel{
+  String OrderName;
+  int Quantity;
+  int Rate;
+  int Amount;
+
+  OrderModel({
+    required this.Rate,
+    required this.Quantity,
+    required this.Amount,
+    required this.OrderName,
+
+});
+
+
+
+
+}

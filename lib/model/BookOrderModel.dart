@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../view/screens/book_order.dart';
+
 class Order {
 
   String CustomerName;
@@ -8,7 +10,7 @@ class Order {
   String Note;
   String OrderBookDate;
   String OrderDelivaryDate;
-  List<OrderItem> items;
+  List<Map<String , dynamic>> items;
 
   Order({
 
@@ -44,8 +46,8 @@ class Order {
      Note : snapshot["Note"] ?? "NO DATA",
      OrderBookDate : snapshot["OrderBookDate"] ?? "NO DATA",
      OrderDelivaryDate : snapshot["OrderBookDate"] ?? "NO DATA",
-     // items : snapshot["items"],
-     items : [],
+     items : snapshot["items"],
+
    );
   }
 }
