@@ -824,7 +824,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                 ),
                                 SlideShower(items: const [
                                   "https://image.shutterstock.com/image-vector/biggest-diwali-sale-promotion-yellow-260nw-1523982320.jpg",
-                                  "https://www.creativehatti.com/wp-content/uploads/edd/2021/04/Happy-Navratri-festival-sale-offer-banner-design-template-06-large.jpg"
+                                  "https://www.creativehatti.com/wp-content/uploads/edd/2021/04/Happy-Navratri-festival-sale-offe r-banner-design-template-06-large.jpg"
                                 ])
                               ],
                             ),
