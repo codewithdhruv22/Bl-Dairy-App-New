@@ -8,9 +8,9 @@ class Order {
   String MobileNumber;
   String Advance;
   String Note;
-  String OrderBookDate;
-  String OrderDelivaryDate;
-  List<Map<String , dynamic>> items;
+  Timestamp OrderBookDate;
+  Timestamp OrderDelivaryDate;
+
 
   Order({
 
@@ -20,7 +20,7 @@ class Order {
     required this.Note,
     required this.OrderBookDate,
     required this.OrderDelivaryDate,
-    required this.items
+
   });
 
 
@@ -32,21 +32,23 @@ class Order {
     "Note" : Note,
     "OrderBookDate" : OrderBookDate,
     "OrderDelivaryDate" : OrderDelivaryDate,
-    "items" : items
+
   };
 
 
 
   static Order fromSnap(DocumentSnapshot snap){
     var snapshot = snap.data() as Map<String , dynamic>;
+    print("I AM ORDER");
+    print(snapshot["items"]);
    return Order(
        CustomerName : snapshot["CustomerName"] ?? "NO DATA",
      Advance : snapshot["Advance"] ?? "NO DATA",
      MobileNumber : snapshot["MobileNumber"] ?? "NO DATA",
      Note : snapshot["Note"] ?? "NO DATA",
-     OrderBookDate : snapshot["OrderBookDate"] ?? "NO DATA",
-     OrderDelivaryDate : snapshot["OrderBookDate"] ?? "NO DATA",
-     items : snapshot["items"],
+     OrderBookDate : snapshot["OrderBookDate"] ,
+     OrderDelivaryDate : snapshot["OrderDelivaryDate"],
+
 
    );
   }

@@ -1,9 +1,11 @@
 import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/model/BookOrderModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class BookOrderScreen extends ConsumerStatefulWidget {
@@ -24,6 +26,13 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
   TextEditingController bRateController = TextEditingController();
   TextEditingController bAmountController = TextEditingController();
 
+
+
+
+  DateTime TodayDate = new DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
+
+
+  var myFormat = DateFormat('d-MM-yyyy');
   final _dateProvider = StateProvider<DateTime>((ref) {
     return DateTime(2020, 11, 17);
   });
@@ -37,6 +46,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
     );
     if (newDate != null) {
       ref.read(_dateProvider.notifier).state = newDate;
+
     }
   }
 
@@ -53,11 +63,10 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
     super.dispose();
   }
 
-
-
   List<OrderModel> OrderItemLocal = [];
-  List<Map<String , dynamic>> databaseOrderItem = [];
+  List<Map<String, dynamic>> databaseOrderItem = [];
   int grandTotal = 0;
+
   @override
   Widget build(BuildContext context) {
     final date = ref.watch(_dateProvider.notifier).state;
@@ -73,7 +82,8 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextField(controller : fullNameController,
+                TextFormField(
+
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -81,11 +91,12 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                     labelText: 'Name',
                     border: OutlineInputBorder(),
                   ),
+                  controller: fullNameController,
                 ),
                 const SizedBox(
                   height: 12,
                 ),
-                TextField(controller : mobileNumberController,
+                TextFormField(
                   maxLength: 10,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
@@ -96,20 +107,11 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                     helperText: 'Without Country Code',
                     border: OutlineInputBorder(),
                   ),
+                  controller: mobileNumberController,
                 ),
                 const SizedBox(
                   height: 12,
                 ),
-<<<<<<< HEAD
-                TextField(controller :advancePaymentController,
-                  decoration: const InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                    labelStyle: TextStyle(fontSize: 14),
-                    labelText: 'Advance Payment',
-                    border: OutlineInputBorder(),
-                  ),
-=======
                 Row(
                   children: [
                     SizedBox(
@@ -123,6 +125,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                           labelText: 'Advance Payment',
                           border: OutlineInputBorder(),
                         ),
+                        controller: advancePaymentController,
                       ),
                     ),
                     const SizedBox(
@@ -152,12 +155,11 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                       ),
                     ),
                   ],
->>>>>>> 1f8923655faab0ae50e774cc7c241f58ce73acc0
                 ),
                 const SizedBox(
                   height: 12,
                 ),
-                TextField(controller : remarkController,
+                TextFormField(
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -165,6 +167,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                     labelText: 'Remark',
                     border: OutlineInputBorder(),
                   ),
+                  controller: remarkController,
                 ),
                 const SizedBox(
                   height: 12,
@@ -198,223 +201,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                   height: MediaQuery.of(context).size.height,
                                   child: Column(
                                     children: <Widget>[
-<<<<<<< HEAD
-                                      SingleChildScrollView(
-                                        child: Expanded(
-                                          child: Column(
-                                            children: <Widget>[
-                                              Align(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: IconButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  icon: const Icon(
-                                                    FeatherIcons.x,
-                                                    color:
-                                                        MyColors.defaultColor,
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              TextField(controller : bProductNameController,
-
-                                                decoration:
-                                                    const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 0,
-                                                          horizontal: 15),
-                                                  labelStyle:
-                                                      TextStyle(fontSize: 14),
-                                                  labelText: 'Product',
-                                                  border: OutlineInputBorder(),
-                                                ),
-
-                                                onChanged: (value){
-
-                                                  BookOrderController.fetchItems(value);
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Expanded(
-                                                    child: TextField(controller : bQuantityController,
-                                                  onChanged: (value){
-                                                    setState(() {
-                                                      bAmountController.text =    (int.parse(bRateController.text)*int.parse(bQuantityController.text)).toString();
-                                                    });
-                                                  },
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets
-                                                                .symmetric(
-                                                                    vertical: 0,
-                                                                    horizontal:
-                                                                        15),
-                                                        labelStyle: TextStyle(
-                                                            fontSize: 14),
-                                                        labelText: 'Quantity',
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  Expanded(
-                                                    child: TextField(
-                                                      onChanged: (value){
-                                                        setState(() {
-
-                                                        bAmountController.text =    (int.parse(bRateController.text)*int.parse(bQuantityController.text)).toString();
-                                                        });
-                                                      },
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets
-                                                                .symmetric(
-                                                                    vertical: 0,
-                                                                    horizontal:
-                                                                        15),
-                                                        labelStyle: TextStyle(
-                                                            fontSize: 14),
-                                                        labelText: 'Rate',
-                                                        
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                            
-                                                      ),
-                                                      controller: bRateController,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  Expanded(
-                                                    child: TextField(controller : bAmountController,
-
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets
-                                                                .symmetric(
-                                                                    vertical: 0,
-                                                                    horizontal:
-                                                                        15),
-                                                        labelStyle: TextStyle(
-                                                            fontSize: 14),
-                                                        labelText: 'Amount',
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              //
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Expanded(
-                                                    child: ElevatedButton.icon(
-                                                      onPressed: () {
-                                                        bRateController.clear();
-                                                        bQuantityController.clear();
-                                                        bProductNameController.clear();
-                                                        bAmountController.clear();
-                                                        Navigator.pop(context);
-                                                      },
-                                                      icon: const Icon(
-                                                        FeatherIcons.trash2,
-                                                        size: 18,
-                                                      ),
-                                                      label:
-                                                          const Text('Delete'),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .fromLTRB(
-                                                                0, 4, 0, 4),
-                                                        backgroundColor:
-                                                            MyColors.red,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 20,
-                                                  ),
-                                                  Expanded(
-                                                    child: ElevatedButton.icon(
-                                                      onPressed: () {
-
-                                                       int amount  =  int.parse(bRateController.text)*int.parse(bQuantityController.text);
-                                                       grandTotal += amount;
-setState(() {
-
-                                                          OrderItemLocal.add(OrderModel(Rate: int.parse(bRateController.text), Quantity: int.parse(bQuantityController.text), Amount: amount, OrderName:  bProductNameController.text));
-                                                          databaseOrderItem.add(
-                                                              {
-                                                                "Rate" :  int.parse(bRateController.text),
-                                                                "Quantity" : int.parse(bQuantityController.text),
-                                                                "Amount" : amount,
-                                                                "OrderName" : bProductNameController.text
-
-                                                              } );
-});
-
-bRateController.clear();
-bQuantityController.clear();
-bProductNameController.clear();
-bAmountController.clear();
-                                                        Navigator.pop(context);
-                                                      },
-                                                      icon: const Icon(
-                                                        FeatherIcons.plus,
-                                                        size: 18,
-                                                      ),
-                                                      label: const Text('Add'),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            MyColors.green,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-=======
                                       Align(
                                         alignment: Alignment.centerRight,
                                         child: IconButton(
@@ -424,7 +210,6 @@ bAmountController.clear();
                                           icon: const Icon(
                                             FeatherIcons.x,
                                             color: MyColors.defaultColor,
->>>>>>> 1f8923655faab0ae50e774cc7c241f58ce73acc0
                                           ),
                                         ),
                                       ),
@@ -439,6 +224,8 @@ bAmountController.clear();
                                           labelText: 'Product',
                                           border: OutlineInputBorder(),
                                         ),
+
+                                        controller: bProductNameController,
                                         onChanged: (value) {
                                           BookOrderController.fetchItems(value);
                                         },
@@ -452,6 +239,7 @@ bAmountController.clear();
                                         children: [
                                           Expanded(
                                             child: TextFormField(
+
                                               decoration: const InputDecoration(
                                                 contentPadding:
                                                     EdgeInsets.symmetric(
@@ -462,6 +250,9 @@ bAmountController.clear();
                                                 labelText: 'Quantity',
                                                 border: OutlineInputBorder(),
                                               ),
+
+
+                                              controller: bQuantityController,
                                             ),
                                           ),
                                           const SizedBox(
@@ -469,6 +260,7 @@ bAmountController.clear();
                                           ),
                                           Expanded(
                                             child: TextFormField(
+
                                               decoration: const InputDecoration(
                                                 contentPadding:
                                                     EdgeInsets.symmetric(
@@ -479,6 +271,12 @@ bAmountController.clear();
                                                 labelText: 'Rate',
                                                 border: OutlineInputBorder(),
                                               ),
+                                              onChanged: (value){
+                                                setState(() {
+                                                  bAmountController.text =    (int.parse(bRateController.text)*int.parse(bQuantityController.text)).toString();
+                                                });
+                                              },
+                                              controller: bRateController,
                                             ),
                                           ),
                                           const SizedBox(
@@ -496,6 +294,13 @@ bAmountController.clear();
                                                 labelText: 'Amount',
                                                 border: OutlineInputBorder(),
                                               ),
+                                              onChanged: (value){
+                                                setState(() {
+
+                                                  bAmountController.text =    (int.parse(bRateController.text)*int.parse(bQuantityController.text)).toString();
+                                                });
+                                              },
+                                              controller: bAmountController,
                                             ),
                                           ),
                                         ],
@@ -543,7 +348,46 @@ bAmountController.clear();
                                               height: size.height * 0.06,
                                               width: size.width * 0.4,
                                               child: ElevatedButton.icon(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  int amount = int.parse(
+                                                          bRateController
+                                                              .text) *
+                                                      int.parse(
+                                                          bQuantityController
+                                                              .text);
+                                                  grandTotal += amount;
+                                                  setState(() {
+                                                    OrderItemLocal.add(OrderModel(
+                                                        Rate: int.parse(
+                                                            bRateController
+                                                                .text),
+                                                        Quantity: int.parse(
+                                                            bQuantityController
+                                                                .text),
+                                                        Amount: amount,
+                                                        OrderName:
+                                                            bProductNameController
+                                                                .text));
+                                                    databaseOrderItem.add({
+                                                      "Rate": int.parse(
+                                                          bRateController.text),
+                                                      "Quantity": int.parse(
+                                                          bQuantityController
+                                                              .text),
+                                                      "Amount": amount,
+                                                      "OrderName":
+                                                          bProductNameController
+                                                              .text
+                                                    });
+                                                  });
+
+
+                                                  bProductNameController.clear();
+                                                  bQuantityController.clear();
+                                                  bRateController.clear();
+                                                  bAmountController.clear();
+                                                  Navigator.pop(context);
+                                                },
                                                 icon: const Icon(
                                                   FeatherIcons.plus,
                                                   size: 18,
@@ -589,7 +433,7 @@ bAmountController.clear();
                       title: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children:  [
                           Text(
                             'Order Name',
                             style: TextStyle(
@@ -621,21 +465,22 @@ bAmountController.clear();
                       thickness: 0.5,
                       color: Colors.grey,
                     ),
+
                     ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                    itemCount: OrderItemLocal.length,
-                    separatorBuilder: (context , index){
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: OrderItemLocal.length,
+                        separatorBuilder: (context , index){
 
-                      return  Divider(
-                        thickness: 0.5,
-                        color: Colors.grey,
-                      );
-                    }
-                    , itemBuilder: (context , index){
+                          return  Divider(
+                            thickness: 0.5,
+                            color: Colors.grey,
+                          );
+                        }
+                        , itemBuilder: (context , index){
 
 
-                        final item = OrderItemLocal[index];
+                      final item = OrderItemLocal[index];
                       return  ListTile(
                         title: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -663,29 +508,45 @@ bAmountController.clear();
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
+
+                    SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          BookOrderController.addOrder(Order(
+                            CustomerName: fullNameController.text,
+                            MobileNumber: mobileNumberController.text,
+                            Advance: advancePaymentController.text,
+                            Note: remarkController.text,
+                            OrderBookDate:   Timestamp.now() ,
+                            OrderDelivaryDate :  Timestamp.fromDate(date)    ,
+                            // items: [],
+                          ));
+
+
+                          fullNameController.clear();
+                          mobileNumberController.clear();
+                          advancePaymentController.clear();
+                          remarkController.clear();
+                          bProductNameController.clear();
+                          bQuantityController.clear();
+                          bRateController.clear();
+                          bAmountController.clear();
+
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:  Text('Order Placed Successfully'))
+
+                          );
+                        },
+                        child: const Text("Book Order"),
+                      ),
+                    )
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      BookOrderController.addOrder(Order(
-                        CustomerName: "DEMO",
-                        MobileNumber: "999",
-                        Advance: "1000",
-                        Note: "DEMO NOTE",
-                        OrderBookDate: "DEMO DATE",
-                        OrderDelivaryDate: "DEMO DATE",
-                        items: databaseOrderItem,
-                      ));
-                    },
-                    child: const Text("Book Order"),
-                  ),
-                )
+
               ],
             ),
           ),
@@ -695,37 +556,29 @@ bAmountController.clear();
   }
 }
 
-
-    // InkWell(
-    //                   onTap:()=> _selectDate(ref),
-    //                   child: SizedBox(
-    //                     width: MediaQuery.of(context).size.width * 0.4,
-    //                     child: Container(
-    //                       height: 45,
-    //                       decoration: BoxDecoration(
-    //                         border: Border.all(
-    //                           color: Colors.black,
-    //                         ),
-    //                         borderRadius: BorderRadius.circular(5),
-    //                       ),
-    //                       child: Center(
-    //                         child: Text(
-    //                           "${_date.day}-${_date.month}-${_date.year}",
-    //                           style: const TextStyle(
-    //                             fontSize: 16,
-    //                           ),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-
-
-
-
-
-
-
+// InkWell(
+//                   onTap:()=> _selectDate(ref),
+//                   child: SizedBox(
+//                     width: MediaQuery.of(context).size.width * 0.4,
+//                     child: Container(
+//                       height: 45,
+//                       decoration: BoxDecoration(
+//                         border: Border.all(
+//                           color: Colors.black,
+//                         ),
+//                         borderRadius: BorderRadius.circular(5),
+//                       ),
+//                       child: Center(
+//                         child: Text(
+//                           "${_date.day}-${_date.month}-${_date.year}",
+//                           style: const TextStyle(
+//                             fontSize: 16,
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
 
 // ElevatedButton(
 //                 onPressed: () {
@@ -743,31 +596,11 @@ bAmountController.clear();
 //               )
 
 // const Text("Order No.1"),
-//             TextField(controller : //ADDCONTROLLER),
+//             TextFormField(),
 //             const Text("Order No.2"),
-//             TextField(controller : //ADDCONTROLLER),
+//             TextFormField(),
 //             const Text("Order No.3"),
-//             TextField(controller : //ADDCONTROLLER),
+//             TextFormField(),
 //             const Text("Order No.4"),
-//             TextField(controller : //ADDCONTROLLER),
+//             TextFormField(),
 //             const Text("REVIEW ORDER DETAILS AND THEN BOOK IT"),
-
-
-class OrderModel{
-  String OrderName;
-  int Quantity;
-  int Rate;
-  int Amount;
-
-  OrderModel({
-    required this.Rate,
-    required this.Quantity,
-    required this.Amount,
-    required this.OrderName,
-
-});
-
-
-
-
-}

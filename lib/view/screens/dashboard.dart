@@ -3,6 +3,7 @@ import 'package:bl_dairy_app/view/widgets/SlideShower.dart';
 import 'package:bl_dairy_app/view/widgets/main_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../constants/Theme.dart';
 import '../../model/BookOrderModel.dart';
@@ -35,6 +36,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
   }
 
   bool _customTileExpanded = false;
+  var myFormat = DateFormat('d-MM-yyyy');
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -213,7 +215,11 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             Center(
                                                                           child: CustomTextFiled(
                                                                               label: "Order Date",
-                                                                              value: order.OrderBookDate),
+                                                                              value: myFormat.format(order.OrderBookDate.toDate())
+
+
+
+                                                                          ),
                                                                         ),
                                                                       ),
                                                                       const Expanded(
@@ -231,8 +237,10 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         child:
                                                                             Center(
                                                                           child: CustomTextFiled(
-                                                                              label: 'Dilivery Date',
-                                                                              value: order.OrderDelivaryDate),
+                                                                              label: 'Delivery Date',
+                                                                              value: myFormat.format(order.OrderDelivaryDate.toDate())
+
+                                                                          ),
                                                                         ),
                                                                       ),
                                                                       const Expanded(
@@ -254,7 +262,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             label:
                                                                                 'Advance Payment',
                                                                             value:
-                                                                                order.OrderDelivaryDate,
+                                                                                order.Advance,
                                                                           ),
                                                                         ),
                                                                       ),
@@ -311,13 +319,11 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                       shrinkWrap:
                                                                           true,
                                                                       itemCount:
-                                                                          10,
-
-                                                                      //
+                                                                         10,
                                                                       itemBuilder:
-                                                                          (index,
-                                                                              context) {
-                                                                        return const ListTile(
+                                                                          (context, index) {
+
+                                                                        return  ListTile(
                                                                           leading:
                                                                               Text("DUDH"),
                                                                           title:
@@ -422,7 +428,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                               title: Text(order.CustomerName),
                                               leading: Text("${index + 1}"),
                                               trailing:
-                                                  Text(order.OrderBookDate),
+                                                  Text( myFormat.format(order.OrderDelivaryDate.toDate())),
                                             );
                                           }),
                                     ),

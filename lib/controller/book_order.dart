@@ -1,12 +1,14 @@
 import 'package:bl_dairy_app/model/BookOrderModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
+
 class BookOrderController {
 
 
   static Future<List<Order>?> fetchOrder() async {
     List<Order> all_orders = [];
-    await FirebaseFirestore.instance.collection("BookOrder").get().then((
+    await FirebaseFirestore.instance.collection("BookOrder").orderBy("OrderDelivaryDate").get().then((
         querSnapshots) {
       querSnapshots.docs.forEach((order) {
         all_orders.add(Order.fromSnap(order));
@@ -38,4 +40,31 @@ class BookOrderController {
 
     return result_items;
   }
+}
+
+
+
+
+
+
+
+
+
+class OrderModel{
+  String OrderName;
+  int Quantity;
+  int Rate;
+  int Amount;
+
+  OrderModel({
+    required this.Rate,
+    required this.Quantity,
+    required this.Amount,
+    required this.OrderName,
+
+  });
+
+
+
+
 }
