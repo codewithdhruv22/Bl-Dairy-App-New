@@ -26,27 +26,23 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
   TextEditingController bRateController = TextEditingController();
   TextEditingController bAmountController = TextEditingController();
 
-
-
-
-  DateTime TodayDate = new DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
-
+  DateTime TodayDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   var myFormat = DateFormat('d-MM-yyyy');
   final _dateProvider = StateProvider<DateTime>((ref) {
-    return DateTime(2020, 11, 17);
+    return DateTime.now();
   });
   void _selectDate(WidgetRef ref) async {
     final DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: ref.watch(_dateProvider),
-      firstDate: DateTime(2017, 1),
-      lastDate: DateTime(2022, 7),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
       helpText: 'Select a date',
     );
     if (newDate != null) {
       ref.read(_dateProvider.notifier).state = newDate;
-
     }
   }
 
@@ -83,7 +79,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextFormField(
-
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -224,7 +219,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                           labelText: 'Product',
                                           border: OutlineInputBorder(),
                                         ),
-
                                         controller: bProductNameController,
                                         onChanged: (value) {
                                           BookOrderController.fetchItems(value);
@@ -239,7 +233,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                         children: [
                                           Expanded(
                                             child: TextFormField(
-
                                               decoration: const InputDecoration(
                                                 contentPadding:
                                                     EdgeInsets.symmetric(
@@ -250,8 +243,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                                 labelText: 'Quantity',
                                                 border: OutlineInputBorder(),
                                               ),
-
-
                                               controller: bQuantityController,
                                             ),
                                           ),
@@ -260,7 +251,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                           ),
                                           Expanded(
                                             child: TextFormField(
-
                                               decoration: const InputDecoration(
                                                 contentPadding:
                                                     EdgeInsets.symmetric(
@@ -271,9 +261,16 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                                 labelText: 'Rate',
                                                 border: OutlineInputBorder(),
                                               ),
-                                              onChanged: (value){
+                                              onChanged: (value) {
                                                 setState(() {
-                                                  bAmountController.text =    (int.parse(bRateController.text)*int.parse(bQuantityController.text)).toString();
+                                                  bAmountController
+                                                      .text = (int.parse(
+                                                              bRateController
+                                                                  .text) *
+                                                          int.parse(
+                                                              bQuantityController
+                                                                  .text))
+                                                      .toString();
                                                 });
                                               },
                                               controller: bRateController,
@@ -294,10 +291,16 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                                 labelText: 'Amount',
                                                 border: OutlineInputBorder(),
                                               ),
-                                              onChanged: (value){
+                                              onChanged: (value) {
                                                 setState(() {
-
-                                                  bAmountController.text =    (int.parse(bRateController.text)*int.parse(bQuantityController.text)).toString();
+                                                  bAmountController
+                                                      .text = (int.parse(
+                                                              bRateController
+                                                                  .text) *
+                                                          int.parse(
+                                                              bQuantityController
+                                                                  .text))
+                                                      .toString();
                                                 });
                                               },
                                               controller: bAmountController,
@@ -381,8 +384,8 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                                     });
                                                   });
 
-
-                                                  bProductNameController.clear();
+                                                  bProductNameController
+                                                      .clear();
                                                   bQuantityController.clear();
                                                   bRateController.clear();
                                                   bAmountController.clear();
@@ -433,7 +436,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                       title: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children:  [
+                        children: const [
                           Text(
                             'Order Name',
                             style: TextStyle(
@@ -465,53 +468,46 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                       thickness: 0.5,
                       color: Colors.grey,
                     ),
-
                     ListView.separated(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: OrderItemLocal.length,
-                        separatorBuilder: (context , index){
-
-                          return  Divider(
+                        separatorBuilder: (context, index) {
+                          return const Divider(
                             thickness: 0.5,
                             color: Colors.grey,
                           );
-                        }
-                        , itemBuilder: (context , index){
-
-
-                      final item = OrderItemLocal[index];
-                      return  ListTile(
-                        title: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:  [
-                            Text(item.OrderName),
-
-                            Text(item.Quantity.toString()),
-                            Text(item.Rate.toString()),
-                            Text(item.Amount.toString()),
-                          ],
-                        ),
-                      );
-                    }),
-
+                        },
+                        itemBuilder: (context, index) {
+                          final item = OrderItemLocal[index];
+                          return ListTile(
+                            title: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(item.OrderName),
+                                Text(item.Quantity.toString()),
+                                Text(item.Rate.toString()),
+                                Text(item.Amount.toString()),
+                              ],
+                            ),
+                          );
+                        }),
                     ListTile(
                       title: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children:  [
-                          Text('Grand Total'),
-                          Text('--'),
-                          Text('--'),
+                        children: [
+                          const Text('Grand Total'),
+                          const Text('--'),
+                          const Text('--'),
                           Text(grandTotal.toString()),
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-
                     SizedBox(
                       height: 50,
                       width: double.infinity,
@@ -522,11 +518,10 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                             MobileNumber: mobileNumberController.text,
                             Advance: advancePaymentController.text,
                             Note: remarkController.text,
-                            OrderBookDate:   Timestamp.now() ,
-                            OrderDelivaryDate :  Timestamp.fromDate(date)    ,
+                            OrderBookDate: Timestamp.now(),
+                            OrderDelivaryDate: Timestamp.fromDate(date),
                             // items: [],
                           ));
-
 
                           fullNameController.clear();
                           mobileNumberController.clear();
@@ -537,16 +532,15 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                           bRateController.clear();
                           bAmountController.clear();
 
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:  Text('Order Placed Successfully'))
-
-                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Order Placed Successfully')));
                         },
                         child: const Text("Book Order"),
                       ),
                     )
                   ],
                 ),
-
               ],
             ),
           ),

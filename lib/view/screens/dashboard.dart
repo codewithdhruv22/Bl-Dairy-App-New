@@ -1,5 +1,4 @@
 import 'package:bl_dairy_app/controller/book_order.dart';
-import 'package:bl_dairy_app/view/widgets/SlideShower.dart';
 import 'package:bl_dairy_app/view/widgets/main_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -8,6 +7,7 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../constants/Theme.dart';
 import '../../model/BookOrderModel.dart';
 import '../widgets/Custom_TextFiled.dart';
+import '../widgets/SlideShower.dart';
 
 class Dashboard_Scren extends StatefulWidget {
   const Dashboard_Scren({Key? key}) : super(key: key);
@@ -215,11 +215,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             Center(
                                                                           child: CustomTextFiled(
                                                                               label: "Order Date",
-                                                                              value: myFormat.format(order.OrderBookDate.toDate())
-
-
-
-                                                                          ),
+                                                                              value: myFormat.format(order.OrderBookDate.toDate())),
                                                                         ),
                                                                       ),
                                                                       const Expanded(
@@ -238,9 +234,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             Center(
                                                                           child: CustomTextFiled(
                                                                               label: 'Delivery Date',
-                                                                              value: myFormat.format(order.OrderDelivaryDate.toDate())
-
-                                                                          ),
+                                                                              value: myFormat.format(order.OrderDelivaryDate.toDate())),
                                                                         ),
                                                                       ),
                                                                       const Expanded(
@@ -305,7 +299,9 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             .spaceBetween,
                                                                     children: const [
                                                                       Text(
-                                                                          'Order Name'),
+                                                                          'OrderName'),
+                                                                      Text(
+                                                                          'Delivery Date'),
                                                                       Text(
                                                                           'Quanitiy'),
                                                                       Text(
@@ -319,21 +315,36 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                       shrinkWrap:
                                                                           true,
                                                                       itemCount:
-                                                                         10,
+                                                                          10,
                                                                       itemBuilder:
-                                                                          (context, index) {
-
-                                                                        return  ListTile(
-                                                                          leading:
-                                                                              Text("DUDH"),
-                                                                          title:
-                                                                              Center(
-                                                                            child:
-                                                                                Text("45"),
-                                                                          ),
-                                                                          trailing:
-                                                                              Text("Rs.1120"),
+                                                                          (context,
+                                                                              index) {
+                                                                        return Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: const [
+                                                                            Text("DUDH"),
+                                                                            Text('21/12/2021'),
+                                                                            Text('25'),
+                                                                            Text("Rs.1120")
+                                                                          ],
                                                                         );
+                                                                        // return ListTile(
+                                                                        //   leading:
+                                                                        //       const Text("DUDH"),
+                                                                        //   title:
+                                                                        //       Center(
+                                                                        //     child:
+                                                                        //         Row(
+                                                                        //       children: const [
+                                                                        //         Text("12/12/2021"),
+                                                                        //         Text('25')
+                                                                        //       ],
+                                                                        //     ),
+                                                                        //   ),
+                                                                        //   trailing:
+                                                                        // const Text("Rs.1120"),
+                                                                        // );
                                                                       },
                                                                     ),
                                                                   )
@@ -427,8 +438,9 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                               },
                                               title: Text(order.CustomerName),
                                               leading: Text("${index + 1}"),
-                                              trailing:
-                                                  Text( myFormat.format(order.OrderDelivaryDate.toDate())),
+                                              trailing: Text(myFormat.format(
+                                                  order.OrderDelivaryDate
+                                                      .toDate())),
                                             );
                                           }),
                                     ),
@@ -830,7 +842,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                 ),
                                 SlideShower(items: const [
                                   "https://image.shutterstock.com/image-vector/biggest-diwali-sale-promotion-yellow-260nw-1523982320.jpg",
-                                  "https://www.creativehatti.com/wp-content/uploads/edd/2021/04/Happy-Navratri-festival-sale-offe r-banner-design-template-06-large.jpg"
+                                  // "https://www.creativehatti.com/wp-content/uploads/edd/2021/04/Happy-Navratri-festival-sale-offe r-banner-design-template-06-large.jpg"
                                 ])
                               ],
                             ),
