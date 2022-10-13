@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:textfield_search/textfield_search.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class BookOrderScreen extends ConsumerStatefulWidget {
@@ -25,9 +26,9 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
   TextEditingController bQuantityController = TextEditingController();
   TextEditingController bRateController = TextEditingController();
   TextEditingController bAmountController = TextEditingController();
+  final searchList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
 
-  DateTime TodayDate =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime TodayDate = DateTime.now();
 
   var myFormat = DateFormat('d-MM-yyyy');
   final _dateProvider = StateProvider<DateTime>((ref) {
@@ -214,23 +215,32 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                           20, 15, 20, 0),
                                       child: Column(
                                         children: [
-                                          TextFormField(
+                                          TextFieldSearch(
+                                            initialList: searchList,
+                                            label: 'Product Name',
+                                            controller: bProductNameController,
                                             decoration: const InputDecoration(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      vertical: 0,
-                                                      horizontal: 15),
-                                              labelStyle:
-                                                  TextStyle(fontSize: 14),
-                                              labelText: 'Product',
+                                              labelText: 'Product Name',
                                               border: OutlineInputBorder(),
                                             ),
-                                            controller: bProductNameController,
-                                            onChanged: (value) {
-                                              BookOrderController.fetchItems(
-                                                  value);
-                                            },
                                           ),
+                                          // TextFormField(
+                                          //   decoration: const InputDecoration(
+                                          //     contentPadding:
+                                          //         EdgeInsets.symmetric(
+                                          //             vertical: 0,
+                                          //             horizontal: 15),
+                                          //     labelStyle:
+                                          //         TextStyle(fontSize: 14),
+                                          //     labelText: 'Product',
+                                          //     border: OutlineInputBorder(),
+                                          //   ),
+                                          //   controller: bProductNameController,
+                                          //   onChanged: (value) {
+                                          //     BookOrderController.fetchItems(
+                                          //         value);
+                                          //   },
+                                          // ),
                                           const SizedBox(
                                             height: 20,
                                           ),

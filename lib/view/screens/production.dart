@@ -3,19 +3,21 @@ import 'package:bl_dairy_app/model/productionModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:textfield_search/textfield_search.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../constants/Theme.dart';
 
-class ProductionScreen extends StatefulWidget {
+class ProductionScreen extends ConsumerStatefulWidget {
   const ProductionScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProductionScreen> createState() => _ProductionScreenState();
+  ConsumerState<ProductionScreen> createState() => _ProductionScreenState();
 }
 
-class _ProductionScreenState extends State<ProductionScreen> {
+class _ProductionScreenState extends ConsumerState<ProductionScreen> {
   TextEditingController PrdNameController = TextEditingController();
   TextEditingController searchController = TextEditingController();
 
@@ -30,33 +32,28 @@ class _ProductionScreenState extends State<ProductionScreen> {
   List<RawMaterialModel> rawMaterialNeeded = [];
   final searchList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
   int grandTotal = 0;
-  @override
-  void dispose() {
-    PrdNameController.dispose();
-    searchController.dispose();
-    RmAmntController.dispose();
-    RmQtyController.dispose();
-    RmController.dispose();
-    RmRateController.dispose();
-    RmAmntController.dispose();
+  DateTime TodayDate = DateTime.now();
 
-    super.dispose();
-  }
-
-  // mocking a future
-  Future<List> fetchSimpleData() async {
-    await Future.delayed(const Duration(milliseconds: 2000));
-    List list = <dynamic>[];
-    // create a list from the text input of three items
-    // to mock a list of items from an http call
-    list.add('Test' ' Item 1');
-    list.add('Test' ' Item 2');
-    list.add('Test' ' Item 3');
-    return list;
+  var myFormat = DateFormat('d-MM-yyyy');
+  final _dateProvider = StateProvider<DateTime>((ref) {
+    return DateTime.now();
+  });
+  void _selectDate(WidgetRef ref) async {
+    final DateTime? newDate = await showDatePicker(
+      context: context,
+      initialDate: ref.watch(_dateProvider),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+      helpText: 'Select a date',
+    );
+    if (newDate != null) {
+      ref.read(_dateProvider.notifier).state = newDate;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final date = ref.watch(_dateProvider);
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -78,10 +75,46 @@ class _ProductionScreenState extends State<ProductionScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFieldSearch(
-                  initialList: searchList,
-                  label: 'Product Name',
-                  controller: searchController,
+                Row(
+                  children: [
+                    Flexible(
+                      child: TextFieldSearch(
+                        initialList: searchList,
+                        label: 'Product Name',
+                        controller: searchController,
+                        decoration: const InputDecoration(
+                          labelText: 'Product Name',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    InkWell(
+                      onTap: () => _selectDate(ref),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: MyColors.defaultColor,
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "${date.day}-${date.month}-${date.year}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 // TextField(
                 //   controller: PrdNameController,
@@ -143,24 +176,33 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                           20, 15, 20, 0),
                                       child: Column(
                                         children: [
-                                          TextField(
-                                            controller: RmController,
+                                          TextFieldSearch(
+                                            initialList: searchList,
+                                            label: 'Product Name',
+                                            controller: searchController,
                                             decoration: const InputDecoration(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      vertical: 0,
-                                                      horizontal: 15),
-                                              labelStyle:
-                                                  TextStyle(fontSize: 14),
-                                              labelText: 'Product',
+                                              labelText: 'Product Name',
                                               border: OutlineInputBorder(),
                                             ),
-
-                                            // onChanged: (value) {
-                                            //   BookOrderController.fetchItems(
-                                            //       value);
-                                            // },
                                           ),
+                                          // TextField(
+                                          //   controller: RmController,
+                                          //   decoration: const InputDecoration(
+                                          //     contentPadding:
+                                          //         EdgeInsets.symmetric(
+                                          //             vertical: 0,
+                                          //             horizontal: 15),
+                                          //     labelStyle:
+                                          //         TextStyle(fontSize: 14),
+                                          //     labelText: 'Product',
+                                          //     border: OutlineInputBorder(),
+                                          //   ),
+
+                                          //   // onChanged: (value) {
+                                          //   //   BookOrderController.fetchItems(
+                                          //   //       value);
+                                          //   // },
+                                          // ),
                                           const SizedBox(
                                             height: 20,
                                           ),
