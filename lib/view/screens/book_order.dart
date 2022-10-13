@@ -184,19 +184,16 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                             VxBottomSheet.bottomSheetView(
                               context,
                               elevation: 20,
-                              roundedFromTop: true,
                               isDismissible: true,
                               backgroundColor: Colors.white,
                               isSafeAreaFromBottom: true,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                ),
-                                child: SizedBox(
-                                  height: MediaQuery.of(context).size.height,
-                                  child: Column(
-                                    children: <Widget>[
-                                      Align(
+                              child: SizedBox(
+                                height: MediaQuery.of(context).size.height,
+                                child: Column(
+                                  children: <Widget>[
+                                    Material(
+                                      elevation: 2,
+                                      child: Align(
                                         alignment: Alignment.centerRight,
                                         child: IconButton(
                                           onPressed: () {
@@ -208,210 +205,237 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      TextFormField(
-                                        decoration: const InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 15),
-                                          labelStyle: TextStyle(fontSize: 14),
-                                          labelText: 'Product',
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        controller: bProductNameController,
-                                        onChanged: (value) {
-                                          BookOrderController.fetchItems(value);
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 15, 20, 0),
+                                      child: Column(
                                         children: [
-                                          Expanded(
-                                            child: TextFormField(
-                                              decoration: const InputDecoration(
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 0,
-                                                        horizontal: 15),
-                                                labelStyle:
-                                                    TextStyle(fontSize: 14),
-                                                labelText: 'Quantity',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                              controller: bQuantityController,
+                                          TextFormField(
+                                            decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 0,
+                                                      horizontal: 15),
+                                              labelStyle:
+                                                  TextStyle(fontSize: 14),
+                                              labelText: 'Product',
+                                              border: OutlineInputBorder(),
                                             ),
+                                            controller: bProductNameController,
+                                            onChanged: (value) {
+                                              BookOrderController.fetchItems(
+                                                  value);
+                                            },
                                           ),
                                           const SizedBox(
-                                            width: 8,
+                                            height: 20,
                                           ),
-                                          Expanded(
-                                            child: TextFormField(
-                                              decoration: const InputDecoration(
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 0,
-                                                        horizontal: 15),
-                                                labelStyle:
-                                                    TextStyle(fontSize: 14),
-                                                labelText: 'Rate',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  bAmountController
-                                                      .text = (int.parse(
-                                                              bRateController
-                                                                  .text) *
-                                                          int.parse(
-                                                              bQuantityController
-                                                                  .text))
-                                                      .toString();
-                                                });
-                                              },
-                                              controller: bRateController,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Expanded(
-                                            child: TextFormField(
-                                              decoration: const InputDecoration(
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 0,
-                                                        horizontal: 15),
-                                                labelStyle:
-                                                    TextStyle(fontSize: 14),
-                                                labelText: 'Amount',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  bAmountController
-                                                      .text = (int.parse(
-                                                              bRateController
-                                                                  .text) *
-                                                          int.parse(
-                                                              bQuantityController
-                                                                  .text))
-                                                      .toString();
-                                                });
-                                              },
-                                              controller: bAmountController,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      //
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: SizedBox(
-                                              height: size.height * 0.06,
-                                              width: size.width * 0.4,
-                                              child: ElevatedButton.icon(
-                                                onPressed: () {
-                                                  // Navigator.pop(context);
-                                                },
-                                                icon: const Icon(
-                                                  FeatherIcons.trash2,
-                                                  size: 18,
-                                                ),
-                                                label: const Text('Delete'),
-                                                style: ElevatedButton.styleFrom(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 4, 0, 4),
-                                                  backgroundColor: MyColors.red,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 15),
+                                                    labelStyle:
+                                                        TextStyle(fontSize: 14),
+                                                    labelText: 'Quantity',
+                                                    border:
+                                                        OutlineInputBorder(),
                                                   ),
+                                                  controller:
+                                                      bQuantityController,
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          Expanded(
-                                            child: SizedBox(
-                                              height: size.height * 0.06,
-                                              width: size.width * 0.4,
-                                              child: ElevatedButton.icon(
-                                                onPressed: () {
-                                                  int amount = int.parse(
-                                                          bRateController
-                                                              .text) *
-                                                      int.parse(
-                                                          bQuantityController
-                                                              .text);
-                                                  grandTotal += amount;
-                                                  setState(() {
-                                                    OrderItemLocal.add(OrderModel(
-                                                        Rate: int.parse(
-                                                            bRateController
-                                                                .text),
-                                                        Quantity: int.parse(
-                                                            bQuantityController
-                                                                .text),
-                                                        Amount: amount,
-                                                        OrderName:
-                                                            bProductNameController
-                                                                .text));
-                                                    databaseOrderItem.add({
-                                                      "Rate": int.parse(
-                                                          bRateController.text),
-                                                      "Quantity": int.parse(
-                                                          bQuantityController
-                                                              .text),
-                                                      "Amount": amount,
-                                                      "OrderName":
-                                                          bProductNameController
-                                                              .text
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Expanded(
+                                                child: TextFormField(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 15),
+                                                    labelStyle:
+                                                        TextStyle(fontSize: 14),
+                                                    labelText: 'Rate',
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      bAmountController
+                                                          .text = (int.parse(
+                                                                  bRateController
+                                                                      .text) *
+                                                              int.parse(
+                                                                  bQuantityController
+                                                                      .text))
+                                                          .toString();
                                                     });
-                                                  });
-
-                                                  bProductNameController
-                                                      .clear();
-                                                  bQuantityController.clear();
-                                                  bRateController.clear();
-                                                  bAmountController.clear();
-                                                  Navigator.pop(context);
-                                                },
-                                                icon: const Icon(
-                                                  FeatherIcons.plus,
-                                                  size: 18,
+                                                  },
+                                                  controller: bRateController,
                                                 ),
-                                                label: const Text('Add'),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      MyColors.green,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Expanded(
+                                                child: TextFormField(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 15),
+                                                    labelStyle:
+                                                        TextStyle(fontSize: 14),
+                                                    labelText: 'Amount',
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      bAmountController
+                                                          .text = (int.parse(
+                                                                  bRateController
+                                                                      .text) *
+                                                              int.parse(
+                                                                  bQuantityController
+                                                                      .text))
+                                                          .toString();
+                                                    });
+                                                  },
+                                                  controller: bAmountController,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          //
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: SizedBox(
+                                                  height: size.height * 0.06,
+                                                  width: size.width * 0.4,
+                                                  child: ElevatedButton.icon(
+                                                    onPressed: () {
+                                                      // Navigator.pop(context);
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.trash2,
+                                                      size: 18,
+                                                    ),
+                                                    label: const Text('Delete'),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(0, 4, 0, 4),
+                                                      backgroundColor:
+                                                          MyColors.red,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Expanded(
+                                                child: SizedBox(
+                                                  height: size.height * 0.06,
+                                                  width: size.width * 0.4,
+                                                  child: ElevatedButton.icon(
+                                                    onPressed: () {
+                                                      int amount = int.parse(
+                                                              bRateController
+                                                                  .text) *
+                                                          int.parse(
+                                                              bQuantityController
+                                                                  .text);
+                                                      grandTotal += amount;
+                                                      setState(() {
+                                                        OrderItemLocal.add(OrderModel(
+                                                            Rate: int.parse(
+                                                                bRateController
+                                                                    .text),
+                                                            Quantity: int.parse(
+                                                                bQuantityController
+                                                                    .text),
+                                                            Amount: amount,
+                                                            OrderName:
+                                                                bProductNameController
+                                                                    .text));
+                                                        databaseOrderItem.add({
+                                                          "Rate": int.parse(
+                                                              bRateController
+                                                                  .text),
+                                                          "Quantity": int.parse(
+                                                              bQuantityController
+                                                                  .text),
+                                                          "Amount": amount,
+                                                          "OrderName":
+                                                              bProductNameController
+                                                                  .text
+                                                        });
+                                                      });
+
+                                                      bProductNameController
+                                                          .clear();
+                                                      bQuantityController
+                                                          .clear();
+                                                      bRateController.clear();
+                                                      bAmountController.clear();
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.plus,
+                                                      size: 18,
+                                                    ),
+                                                    label: const Text('Add'),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          MyColors.green,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             );
