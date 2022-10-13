@@ -11,12 +11,13 @@ class ProductionScreen extends StatelessWidget {
 
     await ProductionController.fetchProduction().then((production){
       production.forEach((element) {
-
         print(element.FinishGoods.toString());
         print(element.ProductionDate.toString());
       });
     });
   }
+
+
   @override
   Widget build(BuildContext context) {
 
