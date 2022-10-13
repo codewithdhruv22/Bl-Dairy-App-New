@@ -3,12 +3,13 @@ import 'package:bl_dairy_app/model/productionModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:textfield_search/textfield_search.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../constants/Theme.dart';
 
 class ProductionScreen extends StatefulWidget {
-  ProductionScreen({Key? key}) : super(key: key);
+  const ProductionScreen({Key? key}) : super(key: key);
 
   @override
   State<ProductionScreen> createState() => _ProductionScreenState();
@@ -16,6 +17,7 @@ class ProductionScreen extends StatefulWidget {
 
 class _ProductionScreenState extends State<ProductionScreen> {
   TextEditingController PrdNameController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
 
   TextEditingController RmController = TextEditingController();
 
@@ -26,16 +28,37 @@ class _ProductionScreenState extends State<ProductionScreen> {
   TextEditingController RmAmntController = TextEditingController();
 
   List<RawMaterialModel> rawMaterialNeeded = [];
+  final searchList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
   int grandTotal = 0;
+  @override
+  void dispose() {
+    PrdNameController.dispose();
+    searchController.dispose();
+    RmAmntController.dispose();
+    RmQtyController.dispose();
+    RmController.dispose();
+    RmRateController.dispose();
+    RmAmntController.dispose();
 
+    super.dispose();
+  }
 
-
+  // mocking a future
+  Future<List> fetchSimpleData() async {
+    await Future.delayed(const Duration(milliseconds: 2000));
+    List list = <dynamic>[];
+    // create a list from the text input of three items
+    // to mock a list of items from an http call
+    list.add('Test' ' Item 1');
+    list.add('Test' ' Item 2');
+    list.add('Test' ' Item 3');
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
- 
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -47,23 +70,29 @@ class _ProductionScreenState extends State<ProductionScreen> {
                   children: const [
                     Text(
                       'Production',
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                TextField(
-                  controller: PrdNameController,
-                  decoration: const InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                    labelStyle: TextStyle(fontSize: 14),
-                    labelText: 'Product Name',
-                    border: OutlineInputBorder(),
-                  ),
+                TextFieldSearch(
+                  initialList: searchList,
+                  label: 'Product Name',
+                  controller: searchController,
                 ),
+                // TextField(
+                //   controller: PrdNameController,
+                //   decoration: const InputDecoration(
+                //     contentPadding:
+                //         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                //     labelStyle: TextStyle(fontSize: 14),
+                //     labelText: 'Product Name',
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -121,7 +150,8 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                                   EdgeInsets.symmetric(
                                                       vertical: 0,
                                                       horizontal: 15),
-                                              labelStyle: TextStyle(fontSize: 14),
+                                              labelStyle:
+                                                  TextStyle(fontSize: 14),
                                               labelText: 'Product',
                                               border: OutlineInputBorder(),
                                             ),
@@ -140,7 +170,6 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                             children: [
                                               Expanded(
                                                 child: TextField(
-
                                                   controller: RmQtyController,
                                                   keyboardType:
                                                       TextInputType.number,
@@ -153,23 +182,20 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                                     labelStyle:
                                                         TextStyle(fontSize: 14),
                                                     labelText: 'Quantity',
-
-                                                    border: OutlineInputBorder(),
-
+                                                    border:
+                                                        OutlineInputBorder(),
                                                   ),
-                                                  onChanged: (value){
+                                                  onChanged: (value) {
                                                     setState(() {
                                                       RmAmntController
                                                           .text = (int.parse(
-                                                          RmQtyController
-                                                              .text) *
-                                                          int.parse(
-                                                              RmRateController
-                                                                  .text))
+                                                                  RmQtyController
+                                                                      .text) *
+                                                              int.parse(
+                                                                  RmRateController
+                                                                      .text))
                                                           .toString();
                                                     });
-
-
                                                   },
                                                   // controller: bQuantityController,
                                                 ),
@@ -180,20 +206,18 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                               Expanded(
                                                 child: TextField(
                                                   controller: RmRateController,
-                                                   onChanged: (value){
+                                                  onChanged: (value) {
                                                     setState(() {
                                                       RmAmntController
                                                           .text = (int.parse(
-                                                          RmQtyController
-                                                              .text) *
-                                                          int.parse(
-                                                              RmRateController
-                                                                  .text))
+                                                                  RmQtyController
+                                                                      .text) *
+                                                              int.parse(
+                                                                  RmRateController
+                                                                      .text))
                                                           .toString();
                                                     });
-
-
-                                                   },
+                                                  },
                                                   decoration:
                                                       const InputDecoration(
                                                     contentPadding:
@@ -203,7 +227,8 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                                     labelStyle:
                                                         TextStyle(fontSize: 14),
                                                     labelText: 'Rate',
-                                                    border: OutlineInputBorder(),
+                                                    border:
+                                                        OutlineInputBorder(),
                                                   ),
                                                   // onChanged: (value) {
                                                   //   setState(() {
@@ -236,7 +261,8 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                                     labelStyle:
                                                         TextStyle(fontSize: 14),
                                                     labelText: 'Amount',
-                                                    border: OutlineInputBorder(),
+                                                    border:
+                                                        OutlineInputBorder(),
                                                   ),
                                                   // onChanged: (value) {
                                                   //   setState(() {
@@ -279,8 +305,8 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                                       size: 18,
                                                     ),
                                                     label: const Text('Delete'),
-                                                    style:
-                                                        ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       padding: const EdgeInsets
                                                           .fromLTRB(0, 4, 0, 4),
                                                       backgroundColor:
@@ -288,8 +314,8 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -304,8 +330,12 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                                   width: size.width * 0.4,
                                                   child: ElevatedButton.icon(
                                                     onPressed: () {
-
-                                                      grandTotal += int.parse(RmQtyController.text) * int.parse(RmRateController.text);
+                                                      grandTotal += int.parse(
+                                                              RmQtyController
+                                                                  .text) *
+                                                          int.parse(
+                                                              RmRateController
+                                                                  .text);
                                                       rawMaterialNeeded.add(
                                                           RawMaterialModel(
                                                               Rm: RmController
@@ -316,30 +346,27 @@ class _ProductionScreenState extends State<ProductionScreen> {
                                                               RmRate: int.parse(
                                                                   RmRateController
                                                                       .text)));
-                                                      
+
                                                       RmController.clear();
                                                       RmRateController.clear();
                                                       RmQtyController.clear();
-                                                      setState(() {
-
-                                                      });
+                                                      setState(() {});
                                                       Navigator.pop(context);
                                                     },
-
                                                     icon: const Icon(
                                                       FeatherIcons.plus,
                                                       size: 18,
                                                     ),
                                                     label: const Text('Add'),
-                                                    style:
-                                                        ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       backgroundColor:
                                                           MyColors.green,
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -406,8 +433,6 @@ class _ProductionScreenState extends State<ProductionScreen> {
                     ),
                   ],
                 ),
-
-
                 ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -429,22 +454,18 @@ class _ProductionScreenState extends State<ProductionScreen> {
                             Text(item.RmQty.toString()),
                             Text(item.RmRate.toString()),
                             Text((item.RmRate * item.RmQty).toString())
-
                           ],
                         ),
                       );
                     }),
-
-
-
                 ListTile(
                   title: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:  [
-                      Text('Grand Total'),
-                      Text('--'),
-                      Text('--'),
+                    children: [
+                      const Text('Grand Total'),
+                      const Text('--'),
+                      const Text('--'),
                       Text(grandTotal.toString()),
                     ],
                   ),
