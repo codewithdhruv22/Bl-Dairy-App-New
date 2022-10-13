@@ -1,4 +1,5 @@
 import 'package:bl_dairy_app/controller/book_order.dart';
+import 'package:bl_dairy_app/controller/productionController.dart';
 import 'package:bl_dairy_app/view/widgets/main_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -26,6 +27,15 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
         dashOrderList = allOrders!;
         loading = false;
       });
+    });
+  }
+
+  ProductionPrinter() async {
+    await ProductionController.fetchProduction().then((production) {
+      for (var element in production) {
+        print(element.FinishGoods.toString());
+        print(element.ProductionDate.toString());
+      }
     });
   }
 
@@ -329,22 +339,6 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             Text("Rs.1120")
                                                                           ],
                                                                         );
-                                                                        // return ListTile(
-                                                                        //   leading:
-                                                                        //       const Text("DUDH"),
-                                                                        //   title:
-                                                                        //       Center(
-                                                                        //     child:
-                                                                        //         Row(
-                                                                        //       children: const [
-                                                                        //         Text("12/12/2021"),
-                                                                        //         Text('25')
-                                                                        //       ],
-                                                                        //     ),
-                                                                        //   ),
-                                                                        //   trailing:
-                                                                        // const Text("Rs.1120"),
-                                                                        // );
                                                                       },
                                                                     ),
                                                                   )
@@ -357,84 +351,6 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                     ],
                                                   ),
                                                 );
-
-                                                // print(order.MobileNumber);
-                                                // print(order.OrderBookDate);
-                                                // print(order.CustomerName);
-                                                // print(order.items);
-                                                // print(order.Advance);
-                                                // print(order.Note);
-                                                // print(order.OrderDelivaryDate);
-
-                                                // showDialog<String>(
-                                                //     context: context,
-                                                //     builder:
-                                                //         (BuildContext context) {
-                                                //       return const Text('data');
-                                                //       // return AlertDialog(
-                                                //       //   title: const Text(
-                                                //       //       "Order Detials"),
-                                                //       //   content: SizedBox(
-                                                //       //     width: MediaQuery.of(
-                                                //       //                 context)
-                                                //       //             .size
-                                                //       //             .width -
-                                                //       //         50,
-                                                //       //     height: 200,
-                                                //       //     child:
-                                                //       //         SingleChildScrollView(
-                                                //       //       child: Column(
-                                                //       //         children: [
-                                                //       //           Text(order
-                                                //       //               .CustomerName),
-                                                //       //           Text(order
-                                                //       //               .MobileNumber),
-                                                //       //           Text(order
-                                                //       //               .OrderBookDate),
-                                                //       //           Text(order
-                                                //       //               .OrderDelivaryDate),
-                                                //       //           Text(
-                                                //       //               order.Note),
-                                                //       //           Text(order
-                                                //       //               .Advance),
-                                                //       //           const SizedBox(
-                                                //       //             height: 20,
-                                                //       //           ),
-                                                //       //           const Text(
-                                                //       //               "Item Details"),
-                                                //       //           SizedBox(
-                                                // //       //             height: 200,
-                                                //                   child: ListView
-                                                //                       .builder(
-                                                //                           itemCount: order
-                                                //                               .items
-                                                //                               .length,
-                                                //                           itemBuilder:
-                                                //                               (context, index) {
-                                                //                             final item =
-                                                //                                 order.items[index];
-                                                //                             return ListTile(
-                                                //                               leading: Text(item.itemName),
-                                                //                               title: Text(item.itemQty.toString()),
-                                                //                               trailing: Text(item.itemRate.toString()),
-                                                //                             );
-                                                //                           }),
-                                                //       //           )
-                                                //       //         ],
-                                                //       //       ),
-                                                //       //     ),
-                                                //       //   ),
-                                                //       //   actions: <Widget>[
-                                                //       //     TextButton(
-                                                //       //         onPressed: () {
-                                                //       //           Navigator.pop(
-                                                //       //               context);
-                                                //       //         },
-                                                //       //         child: const Text(
-                                                //       //             "Close"))
-                                                //       //   ],
-                                                //       // );
-                                                //     });
                                               },
                                               title: Text(order.CustomerName),
                                               leading: Text("${index + 1}"),

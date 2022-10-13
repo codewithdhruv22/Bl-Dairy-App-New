@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
               icon: Icon(FeatherIcons.shoppingCart, size: 18),
               label: 'Book Order'),
           BottomNavigationBarItem(
-              icon: Icon(FeatherIcons.settings, size: 18), label: 'Settings'),
+              icon: Icon(FeatherIcons.package, size: 18), label: 'Production'),
         ],
       ),
       body: pageIndex[pageIdx],
