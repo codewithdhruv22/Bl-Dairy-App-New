@@ -137,7 +137,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                   height: 20,
                 ),
                 TextField(
-                
+
                   keyboardType: TextInputType.number,
                   controller: PrdQuantityController,
                   decoration: const InputDecoration(
@@ -542,7 +542,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
 
                       ProductionController.addProduction(Production(
                           FinishGoods: PrdNameController.text,
-                          FinishGoodsQty: 12,
+                          FinishGoodsQty: int.parse(PrdQuantityController.text),
                           ProductionDate: Timestamp.now(),
                           rawMaterialList: rawMaterialNeeded));
 
