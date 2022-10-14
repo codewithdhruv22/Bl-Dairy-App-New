@@ -18,8 +18,9 @@ class ProductionScreen extends ConsumerStatefulWidget {
 }
 
 class _ProductionScreenState extends ConsumerState<ProductionScreen> {
-  TextEditingController PrdNameController = new TextEditingController();
+  TextEditingController PrdNameController = TextEditingController();
 
+  TextEditingController PrdQuantityController = TextEditingController();
 
   TextEditingController RmController = TextEditingController();
 
@@ -51,13 +52,9 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
     }
   }
 
-
   @override
   void initState() {
-
-
-
-    PrdNameController.addListener(() async{
+    PrdNameController.addListener(() async {
       final String value = PrdNameController.value.text;
       searchList.clear();
       searchList.addAll(await ProductionController.fetchFinishGoodsName(value));
@@ -135,16 +132,19 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                     ),
                   ],
                 ),
-                // TextField(
-                //   controller: PrdNameController,
-                //   decoration: const InputDecoration(
-                //     contentPadding:
-                //         EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                //     labelStyle: TextStyle(fontSize: 14),
-                //     labelText: 'Product Name',
-                //     border: OutlineInputBorder(),
-                //   ),
-                // ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                  controller: PrdQuantityController,
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                    labelStyle: TextStyle(fontSize: 14),
+                    labelText: 'Quantity',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -159,15 +159,9 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Create Order'),
+                        const Text('Add Raw Material'),
                         ElevatedButton(
                           onPressed: () {
-
-
-
-
-
-
                             VxBottomSheet.bottomSheetView(
                               context,
                               elevation: 20,
@@ -202,7 +196,6 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                       child: Column(
                                         children: [
                                           TextField(
-
                                             controller: RmController,
                                             decoration: const InputDecoration(
                                               labelText: 'Raw Material Name',
@@ -539,23 +532,24 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                 ),
                 ElevatedButton(
                     onPressed: () {
+                      const snackBar = SnackBar(
+                        content: Text('Product Added to production'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
                       ProductionController.addProduction(Production(
                           FinishGoods: PrdNameController.text,
                           FinishGoodsQty: 12,
                           ProductionDate: Timestamp.now(),
                           rawMaterialList: rawMaterialNeeded));
 
-
-
-PrdNameController.clear();
-rawMaterialNeeded.clear();
+                      PrdNameController.clear();
+                      PrdQuantityController.clear();
+                      rawMaterialNeeded.clear();
                       RmAmntController.clear();
                       RmController.clear();
                       RmRateController.clear();
                       RmQtyController.clear();
-
-
-
                     },
                     child: const Text("Add To Production"))
               ],
