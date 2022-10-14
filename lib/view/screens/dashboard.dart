@@ -404,7 +404,8 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                         child: ListView.builder(
                                             itemCount: dashPrdList.length,
                                             itemBuilder: (context, index) {
-                                              final PrdItem = dashPrdList[index];
+                                              final PrdItem =
+                                                  dashPrdList[index];
                                               return ListTile(
                                                 onTap: () {
                                                   VxBottomSheet.bottomSheetView(
@@ -469,11 +470,11 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                           width:
                                                                               size.width * 0.4,
                                                                           child:
-                                                                               CustomTextFiled(
+                                                                              CustomTextFiled(
                                                                             label:
-                                                                                PrdItem.FinishGoods,
+                                                                                'Product Name',
                                                                             value:
-                                                                            PrdItem.FinishGoods,
+                                                                                PrdItem.FinishGoods,
                                                                           ),
                                                                         ),
                                                                         const SizedBox(
@@ -485,7 +486,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                               size.height / 17,
                                                                           width:
                                                                               size.width * 0.5,
-                                                                          child:  CustomTextFiled(
+                                                                          child: CustomTextFiled(
                                                                               label: 'Quantity',
                                                                               value: PrdItem.FinishGoodsQty.toString()),
                                                                         ),
@@ -504,20 +505,19 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                           height:
                                                                               size.height / 17,
                                                                           width:
-                                                                              size.width * 0.4,
+                                                                              size.width * 0.92,
                                                                           child:
-                                                                               CustomTextFiled(
+                                                                              CustomTextFiled(
                                                                             label:
                                                                                 "Date",
                                                                             value:
-                                                                            myFormat.format(PrdItem.ProductionDate.toDate()),
+                                                                                myFormat.format(PrdItem.ProductionDate.toDate()),
                                                                           ),
                                                                         ),
                                                                         const SizedBox(
                                                                           width:
                                                                               10,
                                                                         ),
-
                                                                       ],
                                                                     ),
                                                                     const Divider(),
@@ -525,21 +525,29 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                       mainAxisAlignment:
                                                                           MainAxisAlignment
                                                                               .spaceBetween,
-                                                                      children: const [
-                                                                        Text(
-                                                                          'Raw Material Name',
-                                                                          style: TextStyle(
-                                                                              fontSize: 15,
-                                                                              fontWeight: FontWeight.bold),
+                                                                      children: [
+                                                                        SizedBox(
+                                                                          width:
+                                                                              size.width * 0.55,
+                                                                          child:
+                                                                              const Text(
+                                                                            'Raw Material Name',
+                                                                            style:
+                                                                                TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                                                          ),
                                                                         ),
-                                                                        Text(
-                                                                          'Raw Material Qty',
-                                                                          style: TextStyle(
-                                                                              fontSize: 15,
-                                                                              fontWeight: FontWeight.bold),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              size.width * 0.2,
+                                                                          child:
+                                                                              const Text(
+                                                                            'Qty',
+                                                                            style:
+                                                                                TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                                                          ),
                                                                         ),
-                                                                        Text(
-                                                                          'Raw Material Rate',
+                                                                        const Text(
+                                                                          'Rate',
                                                                           style: TextStyle(
                                                                               fontSize: 15,
                                                                               fontWeight: FontWeight.bold),
@@ -547,25 +555,21 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                       ],
                                                                     ),
                                                                     SizedBox(
-                                                                      height:
-                                                                          200,
-                                                                      child:
-
-                                                                          ListView.builder(
-                                                                          itemCount: PrdItem.rawMaterialList.length
-                                                                          ,itemBuilder: (context , index){
-                                                                            final rmItem  = PrdItem.rawMaterialList[index];
-                                                                            return  Row(
+                                                                        height:
+                                                                            200,
+                                                                        child: ListView.builder(
+                                                                            itemCount: PrdItem.rawMaterialList.length,
+                                                                            itemBuilder: (context, index) {
+                                                                              final rmItem = PrdItem.rawMaterialList[index];
+                                                                              return Row(
                                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                children:  [
-                                                                                Text(rmItem.Rm),
-                                                                            Text(rmItem.RmQty.toString()),
-                                                                            Text(rmItem.RmRate.toString()),
-                                                                            ],
-                                                                            );
-                                                                          })
-
-                                                                    )
+                                                                                children: [
+                                                                                  SizedBox(width: size.width * 0.55, child: Text(rmItem.Rm)),
+                                                                                  SizedBox(width: size.width * 0.2, child: Text(rmItem.RmQty.toString())),
+                                                                                  Text(rmItem.RmRate.toString()),
+                                                                                ],
+                                                                              );
+                                                                            }))
                                                                   ],
                                                                 ),
                                                               )
@@ -577,10 +581,11 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                   );
                                                 },
                                                 title:
-                                                     Text(PrdItem.FinishGoods),
-                                                leading:  Text('${index+1}'),
-                                                trailing:
-                                                     Text(myFormat.format(PrdItem.ProductionDate.toDate())),
+                                                    Text(PrdItem.FinishGoods),
+                                                leading: Text('${index + 1}'),
+                                                trailing: Text(myFormat.format(
+                                                    PrdItem.ProductionDate
+                                                        .toDate())),
                                               );
                                             })),
                                   ],
