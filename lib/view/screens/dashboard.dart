@@ -310,14 +310,26 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
-                                                                    children: const [
-                                                                      Text(
-                                                                          'OrderName'),
-                                                                      Text(
-                                                                          'Delivery Date'),
-                                                                      Text(
-                                                                          'Quantity'),
-                                                                      Text(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width: size.width *
+                                                                            0.4,
+                                                                        child: const Text(
+                                                                            'OrderName'),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: size.width *
+                                                                            0.2,
+                                                                        child: const Text(
+                                                                            'Delivery Date'),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: size.width *
+                                                                            0.15,
+                                                                        child: const Text(
+                                                                            'Quantity'),
+                                                                      ),
+                                                                      const Text(
                                                                           'Amount'),
                                                                     ],
                                                                   ),
