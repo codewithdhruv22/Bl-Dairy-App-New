@@ -1,5 +1,6 @@
 import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/controller/productionController.dart';
+import 'package:bl_dairy_app/model/productionModel.dart';
 import 'package:bl_dairy_app/view/widgets/main_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -19,23 +20,24 @@ class Dashboard_Scren extends StatefulWidget {
 
 class _Dashboard_ScrenState extends State<Dashboard_Scren> {
   late List<Order> dashOrderList;
+  late List<Production> dashPrdList;
   bool loading = true;
 
   GetOrders() async {
     await BookOrderController.fetchOrder().then((allOrders) {
       setState(() {
         dashOrderList = allOrders!;
-        loading = false;
       });
     });
   }
 
   ProductionPrinter() async {
     await ProductionController.fetchProduction().then((production) {
-      for (var element in production) {
-        print(element.FinishGoods.toString());
-        print(element.ProductionDate.toString());
-      }
+      setState(() {
+        dashPrdList = production;
+
+        loading = false;
+      });
     });
   }
 
@@ -43,6 +45,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
   void initState() {
     super.initState();
     GetOrders();
+    ProductionPrinter();
   }
 
   bool _customTileExpanded = false;
@@ -313,7 +316,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                       Text(
                                                                           'Delivery Date'),
                                                                       Text(
-                                                                          'Quanitiy'),
+                                                                          'Quantity'),
                                                                       Text(
                                                                           'Amount'),
                                                                     ],
@@ -324,19 +327,22 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         .builder(
                                                                       shrinkWrap:
                                                                           true,
-                                                                      itemCount:
-                                                                          10,
+                                                                      itemCount: order
+                                                                          .items
+                                                                          .length,
                                                                       itemBuilder:
                                                                           (context,
                                                                               index) {
+                                                                        final item =
+                                                                            order.items[index];
                                                                         return Row(
                                                                           mainAxisAlignment:
                                                                               MainAxisAlignment.spaceBetween,
-                                                                          children: const [
-                                                                            Text("DUDH"),
-                                                                            Text('21/12/2021'),
-                                                                            Text('25'),
-                                                                            Text("Rs.1120")
+                                                                          children: [
+                                                                            Text(item.itemName.toString()),
+                                                                            Text(item.itemQty.toString()),
+                                                                            Text(item.itemRate.toString()),
+                                                                            Text(item.itemAmnt.toString())
                                                                           ],
                                                                         );
                                                                       },
@@ -395,201 +401,188 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                   children: [
                                     SizedBox(
                                         height: 300,
-                                        child: ListView(
-                                          children: [
-                                            ListTile(
-                                              onTap: () {
-                                                VxBottomSheet.bottomSheetView(
-                                                  context,
-                                                  isDismissible: true,
-                                                  backgroundColor: Colors.white,
-                                                  isSafeAreaFromBottom: true,
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      SingleChildScrollView(
-                                                        child: Column(
-                                                          children: <Widget>[
-                                                            Material(
-                                                              elevation: 2,
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .centerRight,
-                                                                child:
-                                                                    IconButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  icon:
-                                                                      const Icon(
-                                                                    FeatherIcons
-                                                                        .x,
-                                                                    color: MyColors
-                                                                        .defaultColor,
+                                        child: ListView.builder(
+                                            itemCount: dashPrdList.length,
+                                            itemBuilder: (context, index) {
+                                              final PrdItem = dashPrdList[index];
+                                              return ListTile(
+                                                onTap: () {
+                                                  VxBottomSheet.bottomSheetView(
+                                                    context,
+                                                    isDismissible: true,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    isSafeAreaFromBottom: true,
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        SingleChildScrollView(
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              Material(
+                                                                elevation: 2,
+                                                                child: Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerRight,
+                                                                  child:
+                                                                      IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    icon:
+                                                                        const Icon(
+                                                                      FeatherIcons
+                                                                          .x,
+                                                                      color: MyColors
+                                                                          .defaultColor,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .fromLTRB(
-                                                                      10,
-                                                                      0,
-                                                                      10,
-                                                                      0),
-                                                              child: Column(
-                                                                children: [
-                                                                  const SizedBox(
-                                                                    height: 10,
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.4,
-                                                                        child:
-                                                                            const CustomTextFiled(
-                                                                          label:
-                                                                              "Customer Name",
-                                                                          value:
-                                                                              'sg',
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.5,
-                                                                        child: const CustomTextFiled(
-                                                                            label:
-                                                                                'Number',
-                                                                            value:
-                                                                                'phone number'),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 10,
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.4,
-                                                                        child:
-                                                                            const CustomTextFiled(
-                                                                          label:
-                                                                              "Customer Name",
-                                                                          value:
-                                                                              'sg',
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.5,
-                                                                        child: const CustomTextFiled(
-                                                                            label:
-                                                                                'Number',
-                                                                            value:
-                                                                                'phone number'),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  const Divider(),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: const [
-                                                                      Text(
-                                                                        'first',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold),
-                                                                      ),
-                                                                      Text(
-                                                                        'second',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold),
-                                                                      ),
-                                                                      Text(
-                                                                        'third',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 200,
-                                                                    child:
-                                                                        ListView(
+                                                              const SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .fromLTRB(
+                                                                        10,
+                                                                        0,
+                                                                        10,
+                                                                        0),
+                                                                child: Column(
+                                                                  children: [
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
                                                                       children: [
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceBetween,
-                                                                          children: const [
-                                                                            Text("first"),
-                                                                            Text('second1'),
-                                                                            Text('third'),
-                                                                          ],
-                                                                        )
+                                                                        borderContainer(
+                                                                          height:
+                                                                              size.height / 17,
+                                                                          width:
+                                                                              size.width * 0.4,
+                                                                          child:
+                                                                               CustomTextFiled(
+                                                                            label:
+                                                                                PrdItem.FinishGoods,
+                                                                            value:
+                                                                            PrdItem.FinishGoods,
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                        ),
+                                                                        borderContainer(
+                                                                          height:
+                                                                              size.height / 17,
+                                                                          width:
+                                                                              size.width * 0.5,
+                                                                          child:  CustomTextFiled(
+                                                                              label: 'Quantity',
+                                                                              value: PrdItem.FinishGoodsQty.toString()),
+                                                                        ),
                                                                       ],
                                                                     ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            )
-                                                          ],
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        borderContainer(
+                                                                          height:
+                                                                              size.height / 17,
+                                                                          width:
+                                                                              size.width * 0.4,
+                                                                          child:
+                                                                               CustomTextFiled(
+                                                                            label:
+                                                                                "Date",
+                                                                            value:
+                                                                            myFormat.format(PrdItem.ProductionDate.toDate()),
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                        ),
+
+                                                                      ],
+                                                                    ),
+                                                                    const Divider(),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: const [
+                                                                        Text(
+                                                                          'Raw Material Name',
+                                                                          style: TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                        Text(
+                                                                          'Raw Material Qty',
+                                                                          style: TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                        Text(
+                                                                          'Raw Material Rate',
+                                                                          style: TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          200,
+                                                                      child:
+
+                                                                          ListView.builder(
+                                                                          itemCount: PrdItem.rawMaterialList.length
+                                                                          ,itemBuilder: (context , index){
+                                                                            final rmItem  = PrdItem.rawMaterialList[index];
+                                                                            return  Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children:  [
+                                                                                Text(rmItem.Rm),
+                                                                            Text(rmItem.RmQty.toString()),
+                                                                            Text(rmItem.RmRate.toString()),
+                                                                            ],
+                                                                            );
+                                                                          })
+
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                              title: const Text('Product Name'),
-                                              leading: const Text('1'),
-                                              trailing:
-                                                  const Text('01/02/2027'),
-                                            )
-                                          ],
-                                        )),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                                title:
+                                                     Text(PrdItem.FinishGoods),
+                                                leading:  Text('${index+1}'),
+                                                trailing:
+                                                     Text(myFormat.format(PrdItem.ProductionDate.toDate())),
+                                              );
+                                            })),
                                   ],
                                   onExpansionChanged: (bool expanded) {
                                     setState(

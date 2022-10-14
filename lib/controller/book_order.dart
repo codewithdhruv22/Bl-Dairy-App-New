@@ -32,8 +32,8 @@ class BookOrderController {
     await FirebaseFirestore.instance.collection("ProductList").where("ProductName" , isGreaterThanOrEqualTo: query).get().then((
         querSnapshots) {
       querSnapshots.docs.forEach((item) {
-        result_items.add(OrderItem.fromSnap(item).ProductName);
-        print(OrderItem.fromSnap(item).ProductName);
+        result_items.add(ProductList.fromSnap(item).ProductName);
+        print(ProductList.fromSnap(item).ProductName);
 
       });
     });

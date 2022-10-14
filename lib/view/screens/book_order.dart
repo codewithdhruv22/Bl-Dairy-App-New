@@ -60,7 +60,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
   }
 
   List<OrderModel> OrderItemLocal = [];
-  List<Map<String, dynamic>> databaseOrderItem = [];
+  List<OrderItem> databaseOrderItem = [];
   int grandTotal = 0;
   final _formKey = GlobalKey<FormState>();
 
@@ -442,18 +442,17 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                                                   bProductNameController
                                                                       .text));
                                                           databaseOrderItem
-                                                              .add({
-                                                            "Rate": int.parse(
-                                                                bRateController
-                                                                    .text),
-                                                            "Quantity": int.parse(
-                                                                bQuantityController
-                                                                    .text),
-                                                            "Amount": amount,
-                                                            "OrderName":
-                                                                bProductNameController
-                                                                    .text
-                                                          });
+                                                              .add(
+
+
+                                                              OrderItem(itemRate: int.parse(
+                                                                  bRateController
+                                                                      .text), itemQty: int.parse(
+                                                                  bQuantityController
+                                                                      .text), itemName:  bProductNameController
+                                                                  .text, itemAmnt: amount));
+
+
                                                         });
 
                                                         bProductNameController
@@ -608,7 +607,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                               Note: remarkController.text,
                               OrderBookDate: Timestamp.now(),
                               OrderDelivaryDate: Timestamp.fromDate(date),
-                              // items: [],
+                              items: databaseOrderItem,
                             ));
 
                             fullNameController.clear();
@@ -619,7 +618,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                             bQuantityController.clear();
                             bRateController.clear();
                             bAmountController.clear();
-                            OrderItemLocal.clear();
 
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
