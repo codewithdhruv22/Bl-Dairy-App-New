@@ -387,6 +387,237 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                 horizontal: 12, vertical: 20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ExpansionTile(
+                                  tilePadding:
+                                      const EdgeInsets.fromLTRB(2, 0, 2, 0),
+                                  title: const Text('Production'),
+                                  children: [
+                                    SizedBox(
+                                        height: 300,
+                                        child: ListView(
+                                          children: [
+                                            ListTile(
+                                              onTap: () {
+                                                VxBottomSheet.bottomSheetView(
+                                                  context,
+                                                  isDismissible: true,
+                                                  backgroundColor: Colors.white,
+                                                  isSafeAreaFromBottom: true,
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      SingleChildScrollView(
+                                                        child: Column(
+                                                          children: <Widget>[
+                                                            Material(
+                                                              elevation: 2,
+                                                              child: Align(
+                                                                alignment: Alignment
+                                                                    .centerRight,
+                                                                child:
+                                                                    IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  icon:
+                                                                      const Icon(
+                                                                    FeatherIcons
+                                                                        .x,
+                                                                    color: MyColors
+                                                                        .defaultColor,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .fromLTRB(
+                                                                      10,
+                                                                      0,
+                                                                      10,
+                                                                      0),
+                                                              child: Column(
+                                                                children: [
+                                                                  const SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      borderContainer(
+                                                                        height:
+                                                                            size.height /
+                                                                                17,
+                                                                        width: size.width *
+                                                                            0.4,
+                                                                        child:
+                                                                            const CustomTextFiled(
+                                                                          label:
+                                                                              "Customer Name",
+                                                                          value:
+                                                                              'sg',
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      borderContainer(
+                                                                        height:
+                                                                            size.height /
+                                                                                17,
+                                                                        width: size.width *
+                                                                            0.5,
+                                                                        child: const CustomTextFiled(
+                                                                            label:
+                                                                                'Number',
+                                                                            value:
+                                                                                'phone number'),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      borderContainer(
+                                                                        height:
+                                                                            size.height /
+                                                                                17,
+                                                                        width: size.width *
+                                                                            0.4,
+                                                                        child:
+                                                                            const CustomTextFiled(
+                                                                          label:
+                                                                              "Customer Name",
+                                                                          value:
+                                                                              'sg',
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      borderContainer(
+                                                                        height:
+                                                                            size.height /
+                                                                                17,
+                                                                        width: size.width *
+                                                                            0.5,
+                                                                        child: const CustomTextFiled(
+                                                                            label:
+                                                                                'Number',
+                                                                            value:
+                                                                                'phone number'),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  const Divider(),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: const [
+                                                                      Text(
+                                                                        'first',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                      Text(
+                                                                        'second',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                      Text(
+                                                                        'third',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 200,
+                                                                    child:
+                                                                        ListView(
+                                                                      children: [
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: const [
+                                                                            Text("first"),
+                                                                            Text('second1'),
+                                                                            Text('third'),
+                                                                          ],
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                              title: const Text('Product Name'),
+                                              leading: const Text('1'),
+                                              trailing:
+                                                  const Text('01/02/2027'),
+                                            )
+                                          ],
+                                        )),
+                                  ],
+                                  onExpansionChanged: (bool expanded) {
+                                    setState(
+                                        () => _customTileExpanded = expanded);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        child: Material(
+                          elevation: 4,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12))),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: const [
                                 Padding(
                                   padding: EdgeInsets.only(left: 15),
