@@ -35,7 +35,6 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
     await ProductionController.fetchProduction().then((production) {
       setState(() {
         dashPrdList = production;
-
         loading = false;
       });
     });
