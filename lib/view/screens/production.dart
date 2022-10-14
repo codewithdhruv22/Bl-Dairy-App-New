@@ -511,8 +511,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                     },
                     itemBuilder: (context, index) {
                       final item = rawMaterialNeeded[index];
-                      print("I AM RM");
-                      print(item.Rm);
+
                       return ListTile(
                         title: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -545,6 +544,18 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                           FinishGoodsQty: 12,
                           ProductionDate: Timestamp.now(),
                           rawMaterialList: rawMaterialNeeded));
+
+
+
+PrdNameController.clear();
+rawMaterialNeeded.clear();
+                      RmAmntController.clear();
+                      RmController.clear();
+                      RmRateController.clear();
+                      RmQtyController.clear();
+
+                      
+
                     },
                     child: const Text("Add To Production"))
               ],

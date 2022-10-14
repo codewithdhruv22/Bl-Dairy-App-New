@@ -27,10 +27,10 @@ return all_Production;
   static Future<List<String>> fetchFinishGoodsName(String query) async {
     print("CALLING");
     List<String> result_items = [];
-    await FirebaseFirestore.instance.collection("Production").where("FinishGoods" , isGreaterThanOrEqualTo: query).get().then((
+    await FirebaseFirestore.instance.collection("ProductList").where("ProductName" , isGreaterThanOrEqualTo: query).get().then((
         querSnapshots) {
       querSnapshots.docs.forEach((item) {
-        result_items.add(item["FinishGoods"]);
+        result_items.add(item["ProductName"]);
 
 
       });
