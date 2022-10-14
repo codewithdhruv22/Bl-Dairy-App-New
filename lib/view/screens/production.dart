@@ -18,8 +18,8 @@ class ProductionScreen extends ConsumerStatefulWidget {
 }
 
 class _ProductionScreenState extends ConsumerState<ProductionScreen> {
-  TextEditingController PrdNameController = TextEditingController();
-  TextEditingController searchController = TextEditingController();
+  TextEditingController PrdNameController = new TextEditingController();
+
 
   TextEditingController RmController = TextEditingController();
 
@@ -30,7 +30,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
   TextEditingController RmAmntController = TextEditingController();
 
   List<RawMaterialModel> rawMaterialNeeded = [];
-  final searchList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+  final searchList = [];
   int grandTotal = 0;
   DateTime TodayDate = DateTime.now();
 
@@ -49,6 +49,25 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
     if (newDate != null) {
       ref.read(_dateProvider.notifier).state = newDate;
     }
+  }
+
+
+  @override
+  void initState() {
+
+
+
+    PrdNameController.addListener(() async{
+      final String value = PrdNameController.value.text;
+      searchList.clear();
+      searchList.addAll(await ProductionController.fetchFinishGoodsName(value));
+      searchList.toSet().toList();
+      setState(() {
+        print(searchList);
+      });
+      // YOUR CODE
+    });
+    super.initState();
   }
 
   @override
@@ -81,7 +100,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                       child: TextFieldSearch(
                         initialList: searchList,
                         label: 'Product Name',
-                        controller: searchController,
+                        controller: PrdNameController,
                         decoration: const InputDecoration(
                           labelText: 'Product Name',
                           border: OutlineInputBorder(),
@@ -143,6 +162,12 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                         const Text('Create Order'),
                         ElevatedButton(
                           onPressed: () {
+
+
+
+
+
+
                             VxBottomSheet.bottomSheetView(
                               context,
                               elevation: 20,
@@ -176,12 +201,11 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                           20, 15, 20, 0),
                                       child: Column(
                                         children: [
-                                          TextFieldSearch(
-                                            initialList: searchList,
-                                            label: 'Product Name',
-                                            controller: searchController,
+                                          TextField(
+
+                                            controller: RmController,
                                             decoration: const InputDecoration(
-                                              labelText: 'Product Name',
+                                              labelText: 'Raw Material Name',
                                               border: OutlineInputBorder(),
                                             ),
                                           ),
@@ -487,6 +511,8 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                     },
                     itemBuilder: (context, index) {
                       final item = rawMaterialNeeded[index];
+                      print("I AM RM");
+                      print(item.Rm);
                       return ListTile(
                         title: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,

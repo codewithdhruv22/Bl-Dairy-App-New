@@ -22,7 +22,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
   TextEditingController advancePaymentController = TextEditingController();
   TextEditingController remarkController = TextEditingController();
 
-  TextEditingController bProductNameController = TextEditingController();
+
   TextEditingController bQuantityController = TextEditingController();
   TextEditingController bRateController = TextEditingController();
   TextEditingController bAmountController = TextEditingController();
@@ -53,16 +53,22 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
     mobileNumberController.dispose();
     advancePaymentController.dispose();
     remarkController.dispose();
-    bProductNameController.dispose();
+
     bQuantityController.dispose();
     bRateController.dispose();
     bAmountController.dispose();
     super.dispose();
   }
 
+
+
+
   List<OrderModel> OrderItemLocal = [];
   List<Map<String, dynamic>> databaseOrderItem = [];
   int grandTotal = 0;
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -182,6 +188,18 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                         const Text('Create Order'),
                         ElevatedButton(
                           onPressed: () {
+                            TextEditingController bProductNameController = new TextEditingController();
+
+
+                            bProductNameController.addListener(() async{
+                              final String value = bProductNameController.value.text;
+                              searchList.clear();
+                              searchList.addAll(await BookOrderController.fetchItems(value));
+                              setState(() {
+                                print(searchList);
+                              });
+                              // YOUR CODE
+                            });
                             VxBottomSheet.bottomSheetView(
                               context,
                               elevation: 20,
@@ -216,6 +234,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                       child: Column(
                                         children: [
                                           TextFieldSearch(
+
                                             initialList: searchList,
                                             label: 'Product Name',
                                             controller: bProductNameController,
@@ -223,6 +242,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                               labelText: 'Product Name',
                                               border: OutlineInputBorder(),
                                             ),
+
                                           ),
                                           // TextFormField(
                                           //   decoration: const InputDecoration(
@@ -561,7 +581,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                           mobileNumberController.clear();
                           advancePaymentController.clear();
                           remarkController.clear();
-                          bProductNameController.clear();
+
                           bQuantityController.clear();
                           bRateController.clear();
                           bAmountController.clear();
