@@ -96,6 +96,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                     Flexible(
                       child: TextFieldSearch(
                         initialList: searchList,
+                        itemsInView: 10,
                         label: 'Product Name',
                         controller: PrdNameController,
                         decoration: const InputDecoration(
@@ -136,6 +137,8 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                   height: 20,
                 ),
                 TextField(
+                
+                  keyboardType: TextInputType.number,
                   controller: PrdQuantityController,
                   decoration: const InputDecoration(
                     contentPadding:

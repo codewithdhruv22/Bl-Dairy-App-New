@@ -619,6 +619,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                             bQuantityController.clear();
                             bRateController.clear();
                             bAmountController.clear();
+                            OrderItemLocal.clear();
 
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
