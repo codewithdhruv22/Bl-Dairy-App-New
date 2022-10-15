@@ -19,7 +19,9 @@ class MilkPurchaseScreen extends StatefulWidget {
 final _formKey = GlobalKey<FormState>();
 final List<MilkSupplierModel> searchList = [];
 const List<String> milktyplist = <String>['Cow', 'Buffalow'];
+const List<String> shiftlist = <String>['Morning', 'Evening'];
 String dropdownValue = milktyplist.first;
+String dropdownValue1 = shiftlist.first;
 
 TextEditingController suppNameEdCont = TextEditingController();
 TextEditingController shiftEdCont = TextEditingController();
@@ -130,21 +132,37 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.5,
-                          child: TextFormField(
-                            controller: shiftEdCont,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Select Shift';
-                              }
-                              return null;
+                          child: DropdownButton<String>(
+                            onChanged: (String? value) {
+                              // This is called when the user selects an item.
+                              setState(() {
+                                dropdownValue = value!;
+                              });
                             },
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 15),
-                              labelStyle: TextStyle(fontSize: 14),
-                              labelText: 'Shift',
-                              border: OutlineInputBorder(),
+                            hint: const Text('Milk Type'),
+                            items: shiftlist
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            value: dropdownValue1,
+                            icon: const Icon(Icons.arrow_downward),
+                            elevation: 16,
+                            style: const TextStyle(color: Colors.deepPurple),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.deepPurpleAccent,
                             ),
+
+                            // decoration: const InputDecoration(
+                            //   contentPadding:
+                            //       EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                            //   labelStyle: TextStyle(fontSize: 14),
+                            //   labelText: 'Milk Type',
+                            //   border: OutlineInputBorder(),
+                            // ),
                             // controller: advancePaymentController,
                           ),
                         ),
