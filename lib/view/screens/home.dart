@@ -1,4 +1,5 @@
 import 'package:bl_dairy_app/view/screens/AddMilkSupplier.dart';
+import 'package:bl_dairy_app/view/screens/addNewEmp.dart';
 import 'package:bl_dairy_app/view/screens/milkPurchase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -81,6 +82,12 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 SizedBox(height: 5,),
+                ListTile(
+                  title: Text("NEW EMPLOYEE"),
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AddNewEmp_Screen()));
+                  },
+                ),
 
               ],
             ),
