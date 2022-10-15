@@ -167,7 +167,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                       10,
                                                                       0,
                                                                       10,
-                                                                      0),
+                                                                      15),
                                                               child: Column(
                                                                 children: [
                                                                   const SizedBox(
@@ -287,8 +287,8 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         height:
                                                                             size.height /
                                                                                 17,
-                                                                        width: size.width /
-                                                                            1.2,
+                                                                        width: size.width *
+                                                                            0.95,
                                                                         child:
                                                                             Padding(
                                                                           padding:
@@ -305,7 +305,10 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                       ),
                                                                     ],
                                                                   ),
-                                                                  const Divider(),
+                                                                  const Divider(
+                                                                    thickness:
+                                                                        3,
+                                                                  ),
                                                                   Row(
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
@@ -351,15 +354,96 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                           mainAxisAlignment:
                                                                               MainAxisAlignment.spaceBetween,
                                                                           children: [
-                                                                            Text(item.itemName.toString()),
-                                                                            Text(item.itemQty.toString()),
-                                                                            Text(item.itemRate.toString()),
+                                                                            SizedBox(
+                                                                                width: size.width * 0.4,
+                                                                                child: Text(item.itemName.toString())),
+                                                                            SizedBox(
+                                                                                width: size.width * 0.2,
+                                                                                child: Text(item.itemQty.toString())),
+                                                                            SizedBox(
+                                                                                width: size.width * 0.15,
+                                                                                child: Text(item.itemRate.toString())),
                                                                             Text(item.itemAmnt.toString())
                                                                           ],
                                                                         );
                                                                       },
                                                                     ),
-                                                                  )
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Expanded(
+                                                                        child:
+                                                                            SizedBox(
+                                                                          height:
+                                                                              size.height * 0.06,
+                                                                          width:
+                                                                              size.width * 0.4,
+                                                                          child:
+                                                                              ElevatedButton.icon(
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            icon:
+                                                                                const Icon(
+                                                                              FeatherIcons.trash2,
+                                                                              size: 18,
+                                                                            ),
+                                                                            label:
+                                                                                const Text('Delete'),
+                                                                            style:
+                                                                                ElevatedButton.styleFrom(
+                                                                              padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                                                              backgroundColor: MyColors.red,
+                                                                              shape: RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(5),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            20,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child:
+                                                                            SizedBox(
+                                                                          height:
+                                                                              size.height * 0.06,
+                                                                          width:
+                                                                              size.width * 0.4,
+                                                                          child:
+                                                                              ElevatedButton.icon(
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            icon:
+                                                                                const Icon(
+                                                                              FeatherIcons.plus,
+                                                                              size: 18,
+                                                                            ),
+                                                                            label:
+                                                                                const Text('Add'),
+                                                                            style:
+                                                                                ElevatedButton.styleFrom(
+                                                                              backgroundColor: MyColors.green,
+                                                                              shape: RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(5),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ],
                                                               ),
                                                             )
