@@ -1,6 +1,9 @@
 import 'package:bl_dairy_app/controller/milkSupplierController.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+
+import '../../constants/Theme.dart';
 
 class AddMilkSupplierScreen extends StatefulWidget {
   const AddMilkSupplierScreen({Key? key}) : super(key: key);
@@ -14,7 +17,6 @@ final _formKey = GlobalKey<FormState>();
 const List<String> list = <String>['Cow', 'Buffalow'];
 String dropdownValue = list.first;
 
-
 TextEditingController NameEditingController = TextEditingController();
 TextEditingController MobNOEditingController = TextEditingController();
 TextEditingController MilkTypeEditingController = TextEditingController();
@@ -26,104 +28,41 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller : NameEditingController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Name';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                  labelStyle: TextStyle(fontSize: 14),
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
-                ),
-                // controller: fullNameController,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              TextFormField(
-                controller: MobNOEditingController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Number';
-                  }
-                  return null;
-                },
-                maxLength: 10,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                  labelStyle: TextStyle(fontSize: 14),
-                  labelText: 'Mobile Number',
-                  helperText: 'Without Country Code',
-                  border: OutlineInputBorder(),
-                ),
-                // controller: mobileNumberController,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.43,
-                    child: DropdownButton<String>(
-
-                      hint: const Text('Milk Type'),
-                      items: list.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      value: dropdownValue,
-                      icon: const Icon(Icons.arrow_downward),
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (String? value) {
-                        // This is called when the user selects an item.
-                        setState(() {
-                          dropdownValue = value!;
-                          MilkTypeEditingController.text = value;
-                        });
+      body: SafeArea(
+        child: Column(
+          children: [
+            Material(
+              elevation: 4,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
-                      // decoration: const InputDecoration(
-                      //   contentPadding:
-                      //       EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                      //   labelStyle: TextStyle(fontSize: 14),
-                      //   labelText: 'Milk Type',
-                      //   border: OutlineInputBorder(),
-                      // ),
-                      // controller: advancePaymentController,
+                      icon: const Icon(
+                        FeatherIcons.arrowLeft,
+                        color: MyColors.black,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    child: TextFormField(
-                      controller: FatRateEditingController,
+                    const Text(
+                      'Add Supplier',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: NameEditingController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Fill Rate';
+                          return 'Please enter Name';
                         }
                         return null;
                       },
@@ -131,92 +70,176 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
-                        labelText: 'Fat Rate',
+                        labelText: 'Name',
                         border: OutlineInputBorder(),
                       ),
-                      // controller: advancePaymentController,
+                      // controller: fullNameController,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              TextFormField(
-                controller: AdhrNoEditingController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Number';
-                  }
-                  return null;
-                },
-                maxLength: 12,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                  labelStyle: TextStyle(fontSize: 14),
-                  labelText: 'Aadhar Number',
-                  border: OutlineInputBorder(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    TextFormField(
+                      controller: MobNOEditingController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Number';
+                        }
+                        return null;
+                      },
+                      maxLength: 10,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                        labelStyle: TextStyle(fontSize: 14),
+                        labelText: 'Mobile Number',
+                        helperText: 'Without Country Code',
+                        border: OutlineInputBorder(),
+                      ),
+                      // controller: mobileNumberController,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          child: DropdownButton<String>(
+                            hint: const Text('Milk Type'),
+                            items: list
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            value: dropdownValue,
+                            icon: const Icon(Icons.arrow_downward),
+                            elevation: 16,
+                            style: const TextStyle(color: Colors.deepPurple),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.deepPurpleAccent,
+                            ),
+                            onChanged: (String? value) {
+                              // This is called when the user selects an item.
+                              setState(() {
+                                dropdownValue = value!;
+                                MilkTypeEditingController.text = value;
+                              });
+                            },
+                            // decoration: const InputDecoration(
+                            //   contentPadding:
+                            //       EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                            //   labelStyle: TextStyle(fontSize: 14),
+                            //   labelText: 'Milk Type',
+                            //   border: OutlineInputBorder(),
+                            // ),
+                            // controller: advancePaymentController,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            controller: FatRateEditingController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Fill Rate';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 15),
+                              labelStyle: TextStyle(fontSize: 14),
+                              labelText: 'Fat Rate',
+                              border: OutlineInputBorder(),
+                            ),
+                            // controller: advancePaymentController,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    TextFormField(
+                      controller: AdhrNoEditingController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Number';
+                        }
+                        return null;
+                      },
+                      maxLength: 12,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                        labelStyle: TextStyle(fontSize: 14),
+                        labelText: 'Aadhar Number',
+                        border: OutlineInputBorder(),
+                      ),
+                      // controller: mobileNumberController,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    TextFormField(
+                      controller: AdressEditingController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Address';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                        labelStyle: TextStyle(fontSize: 14),
+                        labelText: 'Address',
+                        border: OutlineInputBorder(),
+                      ),
+                      // controller: remarkController,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+
+                            milkSupplierController.addNewMilkSupplier(
+                                MilkSupplierModel(
+                                    FatRate: FatRateEditingController.text,
+                                    MilkType: MilkTypeEditingController.text,
+                                    Mobile: MobNOEditingController.text,
+                                    Name: NameEditingController.text,
+                                    Village: AdressEditingController.text));
+
+                            FatRateEditingController.clear();
+                            MilkTypeEditingController.clear();
+                            MobNOEditingController.clear();
+                            NameEditingController.clear();
+                            AdressEditingController.clear();
+                            AdhrNoEditingController.clear();
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Supplier Added')),
+                            );
+                          }
+                        },
+                        child: const Text("Add Ledger"))
+                  ],
                 ),
-                // controller: mobileNumberController,
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              TextFormField(
-                controller: AdressEditingController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter Address';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                  labelStyle: TextStyle(fontSize: 14),
-                  labelText: 'Address',
-                  border: OutlineInputBorder(),
-                ),
-                // controller: remarkController,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-
-                      milkSupplierController.addNewMilkSupplier(MilkSupplierModel(
-                          FatRate: FatRateEditingController.text,
-                          MilkType: MilkTypeEditingController.text,
-                          Mobile:  MobNOEditingController.text,
-                          Name: NameEditingController.text,
-                          Village: AdressEditingController.text
-                      ));
-
-
-
-;
-                      FatRateEditingController.clear();
-                      MilkTypeEditingController.clear();
-                      MobNOEditingController.clear();
-                      NameEditingController.clear();
-                      AdressEditingController.clear();
-AdhrNoEditingController.clear();
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Supplier Added')),
-                      );
-                    }
-
-                  },
-                  child: const Text("Add Ledger"))
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
