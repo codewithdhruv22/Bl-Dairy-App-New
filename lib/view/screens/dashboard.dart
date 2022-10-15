@@ -124,6 +124,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                             final order = dashOrderList[index];
                                             return ListTile(
                                               onTap: () {
+                                                bool productionstatus = false;
                                                 VxBottomSheet.bottomSheetView(
                                                   context,
                                                   isDismissible: true,
@@ -376,70 +377,42 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Expanded(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          height:
-                                                                              size.height * 0.06,
-                                                                          width:
-                                                                              size.width * 0.4,
-                                                                          child:
-                                                                              ElevatedButton.icon(
-                                                                            onPressed:
-                                                                                () {
-                                                                              Navigator.pop(context);
-                                                                            },
-                                                                            icon:
-                                                                                const Icon(
-                                                                              FeatherIcons.package,
-                                                                              size: 18,
-                                                                            ),
-                                                                            label:
-                                                                                const Text('Production'),
-                                                                            style:
-                                                                                ElevatedButton.styleFrom(
-                                                                              padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
-                                                                              backgroundColor: MyColors.primary,
-                                                                              shape: RoundedRectangleBorder(
-                                                                                borderRadius: BorderRadius.circular(5),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
+                                                                      const Text(
+                                                                          'Production'),
+                                                                      Checkbox(
+                                                                        value:
+                                                                            productionstatus,
+                                                                        onChanged:
+                                                                            (bool?
+                                                                                value) {
+                                                                          setState(
+                                                                              () {
+                                                                            productionstatus =
+                                                                                value!;
+                                                                          });
+                                                                        },
                                                                       ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            20,
-                                                                      ),
-                                                                      Expanded(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          height:
-                                                                              size.height * 0.06,
-                                                                          width:
-                                                                              size.width * 0.4,
-                                                                          child:
-                                                                              ElevatedButton.icon(
-                                                                            onPressed:
-                                                                                () {
-                                                                              Navigator.pop(context);
-                                                                            },
-                                                                            icon:
-                                                                                const Icon(
-                                                                              FeatherIcons.truck,
-                                                                              size: 18,
-                                                                            ),
-                                                                            label:
-                                                                                const Text('Delivered'),
-                                                                            style:
-                                                                                ElevatedButton.styleFrom(
-                                                                              backgroundColor: MyColors.green,
-                                                                              shape: RoundedRectangleBorder(
-                                                                                borderRadius: BorderRadius.circular(5),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      const Text(
+                                                                          'Deliverd'),
+                                                                      Checkbox(
+                                                                        value:
+                                                                            productionstatus,
+                                                                        onChanged:
+                                                                            (bool?
+                                                                                value) {
+                                                                          setState(
+                                                                              () {
+                                                                            productionstatus =
+                                                                                value!;
+                                                                          });
+                                                                        },
                                                                       ),
                                                                     ],
                                                                   ),
