@@ -1,3 +1,5 @@
+import 'package:bl_dairy_app/view/screens/AddMilkSupplier.dart';
+import 'package:bl_dairy_app/view/screens/milkPurchase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
@@ -40,6 +42,50 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(FeatherIcons.package, size: 18), label: 'Production'),
         ],
+      ),
+
+      appBar: AppBar(
+        title: Text("DAIRY APP"),
+
+      ),
+      drawer: Drawer(
+        child: Container(
+
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 25, vertical: 16),
+                    child: Text(
+                      "CodeMarket.in",
+                      style: TextStyle(
+                        color: Colors.black45,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25),
+                    )),
+                Divider(
+                  color: Colors.white,
+                ),
+             ListTile(
+               title: Text("ADD SUPPLIER"),
+               onTap: (){
+                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AddMilkSupplierScreen()));
+               },
+             ),
+                SizedBox(height: 5,),
+                ListTile(
+                  title: Text("PURCHASE MILK"),
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MilkPurchaseScreen()));
+                  },
+                ),
+                SizedBox(height: 5,),
+
+              ],
+            ),
+          ),
+        ),
       ),
       body: pageIndex[pageIdx],
     );
