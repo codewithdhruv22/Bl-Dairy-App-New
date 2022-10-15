@@ -391,15 +391,15 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             },
                                                                             icon:
                                                                                 const Icon(
-                                                                              FeatherIcons.trash2,
+                                                                              FeatherIcons.package,
                                                                               size: 18,
                                                                             ),
                                                                             label:
-                                                                                const Text('Delete'),
+                                                                                const Text('Production'),
                                                                             style:
                                                                                 ElevatedButton.styleFrom(
                                                                               padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
-                                                                              backgroundColor: MyColors.red,
+                                                                              backgroundColor: MyColors.primary,
                                                                               shape: RoundedRectangleBorder(
                                                                                 borderRadius: BorderRadius.circular(5),
                                                                               ),
@@ -426,11 +426,11 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             },
                                                                             icon:
                                                                                 const Icon(
-                                                                              FeatherIcons.plus,
+                                                                              FeatherIcons.truck,
                                                                               size: 18,
                                                                             ),
                                                                             label:
-                                                                                const Text('Add'),
+                                                                                const Text('Delivered'),
                                                                             style:
                                                                                 ElevatedButton.styleFrom(
                                                                               backgroundColor: MyColors.green,
