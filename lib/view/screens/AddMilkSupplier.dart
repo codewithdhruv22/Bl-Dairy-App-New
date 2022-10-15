@@ -13,23 +13,25 @@ class AddMilkSupplierScreen extends StatefulWidget {
 class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("Name"),
-        TextField(),
-        Text("Village"),
-        TextField(),
-        Text("Mobile"),
-        TextField(),
-        Text("MilkType"),
-        TextField(),
-        Text("FatRate"),
-        TextField(),
+    return Scaffold(
+      body: Column(
+        children: [
+          Text("Name"),
+          TextField(),
+          Text("Village"),
+          TextField(),
+          Text("Mobile"),
+          TextField(),
+          Text("MilkType"),
+          TextField(),
+          Text("FatRate"),
+          TextField(),
 
-        ElevatedButton(onPressed: (){
-          milkSupplierController.addNewMilkSupplier(MilkSupplierModel(FatRate: "2.5", MilkType: "Cow", Mobile: "9999888", Name: "DEMO NAME", Village: "DEMO VILLAGE"));
-        }, child: Text("Add Ledger"))
-      ],
+          ElevatedButton(onPressed: (){
+            milkSupplierController.addNewMilkSupplier(MilkSupplierModel(FatRate: "2.5", MilkType: "Cow", Mobile: "9999888", Name: "DEMO NAME", Village: "DEMO VILLAGE"));
+          }, child: Text("Add Ledger"))
+        ],
+      ),
     );
   }
 }
