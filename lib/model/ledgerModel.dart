@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class LedgerModel{
+class MilkSupplierModel{
 
   String Name;
   String Mobile;
@@ -9,7 +9,7 @@ class LedgerModel{
   String FatRate;
 
 
-  LedgerModel(
+  MilkSupplierModel(
   {
     required this.FatRate,
     required this.MilkType,
@@ -34,9 +34,9 @@ class LedgerModel{
 
 
 
-  static LedgerModel fromSnap(DocumentSnapshot snap){
+  static MilkSupplierModel fromSnap(DocumentSnapshot snap){
     var snapshot = snap.data() as Map<String , dynamic>;
-    return LedgerModel(
+    return MilkSupplierModel(
       FatRate : snapshot["FatRate"] ?? "NO DATA",
       MilkType : snapshot["MilkType"] ?? "NO DATA",
       Mobile : snapshot["Mobile"] ?? "NO DATA",
