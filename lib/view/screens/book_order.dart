@@ -441,18 +441,18 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                                               OrderName:
                                                                   bProductNameController
                                                                       .text));
-                                                          databaseOrderItem
-                                                              .add(
-
-
-                                                              OrderItem(itemRate: int.parse(
+                                                          databaseOrderItem.add(OrderItem(
+                                                              itemRate: int.parse(
                                                                   bRateController
-                                                                      .text), itemQty: int.parse(
+                                                                      .text),
+                                                              itemQty: int.parse(
                                                                   bQuantityController
-                                                                      .text), itemName:  bProductNameController
-                                                                  .text, itemAmnt: amount));
-
-
+                                                                      .text),
+                                                              itemName:
+                                                                  bProductNameController
+                                                                      .text,
+                                                              itemAmnt:
+                                                                  amount));
                                                         });
 
                                                         bProductNameController
@@ -597,7 +597,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                               // you'd often call a server or save the information in a database.
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text('Processing Data')),
+                                    content: Text('Order Placed Successfully')),
                               );
                             }
                             BookOrderController.addOrder(Order(
@@ -619,10 +619,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                             bRateController.clear();
                             bAmountController.clear();
                             OrderItemLocal.clear();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content:
-                                        Text('Order Placed Successfully')));
                           },
                           child: const Text("Book Order"),
                         ),

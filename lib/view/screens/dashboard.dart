@@ -68,7 +68,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 60,
+                        height: 20,
                       ),
                       // container for Dashboard Title
                       Container(
