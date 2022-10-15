@@ -129,11 +129,38 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                 height: 12,
               ),
               TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Number';
+                  }
+                  return null;
+                },
+                maxLength: 12,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                   labelStyle: TextStyle(fontSize: 14),
-                  labelText: 'Remark',
+                  labelText: 'Aadhar Number',
+                  border: OutlineInputBorder(),
+                ),
+                // controller: mobileNumberController,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Address';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                  labelStyle: TextStyle(fontSize: 14),
+                  labelText: 'Address',
                   border: OutlineInputBorder(),
                 ),
                 // controller: remarkController,
