@@ -10,6 +10,7 @@ class MilkPurchaseModel{
   int milkQty;
   double fat;
   double snfVal;
+  double totalAmnt;
 
   MilkPurchaseModel(
   {
@@ -19,7 +20,9 @@ class MilkPurchaseModel{
     required this.milkType,
     required this.shift,
     required this.snfVal,
-    required this.SupplierName
+    required this.SupplierName,
+    required this.totalAmnt
+
 }
       );
 
@@ -32,7 +35,7 @@ class MilkPurchaseModel{
     "shift" : shift,
     "snfVal" : snfVal,
     "SupplierNam" : SupplierName,
-
+"totalAmnt" : totalAmnt,
 
   };
 
@@ -50,6 +53,7 @@ class MilkPurchaseModel{
       shift : snapshot["shift"] ?? "NO DATA",
       snfVal : snapshot["snfVal"] ?? "NO DATA",
       SupplierName : snapshot["SupplierName"] ?? "NO DATA",
+        totalAmnt : snapshot["totalAmnt"],
 
 
     );

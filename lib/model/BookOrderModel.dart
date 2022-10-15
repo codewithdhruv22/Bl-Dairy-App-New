@@ -4,6 +4,7 @@ import '../view/screens/book_order.dart';
 
 class Order {
 
+  String? id;
   String CustomerName;
   String MobileNumber;
   String Advance;
@@ -11,6 +12,8 @@ class Order {
   Timestamp OrderBookDate;
   Timestamp OrderDelivaryDate;
   List<OrderItem> items;
+  bool ProductionDone;
+  bool Delivered;
 
 
 
@@ -22,8 +25,10 @@ class Order {
     required this.Note,
     required this.OrderBookDate,
     required this.OrderDelivaryDate,
-    required this.items
-
+    required this.items,
+    required this.ProductionDone,
+    required this.Delivered,
+this.id
 
   });
 
@@ -42,7 +47,9 @@ class Order {
       "Note" : Note,
       "OrderBookDate" : OrderBookDate,
       "OrderDelivaryDate" : OrderDelivaryDate,
-      "items" : DataBaseItemList
+      "items" : DataBaseItemList,
+      "Delivered" : Delivered,
+      "ProductionDone"  : ProductionDone
 
 
     };
@@ -52,6 +59,7 @@ class Order {
 
 
   static Order fromSnap(DocumentSnapshot snap){
+
     var snapshot = snap.data() as Map<String , dynamic>;
 
 
@@ -66,6 +74,9 @@ class Order {
 
       );
     });
+
+print("PRODUCTION DONE");
+    print(snapshot["ProductionDone"]);
    return Order(
        CustomerName : snapshot["CustomerName"] ?? "NO DATA",
      Advance : snapshot["Advance"] ?? "NO DATA",
@@ -73,8 +84,11 @@ class Order {
      Note : snapshot["Note"] ?? "NO DATA",
      OrderBookDate : snapshot["OrderBookDate"] ,
      OrderDelivaryDate : snapshot["OrderDelivaryDate"],
-     items: orderItemFromSnap
+     items: orderItemFromSnap,
+       ProductionDone: snapshot["ProductionDone"],
+       Delivered: snapshot["Delivered"],
 
+id: snap.id
 
    );
   }

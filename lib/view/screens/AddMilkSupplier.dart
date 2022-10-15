@@ -14,6 +14,14 @@ final _formKey = GlobalKey<FormState>();
 const List<String> list = <String>['Cow', 'Buffalow'];
 String dropdownValue = list.first;
 
+
+TextEditingController NameEditingController = TextEditingController();
+TextEditingController MobNOEditingController = TextEditingController();
+TextEditingController MilkTypeEditingController = TextEditingController();
+TextEditingController FatRateEditingController = TextEditingController();
+TextEditingController AdhrNoEditingController = TextEditingController();
+TextEditingController AdressEditingController = TextEditingController();
+
 class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
   @override
   Widget build(BuildContext context) {
@@ -25,6 +33,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
           child: Column(
             children: [
               TextFormField(
+                controller : NameEditingController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter Name';
@@ -44,6 +53,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                 height: 12,
               ),
               TextFormField(
+                controller: MobNOEditingController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter Number';
@@ -70,9 +80,11 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.43,
                     child: DropdownButton<String>(
+
                       hint: const Text('Milk Type'),
                       items: list.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
+
                           value: value,
                           child: Text(value),
                         );
@@ -89,6 +101,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         // This is called when the user selects an item.
                         setState(() {
                           dropdownValue = value!;
+                          MilkTypeEditingController.text = value;
                         });
                       },
                       // decoration: const InputDecoration(
@@ -107,6 +120,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: TextFormField(
+                      controller: FatRateEditingController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Fill Rate';
@@ -129,6 +143,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                 height: 12,
               ),
               TextFormField(
+                controller: AdhrNoEditingController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter Number';
@@ -150,6 +165,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                 height: 12,
               ),
               TextFormField(
+                controller: AdressEditingController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter Address';
@@ -173,16 +189,30 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                     if (_formKey.currentState!.validate()) {
                       // If the form is valid, display a snackbar. In the real world,
                       // you'd often call a server or save the information in a database.
+
+                      milkSupplierController.addNewMilkSupplier(MilkSupplierModel(
+                          FatRate: FatRateEditingController.text,
+                          MilkType: MilkTypeEditingController.text,
+                          Mobile:  MobNOEditingController.text,
+                          Name: NameEditingController.text,
+                          Village: AdressEditingController.text
+                      ));
+
+
+
+;
+                      FatRateEditingController.clear();
+                      MilkTypeEditingController.clear();
+                      MobNOEditingController.clear();
+                      NameEditingController.clear();
+                      AdressEditingController.clear();
+AdhrNoEditingController.clear();
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Supplier Added')),
                       );
                     }
-                    milkSupplierController.addNewMilkSupplier(MilkSupplierModel(
-                        FatRate: "2.5",
-                        MilkType: "Cow",
-                        Mobile: "9999888",
-                        Name: "DEMO NAME",
-                        Village: "DEMO VILLAGE"));
+
                   },
                   child: const Text("Add Ledger"))
             ],

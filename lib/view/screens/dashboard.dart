@@ -121,10 +121,11 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                           shrinkWrap: true,
                                           itemCount: dashOrderList.length,
                                           itemBuilder: (context, index) {
+
                                             final order = dashOrderList[index];
-                                            return ListTile(
+                                            return (order.ProductionDone && order.Delivered) ? Container() :  ListTile(
                                               onTap: () {
-                                                bool productionstatus = false;
+
                                                 VxBottomSheet.bottomSheetView(
                                                   context,
                                                   isDismissible: true,
@@ -288,13 +289,13 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             size.height /
                                                                                 17,
                                                                         width: size.width *
-                                                                            0.95,
+                                                                            0.90,
                                                                         child:
                                                                             Padding(
                                                                           padding:
                                                                               const EdgeInsets.symmetric(
                                                                             horizontal:
-                                                                                3,
+                                                                                1,
                                                                             vertical:
                                                                                 2,
                                                                           ),
@@ -377,20 +378,14 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      const Text(
-                                                                          'Production'),
-                                                                      Checkbox(
-                                                                        value:
-                                                                            productionstatus,
-                                                                        onChanged:
-                                                                            (bool?
-                                                                                value) {
-                                                                          setState(
-                                                                              () {
-                                                                            productionstatus =
-                                                                                value!;
-                                                                          });
+                                                                      InkWell(
+                                                                        onTap: (){
+                                                                          BookOrderController.ChangeProductionStatus(order);
+
+                                                                          print(order.ProductionDone ? 'Order Produced' : 'Order Not Produced');
                                                                         },
+                                                                        child: Text(
+                                                                            'Click To Change Production Status'),
                                                                       ),
                                                                     ],
                                                                   ),
@@ -399,21 +394,17 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      const Text(
-                                                                          'Deliverd'),
-                                                                      Checkbox(
-                                                                        value:
-                                                                            productionstatus,
-                                                                        onChanged:
-                                                                            (bool?
-                                                                                value) {
-                                                                          setState(
-                                                                              () {
-                                                                            productionstatus =
-                                                                                value!;
-                                                                          });
-                                                                        },
-                                                                      ),
+                                                                       InkWell(
+                                                                         onTap: (){
+                                                                          BookOrderController.ChangeDeliveryStatus(order);
+
+//SHOW A MESSAGE CONFIRMATION HERE
+                                                                          print(order.Delivered ? 'Order Delivered' : 'Order Undelivered');
+                                                            },
+                                                                         child: Text(
+                                                                            'Click To Change Delivery Status'),
+                                                                       ),
+
                                                                     ],
                                                                   ),
                                                                 ],

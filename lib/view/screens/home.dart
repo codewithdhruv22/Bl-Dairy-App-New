@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(FeatherIcons.alertOctagon, size: 18), label: 'Report'),
           BottomNavigationBarItem(
-              icon: Icon(FeatherIcons.plus, size: 18), label: 'Add Milk Supplier'),
+              icon: Icon(FeatherIcons.plus, size: 18), label: 'Add'),
           BottomNavigationBarItem(
               icon: Icon(FeatherIcons.shoppingCart, size: 18),
               label: 'Book Order'),

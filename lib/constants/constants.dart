@@ -10,7 +10,7 @@ import 'package:bl_dairy_app/view/screens/dashboard.dart';
 var pageIndex = [
   Dashboard_Scren(),
 ReportScreen(),
-AddMilkSupplierScreen(),
+Text("ADDD"),
 BookOrderScreen(),
  ProductionScreen(),
 ];

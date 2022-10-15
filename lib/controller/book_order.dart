@@ -40,6 +40,20 @@ class BookOrderController {
 
     return result_items;
   }
+
+
+
+
+  static ChangeProductionStatus(Order order) async{
+    await FirebaseFirestore.instance.collection("BookOrder").doc(order.id).update(
+        {"ProductionDone" : !order.ProductionDone});
+  }
+
+
+  static ChangeDeliveryStatus(Order order) async{
+    await FirebaseFirestore.instance.collection("BookOrder").doc(order.id).update(
+        {"Delivered" : !order.Delivered});
+  }
 }
 
 

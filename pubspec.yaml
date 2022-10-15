@@ -49,6 +49,8 @@ dependencies:
   velocity_x: ^3.5.1
   intl: any
   textfield_search: ^0.10.0
+  searchfield: ^0.7.1
+  dropdown_search: ^5.0.3
 
 dev_dependencies:
   flutter_test:

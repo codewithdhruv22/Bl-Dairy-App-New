@@ -1,8 +1,15 @@
 import 'package:bl_dairy_app/controller/milkPurchaseController.dart';
+import 'package:bl_dairy_app/controller/milkSupplierController.dart';
+import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:bl_dairy_app/model/milkPurchaseModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:searchfield/searchfield.dart';
 import 'package:textfield_search/textfield_search.dart';
+import 'package:velocity_x/velocity_x.dart';
+import 'package:velocity_x/velocity_x.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../constants/Theme.dart';
 
@@ -14,10 +21,41 @@ class MilkPurchaseScreen extends StatefulWidget {
 }
 
 final _formKey = GlobalKey<FormState>();
-TextEditingController Suppliername = TextEditingController();
-final searchList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+final List<MilkSupplierModel> searchList = [];
+
+
+TextEditingController suppNameEdCont = TextEditingController();
+TextEditingController shiftEdCont = TextEditingController();
+TextEditingController milkTypeEdCont = TextEditingController();
+TextEditingController fatEdCont = TextEditingController();
+TextEditingController snfEdCont = TextEditingController();
+TextEditingController qtyEdCont = TextEditingController();
+
+double totalAmnt = 0.0;
+double fatRate = 0.0;
+
+
+
 
 class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
+
+
+  @override
+  void initState() {
+    suppNameEdCont.addListener(() async {
+      final String value =
+          suppNameEdCont.value.text;
+      searchList.clear();
+      searchList.addAll(await milkSupplierController.fetchOneLedger(value));
+
+      searchList.toSet().toList();
+
+
+
+      // YOUR CODE
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,16 +66,54 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                TextFieldSearch(
-                  initialList: searchList,
-                  itemsInView: 10,
-                  label: 'Supplier Name',
-                  controller: Suppliername,
-                  decoration: const InputDecoration(
-                    labelText: 'Supplier Name',
-                    border: OutlineInputBorder(),
+
+                DropdownSearch<MilkSupplierModel>(
+
+                  asyncItems: (String filter) => milkSupplierController.fetchOneLedger(filter),
+                  itemAsString: (MilkSupplierModel u) => u.Name,
+
+
+
+
+                  onChanged: (MilkSupplierModel? data){
+                    setState(() {
+                      print("FAT RATE IS HERE");
+                      print(data!.Name);
+                      print(data!.FatRate);
+
+                    fatRate += double.parse(data!.FatRate.toString());
+
+                    });
+                  },
+                  dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(labelText: "Select Supplier"),
                   ),
-                ),
+                )
+,
+
+
+//                 SearchField(
+//                   suggestionState: Suggestion.expand,
+//                   textInputAction: TextInputAction.next,
+// controller: suppNameEdCont,
+// suggestions: searchList.map((e) => SearchFieldListItem(e.Name)).toList(),
+//                   suggestionAction: SuggestionAction.unfocus,
+//                   onSuggestionTap: (value){
+//
+//                   },
+//                 ),
+                SizedBox(height: 10,),
+                // TextFieldSearch(
+                //
+                //   controller : suppNameEdCont,
+                //   initialList: searchList,
+                //   itemsInView: 10,
+                //   label: 'Supplier Name',
+                //   decoration: const InputDecoration(
+                //     labelText: 'Supplier Name',
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -47,6 +123,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.5,
                       child: TextFormField(
+                        controller: shiftEdCont,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Select Shift';
@@ -101,6 +178,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: TextFormField(
+                        controller: milkTypeEdCont,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Fill Amount';
@@ -123,6 +201,12 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: TextFormField(
+controller: fatEdCont,
+                        onChanged: (value){
+  setState(() {
+    totalAmnt = double.parse(fatEdCont.text)*fatRate*double.parse(qtyEdCont.text);
+  });
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Fill Amount';
@@ -133,7 +217,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                           contentPadding:
                               EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                           labelStyle: TextStyle(fontSize: 14),
-                          labelText: 'Fat Rate',
+                          labelText: 'Fat',
                           border: OutlineInputBorder(),
                         ),
                         // controller: advancePaymentController,
@@ -150,6 +234,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: TextFormField(
+                        controller: snfEdCont,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Fill SNF Value';
@@ -172,6 +257,13 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: TextFormField(
+                        controller: qtyEdCont,
+                        onChanged: (value){
+                          setState(() {
+                            totalAmnt = double.parse(fatEdCont.text)*fatRate*double.parse(qtyEdCont.text);
+                          });
+                        },
+
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Fill Value';
@@ -182,7 +274,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                           contentPadding:
                               EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                           labelStyle: TextStyle(fontSize: 14),
-                          labelText: 'Fat',
+                          labelText: 'Quantity',
                           border: OutlineInputBorder(),
                         ),
                         // controller: advancePaymentController,
@@ -193,20 +285,36 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Align(
+                 Align(
                     alignment: Alignment.topLeft,
                     child:
-                        Text("TOTAL PRICE - Fat*Supplier Fat Rate * Quantity")),
+                        Text("TOTAL PRICE - ${double. parse((totalAmnt). toStringAsFixed(2))}")),
+
+
                 ElevatedButton(
                     onPressed: () {
                       MilkPurchaseController.addMilkPurchase(MilkPurchaseModel(
                           Date: Timestamp.now(),
-                          fat: 4,
-                          milkQty: 23,
-                          milkType: "COW",
-                          shift: "MORNING",
-                          snfVal: 6.3,
-                          SupplierName: "DHRUV"));
+                          fat: double.parse(fatEdCont.text),
+                          milkQty: int.parse(qtyEdCont.text),
+                          milkType: milkTypeEdCont.text,
+                          shift: shiftEdCont.text,
+                          snfVal: double.parse(snfEdCont.text),
+                          SupplierName: suppNameEdCont.text,
+                      totalAmnt : totalAmnt,
+                      ));
+
+fatRate  = 0;
+fatEdCont.clear();
+qtyEdCont.clear();
+milkTypeEdCont.clear();
+shiftEdCont.clear();
+snfEdCont.clear();
+suppNameEdCont.clear();
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Done')),
+                      );
                     },
                     child: const Text("Complete"))
               ],

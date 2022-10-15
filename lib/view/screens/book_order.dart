@@ -608,6 +608,8 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                               OrderBookDate: Timestamp.now(),
                               OrderDelivaryDate: Timestamp.fromDate(date),
                               items: databaseOrderItem,
+                              ProductionDone: false,
+                              Delivered: false
                             ));
 
                             fullNameController.clear();
