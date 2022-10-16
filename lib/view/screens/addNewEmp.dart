@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/employeeModel.dart';
+
 class AddNewEmp_Screen extends StatefulWidget {
   const AddNewEmp_Screen({Key? key}) : super(key: key);
 
@@ -16,14 +17,18 @@ class _AddNewEmp_ScreenState extends State<AddNewEmp_Screen> {
     return Scaffold(
       body: Column(
         children: [
-          Text("ADD EMPLOYEEE SCREEN"),
-          ElevatedButton(onPressed: (){
-
-            EmployeeController.addNewEmp(EmployeeModel(
-                EmpAadhr: "454545454", EmpAddr: "DEMO", EmpMobNo: "5656565",
-                EmpName: "DEMO", EmpPerHrRate: 34, DateAdded: Timestamp.now()));
-
-          }, child: Text("Add New Employee"))
+          const Text("ADD EMPLOYEEE SCREEN"),
+          ElevatedButton(
+              onPressed: () {
+                EmployeeController.addNewEmp(EmployeeModel(
+                    EmpAadhr: "454545454",
+                    EmpAddr: "DEMO",
+                    EmpMobNo: "5656565",
+                    EmpName: "DEMO",
+                    EmpPerHrRate: 34,
+                    DateAdded: Timestamp.now()));
+              },
+              child: const Text("Add New Employeeee"))
         ],
       ),
     );
