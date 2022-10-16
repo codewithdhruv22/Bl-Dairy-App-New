@@ -121,308 +121,248 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                           shrinkWrap: true,
                                           itemCount: dashOrderList.length,
                                           itemBuilder: (context, index) {
-
                                             final order = dashOrderList[index];
-                                            return (order.ProductionDone && order.Delivered) ? Container() :  ListTile(
-                                              onTap: () {
-
-                                                VxBottomSheet.bottomSheetView(
-                                                  context,
-                                                  isDismissible: true,
-                                                  backgroundColor: Colors.white,
-                                                  isSafeAreaFromBottom: true,
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      SingleChildScrollView(
+                                            return (order.ProductionDone &&
+                                                    order.Delivered)
+                                                ? Container()
+                                                : ListTile(
+                                                    onTap: () {
+                                                      VxBottomSheet
+                                                          .bottomSheetView(
+                                                        context,
+                                                        isDismissible: true,
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        isSafeAreaFromBottom:
+                                                            true,
                                                         child: Column(
                                                           children: <Widget>[
-                                                            Material(
-                                                              elevation: 2,
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .centerRight,
-                                                                child:
-                                                                    IconButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  icon:
-                                                                      const Icon(
-                                                                    FeatherIcons
-                                                                        .x,
-                                                                    color: MyColors
-                                                                        .defaultColor,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .fromLTRB(
-                                                                      10,
-                                                                      0,
-                                                                      10,
-                                                                      15),
+                                                            SingleChildScrollView(
                                                               child: Column(
-                                                                children: [
-                                                                  const SizedBox(
-                                                                    height: 10,
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.4,
-                                                                        child:
-                                                                            CustomTextFiled(
-                                                                          label:
-                                                                              "Customer Name",
-                                                                          value:
-                                                                              order.CustomerName,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Material(
+                                                                    elevation:
+                                                                        2,
+                                                                    child:
+                                                                        Align(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerRight,
+                                                                      child:
+                                                                          IconButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        },
+                                                                        icon:
+                                                                            const Icon(
+                                                                          FeatherIcons
+                                                                              .x,
+                                                                          color:
+                                                                              MyColors.defaultColor,
                                                                         ),
                                                                       ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.5,
-                                                                        child: CustomTextFiled(
-                                                                            label:
-                                                                                'Number',
-                                                                            value:
-                                                                                order.MobileNumber),
-                                                                      ),
-                                                                    ],
+                                                                    ),
                                                                   ),
                                                                   const SizedBox(
-                                                                    height: 10,
+                                                                    height: 5,
                                                                   ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.33,
-                                                                        child:
-                                                                            Center(
-                                                                          child: CustomTextFiled(
-                                                                              label: "Order Date",
-                                                                              value: myFormat.format(order.OrderBookDate.toDate())),
-                                                                        ),
-                                                                      ),
-                                                                      const Expanded(
-                                                                          child:
-                                                                              SizedBox(
-                                                                        width:
+                                                                  Container(
+                                                                    padding:
+                                                                        const EdgeInsets.fromLTRB(
                                                                             10,
-                                                                      )),
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.3,
-                                                                        child:
-                                                                            Center(
-                                                                          child: CustomTextFiled(
-                                                                              label: 'Delivery Date',
-                                                                              value: myFormat.format(order.OrderDelivaryDate.toDate())),
-                                                                        ),
-                                                                      ),
-                                                                      const Expanded(
-                                                                          child:
-                                                                              SizedBox(
-                                                                        width:
+                                                                            0,
                                                                             10,
-                                                                      )),
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.3,
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              CustomTextFiled(
-                                                                            label:
-                                                                                'Advance Payment',
-                                                                            value:
-                                                                                order.Advance,
-                                                                          ),
+                                                                            15),
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              10,
                                                                         ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 10,
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      borderContainer(
-                                                                        height:
-                                                                            size.height /
-                                                                                17,
-                                                                        width: size.width *
-                                                                            0.90,
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.symmetric(
-                                                                            horizontal:
-                                                                                1,
-                                                                            vertical:
-                                                                                2,
-                                                                          ),
-                                                                          child: CustomTextFiled(
-                                                                              label: "Notes",
-                                                                              value: order.Note),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            borderContainer(
+                                                                              height: size.height / 17,
+                                                                              width: size.width * 0.4,
+                                                                              child: CustomTextFiled(
+                                                                                label: "Customer Name",
+                                                                                value: order.CustomerName,
+                                                                              ),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              width: 10,
+                                                                            ),
+                                                                            borderContainer(
+                                                                              height: size.height / 17,
+                                                                              width: size.width * 0.5,
+                                                                              child: CustomTextFiled(label: 'Number', value: order.MobileNumber),
+                                                                            ),
+                                                                          ],
                                                                         ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  const Divider(
-                                                                    thickness:
-                                                                        3,
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      SizedBox(
-                                                                        width: size.width *
-                                                                            0.4,
-                                                                        child: const Text(
-                                                                            'OrderName'),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width: size.width *
-                                                                            0.2,
-                                                                        child: const Text(
-                                                                            'Delivery Date'),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width: size.width *
-                                                                            0.15,
-                                                                        child: const Text(
-                                                                            'Quantity'),
-                                                                      ),
-                                                                      const Text(
-                                                                          'Amount'),
-                                                                    ],
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 200,
-                                                                    child: ListView
-                                                                        .builder(
-                                                                      shrinkWrap:
-                                                                          true,
-                                                                      itemCount: order
-                                                                          .items
-                                                                          .length,
-                                                                      itemBuilder:
-                                                                          (context,
-                                                                              index) {
-                                                                        final item =
-                                                                            order.items[index];
-                                                                        return Row(
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              10,
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            borderContainer(
+                                                                              height: size.height / 17,
+                                                                              width: size.width * 0.33,
+                                                                              child: CustomTextFiled(label: "Order Date", value: myFormat.format(order.OrderBookDate.toDate())),
+                                                                            ),
+                                                                            const Expanded(
+                                                                                child: SizedBox(
+                                                                              width: 10,
+                                                                            )),
+                                                                            borderContainer(
+                                                                              height: size.height / 17,
+                                                                              width: size.width * 0.3,
+                                                                              child: CustomTextFiled(label: 'Delivery Date', value: myFormat.format(order.OrderDelivaryDate.toDate())),
+                                                                            ),
+                                                                            const Expanded(
+                                                                                child: SizedBox(
+                                                                              width: 10,
+                                                                            )),
+                                                                            borderContainer(
+                                                                              height: size.height / 17,
+                                                                              width: size.width * 0.3,
+                                                                              child: CustomTextFiled(
+                                                                                label: 'Advance Payment',
+                                                                                value: order.Advance,
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              10,
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            Expanded(
+                                                                              child: borderContainer(
+                                                                                height: size.height / 17,
+                                                                                width: size.width * 0.90,
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.symmetric(
+                                                                                    horizontal: 1,
+                                                                                    vertical: 2,
+                                                                                  ),
+                                                                                  child: CustomTextFiled(label: "Notes", value: order.Note),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        const Divider(
+                                                                          thickness:
+                                                                              3,
+                                                                        ),
+                                                                        Row(
                                                                           mainAxisAlignment:
                                                                               MainAxisAlignment.spaceBetween,
                                                                           children: [
                                                                             SizedBox(
-                                                                                width: size.width * 0.4,
-                                                                                child: Text(item.itemName.toString())),
+                                                                              width: size.width * 0.4,
+                                                                              child: const Text('OrderName'),
+                                                                            ),
                                                                             SizedBox(
-                                                                                width: size.width * 0.2,
-                                                                                child: Text(item.itemQty.toString())),
+                                                                              width: size.width * 0.2,
+                                                                              child: const Text('Delivery Date'),
+                                                                            ),
                                                                             SizedBox(
-                                                                                width: size.width * 0.15,
-                                                                                child: Text(item.itemRate.toString())),
-                                                                            Text(item.itemAmnt.toString())
+                                                                              width: size.width * 0.15,
+                                                                              child: const Text('Quantity'),
+                                                                            ),
+                                                                            const Text('Amount'),
                                                                           ],
-                                                                        );
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 10,
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      InkWell(
-                                                                        onTap: (){
-                                                                          BookOrderController.ChangeProductionStatus(order);
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              200,
+                                                                          child:
+                                                                              ListView.builder(
+                                                                            shrinkWrap:
+                                                                                true,
+                                                                            itemCount:
+                                                                                order.items.length,
+                                                                            itemBuilder:
+                                                                                (context, index) {
+                                                                              final item = order.items[index];
+                                                                              return Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  SizedBox(width: size.width * 0.4, child: Text(item.itemName.toString())),
+                                                                                  SizedBox(width: size.width * 0.2, child: Text(item.itemQty.toString())),
+                                                                                  SizedBox(width: size.width * 0.15, child: Text(item.itemRate.toString())),
+                                                                                  Text(item.itemAmnt.toString())
+                                                                                ],
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              10,
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            InkWell(
+                                                                              onTap: () {
+                                                                                BookOrderController.ChangeProductionStatus(order);
 
-                                                                          print(order.ProductionDone ? 'Order Produced' : 'Order Not Produced');
-                                                                        },
-                                                                        child: Text(
-                                                                            'Click To Change Production Status'),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                       InkWell(
-                                                                         onTap: (){
-                                                                          BookOrderController.ChangeDeliveryStatus(order);
+                                                                                print(order.ProductionDone ? 'Order Produced' : 'Order Not Produced');
+                                                                              },
+                                                                              child: const Text('Click To Change Production Status'),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            InkWell(
+                                                                              onTap: () {
+                                                                                BookOrderController.ChangeDeliveryStatus(order);
 
 //SHOW A MESSAGE CONFIRMATION HERE
-                                                                          print(order.Delivered ? 'Order Delivered' : 'Order Undelivered');
-                                                            },
-                                                                         child: Text(
-                                                                            'Click To Change Delivery Status'),
-                                                                       ),
-
-                                                                    ],
-                                                                  ),
+                                                                                print(order.Delivered ? 'Order Delivered' : 'Order Undelivered');
+                                                                              },
+                                                                              child: const Text('Click To Change Delivery Status'),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  )
                                                                 ],
                                                               ),
-                                                            )
+                                                            ),
                                                           ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                              title: Text(order.CustomerName),
-                                              leading: Text("${index + 1}"),
-                                              trailing: Text(myFormat.format(
-                                                  order.OrderDelivaryDate
-                                                      .toDate())),
-                                            );
+                                                      );
+                                                    },
+                                                    title: Text(
+                                                        order.CustomerName),
+                                                    leading:
+                                                        Text("${index + 1}"),
+                                                    trailing: Text(
+                                                        myFormat.format(order
+                                                                .OrderDelivaryDate
+                                                            .toDate())),
+                                                  );
                                           }),
                                     ),
                                   ],
