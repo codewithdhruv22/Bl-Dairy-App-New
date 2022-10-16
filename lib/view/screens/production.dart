@@ -280,6 +280,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                           .toString();
                                                     });
                                                   },
+                                                  keyboardType: TextInputType.number,
                                                   decoration:
                                                       const InputDecoration(
                                                     contentPadding:
@@ -313,7 +314,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                               Expanded(
                                                 child: TextField(
                                                   controller: RmAmntController,
-
+                                                  keyboardType: TextInputType.number,
                                                   decoration:
                                                       const InputDecoration(
                                                     contentPadding:

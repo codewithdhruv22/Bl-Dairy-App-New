@@ -51,6 +51,8 @@ dependencies:
   textfield_search: ^0.10.0
   searchfield: ^0.7.1
   dropdown_search: ^5.0.3
+  get: any
+  rename: any
 
 dev_dependencies:
   flutter_test:

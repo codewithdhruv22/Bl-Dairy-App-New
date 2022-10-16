@@ -151,6 +151,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                               }
                               return null;
                             },
+                            keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 15),

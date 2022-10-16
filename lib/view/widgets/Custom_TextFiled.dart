@@ -14,7 +14,7 @@ class CustomTextFiled extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 36,
+      height: 45,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
         child: Column(

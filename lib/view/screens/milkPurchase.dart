@@ -2,6 +2,7 @@ import 'package:bl_dairy_app/controller/milkPurchaseController.dart';
 import 'package:bl_dairy_app/controller/milkSupplierController.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:bl_dairy_app/model/milkPurchaseModel.dart';
+import 'package:bl_dairy_app/view/screens/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -136,7 +137,8 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                             onChanged: (String? value) {
                               // This is called when the user selects an item.
                               setState(() {
-                                dropdownValue = value!;
+                                dropdownValue1 = value!;
+                                shiftEdCont.text = value!;
                               });
                             },
                             hint: const Text('Milk Type'),
@@ -183,7 +185,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                               ),
                               child: const Center(
                                 child: Text(
-                                  'date',
+                                  "Today's Date",
                                   // "${date.day}-${date.month}-${date.year}",
                                   style: TextStyle(
                                     fontSize: 16,
@@ -207,6 +209,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                               // This is called when the user selects an item.
                               setState(() {
                                 dropdownValue = value!;
+                                milkTypeEdCont.text  = value;
                               });
                             },
                             hint: const Text('Milk Type'),
@@ -241,7 +244,8 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                         ),
                         Expanded(
                           child: TextFormField(
-                            controller: null,
+                            keyboardType: TextInputType.number,
+                            controller: fatEdCont,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Fill Rate';
@@ -252,7 +256,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 15),
                               labelStyle: TextStyle(fontSize: 14),
-                              labelText: 'Fat Rate',
+                              labelText: 'Fat',
                               border: OutlineInputBorder(),
                             ),
                             // controller: advancePaymentController,
@@ -270,6 +274,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
                           child: TextFormField(
+                            keyboardType: TextInputType.number,
                             controller: snfEdCont,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -301,7 +306,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                                     double.parse(qtyEdCont.text);
                               });
                             },
-
+                            keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Fill Value';
@@ -349,10 +354,14 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                           shiftEdCont.clear();
                           snfEdCont.clear();
                           suppNameEdCont.clear();
+totalAmnt = 0;
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Done')),
                           );
+                          setState(() {
+
+                          });
                         },
                         child: const Text("Complete"))
                   ],

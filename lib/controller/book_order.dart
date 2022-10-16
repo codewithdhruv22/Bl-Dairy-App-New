@@ -44,15 +44,15 @@ class BookOrderController {
 
 
 
-  static ChangeProductionStatus(Order order) async{
-    await FirebaseFirestore.instance.collection("BookOrder").doc(order.id).update(
-        {"ProductionDone" : !order.ProductionDone});
+  static ChangeProductionStatus(String? orderId , bool status) async{
+    await FirebaseFirestore.instance.collection("BookOrder").doc(orderId).update(
+        {"ProductionDone" : status});
   }
 
 
-  static ChangeDeliveryStatus(Order order) async{
-    await FirebaseFirestore.instance.collection("BookOrder").doc(order.id).update(
-        {"Delivered" : !order.Delivered});
+  static ChangeDeliveryStatus(String? orderId , bool status) async{
+    await FirebaseFirestore.instance.collection("BookOrder").doc(orderId).update(
+        {"Delivered" : status});
   }
 }
 

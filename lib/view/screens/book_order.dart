@@ -81,6 +81,21 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+
+                  Row(
+                    children: const [
+                      Text(
+                        'Book Order',
+                        style:
+                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+
                   TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -127,6 +142,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Fill Amount';
@@ -310,6 +326,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                                 ),
                                                 Expanded(
                                                   child: TextFormField(
+                                                    keyboardType: TextInputType.number,
                                                     decoration:
                                                         const InputDecoration(
                                                       contentPadding:
@@ -591,6 +608,8 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
+
+
                             // Validate returns true if the form is valid, or false otherwise.
                             if (_formKey.currentState!.validate()) {
                               // If the form is valid, display a snackbar. In the real world,
@@ -611,7 +630,8 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                               ProductionDone: false,
                               Delivered: false
                             ));
-
+                            databaseOrderItem.clear();
+                            OrderItemLocal.clear();
                             fullNameController.clear();
                             mobileNumberController.clear();
                             advancePaymentController.clear();
@@ -620,7 +640,11 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                             bQuantityController.clear();
                             bRateController.clear();
                             bAmountController.clear();
-                            OrderItemLocal.clear();
+                            grandTotal = 0;
+
+setState(() {
+
+});
                           },
                           child: const Text("Book Order"),
                         ),

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codewithdhruv.bl_dairy_app">
    <application
-        android:label="bl_dairy_app"
+        android:label="BhagyaLaxmi Dairy"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
