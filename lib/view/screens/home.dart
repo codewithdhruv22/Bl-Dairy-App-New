@@ -1,6 +1,7 @@
 import 'package:bl_dairy_app/view/screens/AddMilkSupplier.dart';
 import 'package:bl_dairy_app/view/screens/addNewEmp.dart';
 import 'package:bl_dairy_app/view/screens/milkPurchase.dart';
+import 'package:bl_dairy_app/view/screens/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
@@ -44,51 +45,65 @@ class _HomeState extends State<Home> {
               icon: Icon(FeatherIcons.package, size: 18), label: 'Production'),
         ],
       ),
-
       appBar: AppBar(
-        title: Text("DAIRY APP"),
-
+        title: const Text("DAIRY APP"),
       ),
       drawer: Drawer(
         child: Container(
-
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25, vertical: 16),
-                    child: Text(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 16),
+                    child: const Text(
                       "CodeMarket.in",
                       style: TextStyle(
-                        color: Colors.black45,
+                          color: Colors.black45,
                           fontWeight: FontWeight.bold,
                           fontSize: 25),
                     )),
-                Divider(
+                const Divider(
                   color: Colors.white,
                 ),
-             ListTile(
-               title: Text("ADD SUPPLIER"),
-               onTap: (){
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AddMilkSupplierScreen()));
-               },
-             ),
-                SizedBox(height: 5,),
                 ListTile(
-                  title: Text("PURCHASE MILK"),
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MilkPurchaseScreen()));
+                  title: const Text("ADD SUPPLIER"),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AddMilkSupplierScreen()));
                   },
                 ),
-                SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 ListTile(
-                  title: Text("NEW EMPLOYEE"),
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AddNewEmp_Screen()));
+                  title: const Text("PURCHASE MILK"),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const MilkPurchaseScreen()));
                   },
                 ),
-
+                const SizedBox(
+                  height: 5,
+                ),
+                ListTile(
+                  title: const Text("NEW EMPLOYEE"),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AddNewEmp_Screen()));
+                  },
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                ListTile(
+                  title: const Text("Utilities"),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const UtilitiesScreen()));
+                  },
+                ),
               ],
             ),
           ),
