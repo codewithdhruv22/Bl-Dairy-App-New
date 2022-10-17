@@ -13,36 +13,36 @@ class UtilitiesScreen extends StatefulWidget {
 }
 
 final _formKey = GlobalKey<FormState>();
-final List<MilkSupplierModel> searchList = [];
-const List<String> milktyplist = <String>['Cow', 'Buffalow'];
-const List<String> shiftlist = <String>['Morning', 'Evening'];
-String dropdownValue = milktyplist.first;
-String dropdownValue1 = shiftlist.first;
 
-TextEditingController suppNameEdCont = TextEditingController();
-TextEditingController shiftEdCont = TextEditingController();
-TextEditingController milkTypeEdCont = TextEditingController();
-TextEditingController fatEdCont = TextEditingController();
-TextEditingController snfEdCont = TextEditingController();
-TextEditingController qtyEdCont = TextEditingController();
-
-double totalAmnt = 0.0;
-double fatRate = 0.0;
 
 class _UtilitiesScreenState extends State<UtilitiesScreen> {
-  @override
-  void initState() {
-    suppNameEdCont.addListener(() async {
-      final String value = suppNameEdCont.value.text;
-      searchList.clear();
-      searchList.addAll(await milkSupplierController.fetchOneLedger(value));
 
-      searchList.toSet().toList();
+  TextEditingController WaReqFat = TextEditingController();
+  TextEditingController WaMilkQty = TextEditingController();
+  TextEditingController WaFat = TextEditingController();
 
-      // YOUR CODE
-    });
-    super.initState();
-  }
+
+  TextEditingController CsReqFat = TextEditingController();
+  TextEditingController CsMilkQty = TextEditingController();
+  TextEditingController CsFat = TextEditingController();
+
+
+
+  TextEditingController AvQty1 = TextEditingController();
+  TextEditingController AvQty2 = TextEditingController();
+  TextEditingController AvQty3 = TextEditingController();
+  TextEditingController AvQty4 = TextEditingController();
+  TextEditingController AvFat1 = TextEditingController();
+  TextEditingController AvFat2 = TextEditingController();
+  TextEditingController AvFat3 = TextEditingController();
+  TextEditingController AvFat4 = TextEditingController();
+
+
+  double WaResult = 0.0;
+  double CsResult = 0.0;
+  double AvResult = 0.0;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +69,144 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
               ),
               body: TabBarView(
                 children: [
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        children: [
+                          TextFormField( keyboardType: TextInputType.number,
+                            controller: WaReqFat,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Fill This';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 15),
+                              labelStyle: TextStyle(fontSize: 14),
+                              labelText: 'Required Fat',
+                              border: OutlineInputBorder(),
+                            ),
+                            // controller: advancePaymentController,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField( keyboardType: TextInputType.number,
+                            controller: WaMilkQty,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Fill This';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 15),
+                              labelStyle: TextStyle(fontSize: 14),
+                              labelText: 'Milk Quantity',
+                              border: OutlineInputBorder(),
+                            ),
+                            // controller: advancePaymentController,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField( keyboardType: TextInputType.number,
+                            controller: WaFat,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Fill This';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 15),
+                              labelStyle: TextStyle(fontSize: 14),
+                              labelText: 'Fat',
+                              border: OutlineInputBorder(),
+                            ),
+                            // controller: advancePaymentController,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+
+                          Text("${WaResult.toStringAsFixed(2)} Liters"),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    WaReqFat.clear();
+                                    WaMilkQty.clear();
+                                    WaFat.clear();
+                                    setState(() {
+                                      WaResult  = 0;
+
+                                    });
+
+                                  },
+                                  icon: const Icon(
+                                    FeatherIcons.refreshCcw,
+                                    size: 18,
+                                  ),
+                                  label: const Text('Reset'),
+                                  style: ElevatedButton.styleFrom(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                    backgroundColor: MyColors.red,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+
+setState(() {
+  WaResult = ((( double.parse( WaFat.text)  * double.parse( WaMilkQty.text)) / double.parse( WaReqFat.text)) - (double.parse( WaMilkQty.text)));
+});
+
+
+                                  },
+                                  icon: const Icon(
+                                    FeatherIcons.plus,
+                                    size: 18,
+                                  ),
+                                  label: const Text('Calculate'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: MyColors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        TextFormField(
-                          controller: null,
+                        TextFormField( keyboardType: TextInputType.number,
+                          controller: CsReqFat,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Fill This';
@@ -93,8 +225,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        TextFormField(
-                          controller: null,
+                        TextFormField( keyboardType: TextInputType.number,
+                          controller: CsMilkQty,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Fill This';
@@ -113,8 +245,9 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        TextFormField(
-                          controller: null,
+                        TextFormField( keyboardType: TextInputType.number,
+                          
+                          controller: CsFat,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Fill This';
@@ -133,13 +266,26 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                         const SizedBox(
                           height: 20,
                         ),
+
+                        Text("${CsResult.toStringAsFixed(2)} Cream"),
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: ElevatedButton.icon(
                                 onPressed: () {
-                                  // Navigator.pop(context);
+CsReqFat.clear();
+CsMilkQty.clear();
+CsFat.clear();
+setState(() {
+  CsResult = 0.0;
+});
+
                                 },
                                 icon: const Icon(
                                   FeatherIcons.refreshCcw,
@@ -161,119 +307,14 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                             ),
                             Expanded(
                               child: ElevatedButton.icon(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  FeatherIcons.plus,
-                                  size: 18,
-                                ),
-                                label: const Text('Calculate'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: MyColors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: null,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Fill This';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 15),
-                            labelStyle: TextStyle(fontSize: 14),
-                            labelText: 'Required Fat',
-                            border: OutlineInputBorder(),
-                          ),
-                          // controller: advancePaymentController,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: null,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Fill This';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 15),
-                            labelStyle: TextStyle(fontSize: 14),
-                            labelText: 'Milk Quantity',
-                            border: OutlineInputBorder(),
-                          ),
-                          // controller: advancePaymentController,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: null,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Fill This';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 15),
-                            labelStyle: TextStyle(fontSize: 14),
-                            labelText: 'Fat',
-                            border: OutlineInputBorder(),
-                          ),
-                          // controller: advancePaymentController,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: ElevatedButton.icon(
                                 onPressed: () {
-                                  // Navigator.pop(context);
+                                  setState(() {
+                                    CsResult =  ((double.parse( CsMilkQty.text) * double.parse( CsReqFat.text)) / double.parse( CsFat.text));
+                                  });
+
+
                                 },
                                 icon: const Icon(
-                                  FeatherIcons.refreshCcw,
-                                  size: 18,
-                                ),
-                                label: const Text('Reset'),
-                                style: ElevatedButton.styleFrom(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 4, 0, 4),
-                                  backgroundColor: MyColors.red,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              child: ElevatedButton.icon(
-                                onPressed: () {},
-                                icon: const Icon(
                                   FeatherIcons.plus,
                                   size: 18,
                                 ),
@@ -291,6 +332,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                       ],
                     ),
                   ),
+                  SingleChildScrollView(
+                    child:
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
                     child: Column(
@@ -306,8 +349,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: TextFormField(
-                                controller: null,
+                              child: TextFormField( keyboardType: TextInputType.number,
+                                controller: AvQty1,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Fill This';
@@ -328,8 +371,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                               width: 20,
                             ),
                             Expanded(
-                              child: TextFormField(
-                                controller: null,
+                              child: TextFormField( keyboardType: TextInputType.number,
+                                controller: AvFat1,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Fill This';
@@ -363,8 +406,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: TextFormField(
-                                controller: null,
+                              child: TextFormField( keyboardType: TextInputType.number,
+                                controller: AvQty2,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Fill This';
@@ -385,8 +428,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                               width: 20,
                             ),
                             Expanded(
-                              child: TextFormField(
-                                controller: null,
+                              child: TextFormField( keyboardType: TextInputType.number,
+                                controller: AvFat2,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Fill This';
@@ -420,8 +463,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: TextFormField(
-                                controller: null,
+                              child: TextFormField( keyboardType: TextInputType.number,
+                                controller: AvQty3,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Fill This';
@@ -442,8 +485,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                               width: 20,
                             ),
                             Expanded(
-                              child: TextFormField(
-                                controller: null,
+                              child: TextFormField( keyboardType: TextInputType.number,
+                                controller: AvFat3,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Fill This';
@@ -477,8 +520,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: TextFormField(
-                                controller: null,
+                              child: TextFormField( keyboardType: TextInputType.number,
+                                controller: AvQty4,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Fill This';
@@ -499,8 +542,8 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                               width: 20,
                             ),
                             Expanded(
-                              child: TextFormField(
-                                controller: null,
+                              child: TextFormField( keyboardType: TextInputType.number,
+                                controller: AvFat4,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Fill This';
@@ -522,6 +565,11 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                         const SizedBox(
                           height: 20,
                         ),
+
+                        Text("Average Fat is : ${AvResult.toStringAsFixed(2)}"),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         // row with text feild end
                         // row with button
                         Row(
@@ -530,7 +578,18 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                             Expanded(
                               child: ElevatedButton.icon(
                                 onPressed: () {
-                                  // Navigator.pop(context);
+
+    AvQty1.clear();
+    AvQty2.clear();
+    AvQty3.clear();
+    AvQty4.clear();
+    AvFat1.clear();
+    AvFat2.clear();
+    AvFat3.clear();
+    AvFat4.clear();
+    setState(() {
+    AvResult = 0.0;
+    });
                                 },
                                 icon: const Icon(
                                   FeatherIcons.refreshCcw,
@@ -552,7 +611,52 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                             ),
                             Expanded(
                               child: ElevatedButton.icon(
-                                onPressed: () {},
+                                onPressed: () {
+
+                                  if(AvFat1.text.isEmpty){
+                                    AvFat1.text = "0";
+                                  }
+
+                                  if(AvFat2.text.isEmpty){
+                                    AvFat2.text = "0";
+                                  }
+                                  if(AvFat3.text.isEmpty){
+                                    AvFat3.text = "0";
+                                  }
+
+                                  if(AvFat4.text.isEmpty){
+                                    AvFat4.text = "0";
+                                  }
+
+
+                                  if(AvQty1.text.isEmpty){
+                                    AvQty1.text = "0";
+                                  }
+
+                                  if(AvQty2.text.isEmpty){
+                                    AvQty2.text = "0";
+                                  }
+
+                                  if(AvQty3.text.isEmpty){
+                                    AvQty3.text = "0";
+                                  }
+
+                                  if(AvQty4.text.isEmpty){
+                                    AvQty4.text = "0";
+                                  }
+
+
+                                  setState(() {
+                                    AvResult = ((double.parse(AvFat1.text) * double.parse(AvQty1.text))
+                                        + (double.parse(AvFat2.text) * double.parse(AvQty2.text)) +
+                                        (double.parse(AvFat3.text) * double.parse(AvQty3.text)) +
+                                        (double.parse(AvFat4.text) * double.parse(AvQty4.text))
+                                    ) / (double.parse(AvQty1.text) + double.parse(AvQty2.text) + double.parse(AvQty3.text)
+                                        + double.parse(AvQty4.text));
+
+                                  });
+
+                                },
                                 icon: const Icon(
                                   FeatherIcons.plus,
                                   size: 18,
@@ -571,6 +675,7 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                       ],
                     ),
                   ),
+                  )
                 ],
               ),
             )));
