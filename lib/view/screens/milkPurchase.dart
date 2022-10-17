@@ -138,7 +138,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                               // This is called when the user selects an item.
                               setState(() {
                                 dropdownValue1 = value!;
-                                shiftEdCont.text = value!;
+                                shiftEdCont.text = value;
                               });
                             },
                             hint: const Text('Milk Type'),
@@ -209,7 +209,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                               // This is called when the user selects an item.
                               setState(() {
                                 dropdownValue = value!;
-                                milkTypeEdCont.text  = value;
+                                milkTypeEdCont.text = value;
                               });
                             },
                             hint: const Text('Milk Type'),
@@ -354,14 +354,12 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                           shiftEdCont.clear();
                           snfEdCont.clear();
                           suppNameEdCont.clear();
-totalAmnt = 0;
+                          totalAmnt = 0;
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Done')),
                           );
-                          setState(() {
-
-                          });
+                          setState(() {});
                         },
                         child: const Text("Complete"))
                   ],
