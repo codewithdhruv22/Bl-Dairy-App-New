@@ -7,7 +7,7 @@ class MilkPurchaseModel{
   Timestamp Date;
   String shift;
   String milkType;
-  int milkQty;
+  double milkQty;
   double fat;
   double snfVal;
   double totalAmnt;

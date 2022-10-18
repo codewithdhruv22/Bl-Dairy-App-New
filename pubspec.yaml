@@ -54,7 +54,8 @@ dependencies:
   get: any
   rename: any
   share_plus: ^5.0.0
-  syncfusion_flutter_datagrid: ^20.3.49
+  url_launcher: ^6.1.6
+  syncfusion_flutter_datagrid: ^20.3.50
 
 dev_dependencies:
   flutter_test:
