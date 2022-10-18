@@ -82,9 +82,6 @@ class _HomeState extends State<Home> {
                           fontWeight: FontWeight.bold,
                           fontSize: 25),
                     )),
-                const Divider(
-                  color: Colors.white,
-                ),
                 ListTile(
                   title: const Text("ADD SUPPLIER"),
                   onTap: () {
