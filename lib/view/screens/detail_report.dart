@@ -1,7 +1,13 @@
 import 'package:bl_dairy_app/constants/Theme.dart';
+import 'package:bl_dairy_app/model/ledgerModel.dart';
+import 'package:bl_dairy_app/model/milkPurchaseModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+import '../../controller/milkPurchaseController.dart';
 
 class DetailReportScreen extends StatefulWidget {
   const DetailReportScreen({Key? key}) : super(key: key);
@@ -12,16 +18,110 @@ class DetailReportScreen extends StatefulWidget {
 
 double totalAmnt = 0.0;
 double fatRate = 0.0;
-List<Employee> employees = <Employee>[];
-late EmployeeDataSource employeeDataSource;
+
+
+List<MilkPurchaseDet> employees = <MilkPurchaseDet>[];
+late MilkPurchaseDataSource milkPurchaseDataSource;
+
+
+
+
+
 
 class _DetailReportScreenState extends State<DetailReportScreen> {
+
+  var myFormat = DateFormat('d-MM-yyyy');
+  late List<MilkPurchaseModel> weekList;
+
+  double sunQty = 0;
+  double monQty = 0;
+  double tueQty = 0;
+  double wedQty = 0;
+  double thuQty = 0;
+  double friQty = 0;
+  double satQty = 0;
+
+  List<_MilPurchaseData> weekdata = [];
+
+
+  List<MilkPurchaseDet> WeekDataSource = [];
+  //   return [
+  //     MilkPurchaseDet("10001", 'James', 'Project Lead', 20000),
+  //     MilkPurchaseDet("10002", 'Kathryn', 'Manager', 30000),
+  //     MilkPurchaseDet("10003", 'Lara', 'Developer', 15000),
+  //     MilkPurchaseDet("10004", 'Michael', 'Designer', 15000),
+  //     MilkPurchaseDet("10005", 'Martin', 'Developer', 15000),
+  //     MilkPurchaseDet("10006", 'Newberry', 'Developer', 15000),
+  //     MilkPurchaseDet("10007", 'Balnc', 'Developer', 15000),
+  //     MilkPurchaseDet("10008", 'Perry', 'Developer', 15000),
+  //     MilkPurchaseDet("10009", 'Gable', 'Developer', 15000),
+  //     MilkPurchaseDet("10010", 'Grimes', 'Developer', 15000)
+  //   ];
+  // }
+
+
+  GetWeekData() async{
+    await MilkPurchaseController.allMilkPurchaseByThisWeek().then((result_list){
+      setState(() {
+        weekList = result_list;
+        result_list.forEach((MilkPurchased) {
+          int weekDayNum = MilkPurchased.Date.toDate().weekday;
+          if(weekDayNum == 1){
+            monQty += MilkPurchased.milkQty;
+          }else if(weekDayNum == 2){
+            tueQty += MilkPurchased.milkQty;
+          }else if(weekDayNum == 3){
+            wedQty += MilkPurchased.milkQty;
+          }else if(weekDayNum == 4){
+            thuQty += MilkPurchased.milkQty;
+          }else if(weekDayNum == 5){
+            friQty += MilkPurchased.milkQty;
+          }else if(weekDayNum == 6){
+            satQty += MilkPurchased.milkQty;
+          }else{
+            sunQty += MilkPurchased.milkQty;
+          }
+        });
+
+
+
+        weekdata = [
+
+          _MilPurchaseData('Mon', monQty),
+          _MilPurchaseData('Tues', tueQty),
+          _MilPurchaseData('Wed', wedQty),
+          _MilPurchaseData('Thu', thuQty),
+          _MilPurchaseData('Fri', friQty),
+          _MilPurchaseData('Sat', satQty),
+          _MilPurchaseData('Sun', sunQty),
+        ];
+
+        result_list.forEach((element) {
+          WeekDataSource.add(MilkPurchaseDet( myFormat.format(element.Date.toDate()), element.SupplierName, element.shift, element.milkQty));
+        });
+
+
+
+        milkPurchaseDataSource = MilkPurchaseDataSource( milkPurchaseData: WeekDataSource);
+
+
+
+      });
+    });
+  }
+
+
+
+
+
+
   @override
   void initState() {
-    employees = getEmployeeData();
-    employeeDataSource = EmployeeDataSource(employeeData: employees);
+
+    GetWeekData();
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +135,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
           bottom: const TabBar(
             tabs: [
               Tab(
-                text: 'Week',
+                text: 'This Week',
               ),
               Tab(
                 text: 'Month',
@@ -45,8 +145,8 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
         ),
         body: TabBarView(
           children: [
-            matter(data: weekdata),
-            matter(data: monthdata),
+            matter(data: weekdata , dataSource: milkPurchaseDataSource),
+            // matter(data: monthdata),
           ],
         ),
       ),
@@ -54,7 +154,8 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
   }
 
   Widget matter({
-    required List<_SalesData> data,
+    required List<_MilPurchaseData> data,
+    required MilkPurchaseDataSource dataSource,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -75,8 +176,8 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
 
             // Enable tooltip
             tooltipBehavior: TooltipBehavior(enable: true),
-            series: <ChartSeries<_SalesData, String>>[
-              ColumnSeries<_SalesData, String>(
+            series: <ChartSeries<_MilPurchaseData, String>>[
+              ColumnSeries<_MilPurchaseData, String>(
                   color: const Color.fromARGB(197, 252, 252, 252),
                   trackBorderWidth: 0,
                   borderRadius: const BorderRadius.only(
@@ -84,8 +185,8 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                     topRight: Radius.circular(5),
                   ),
                   dataSource: data,
-                  xValueMapper: (_SalesData sales, _) => sales.day,
-                  yValueMapper: (_SalesData sales, _) => sales.sales,
+                  xValueMapper: (_MilPurchaseData sales, _) => sales.day,
+                  yValueMapper: (_MilPurchaseData sales, _) => sales.sales,
                   name: 'Sales',
                   // Enable data label
                   dataLabelSettings: const DataLabelSettings(isVisible: true))
@@ -97,7 +198,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
             print(addedRows.length);
             print(removedRows);
           },
-          source: employeeDataSource,
+          source: dataSource,
           columnWidthMode: ColumnWidthMode.fill,
           columns: <GridColumn>[
             GridColumn(
@@ -136,64 +237,43 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
   }
 }
 
-List<_SalesData> weekdata = [
-  _SalesData('Sun', 3500),
-  _SalesData('Mon', 2800),
-  _SalesData('Tues', 3400),
-  _SalesData('Wed', 3200),
-  _SalesData('Thu', 4000),
-  _SalesData('Fri', 4000),
-  _SalesData('Sat', 80),
-];
-List<_SalesData> monthdata = [
-  _SalesData('01', 35),
-  _SalesData('02', 28),
-  _SalesData('03', 34),
-  _SalesData('04', 32),
-  _SalesData('05', 40),
-  _SalesData('06', 40),
-  _SalesData('07', 80),
-  _SalesData('08', 80),
-  _SalesData('09', 80),
-  _SalesData('10', 80),
-  _SalesData('11', 35),
-  _SalesData('12', 28),
-  _SalesData('13', 34),
-  _SalesData('14', 32),
-  _SalesData('15', 40),
-  _SalesData('16', 40),
-  _SalesData('17', 80),
-  _SalesData('18', 80),
-  _SalesData('19', 80),
-  _SalesData('20', 80),
-  _SalesData('21', 35),
-  _SalesData('22', 28),
-  _SalesData('23', 34),
-  _SalesData('24', 32),
-  _SalesData('25', 40),
-  _SalesData('26', 40),
-  _SalesData('27', 80),
-  _SalesData('28', 80),
-  _SalesData('29', 80),
-  _SalesData('30', 80),
-];
-List<Employee> getEmployeeData() {
-  return [
-    Employee(10001, 'James', 'Project Lead', 20000),
-    Employee(10002, 'Kathryn', 'Manager', 30000),
-    Employee(10003, 'Lara', 'Developer', 15000),
-    Employee(10004, 'Michael', 'Designer', 15000),
-    Employee(10005, 'Martin', 'Developer', 15000),
-    Employee(10006, 'Newberry', 'Developer', 15000),
-    Employee(10007, 'Balnc', 'Developer', 15000),
-    Employee(10008, 'Perry', 'Developer', 15000),
-    Employee(10009, 'Gable', 'Developer', 15000),
-    Employee(10010, 'Grimes', 'Developer', 15000)
-  ];
-}
 
-class _SalesData {
-  _SalesData(this.day, this.sales);
+List<_MilPurchaseData> monthdata = [
+  _MilPurchaseData('01', 35),
+  _MilPurchaseData('02', 28),
+  _MilPurchaseData('03', 34),
+  _MilPurchaseData('04', 32),
+  _MilPurchaseData('05', 40),
+  _MilPurchaseData('06', 40),
+  _MilPurchaseData('07', 80),
+  _MilPurchaseData('08', 80),
+  _MilPurchaseData('09', 80),
+  _MilPurchaseData('10', 80),
+  _MilPurchaseData('11', 35),
+  _MilPurchaseData('12', 28),
+  _MilPurchaseData('13', 34),
+  _MilPurchaseData('14', 32),
+  _MilPurchaseData('15', 40),
+  _MilPurchaseData('16', 40),
+  _MilPurchaseData('17', 80),
+  _MilPurchaseData('18', 80),
+  _MilPurchaseData('19', 80),
+  _MilPurchaseData('20', 80),
+  _MilPurchaseData('21', 35),
+  _MilPurchaseData('22', 28),
+  _MilPurchaseData('23', 34),
+  _MilPurchaseData('24', 32),
+  _MilPurchaseData('25', 40),
+  _MilPurchaseData('26', 40),
+  _MilPurchaseData('27', 80),
+  _MilPurchaseData('28', 80),
+  _MilPurchaseData('29', 80),
+  _MilPurchaseData('30', 80),
+];
+
+
+class _MilPurchaseData {
+  _MilPurchaseData(this.day, this.sales);
 
   final String day;
   final double sales;
@@ -201,43 +281,43 @@ class _SalesData {
 
 /// Custom business object class which contains properties to hold the detailed
 /// information about the employee which will be rendered in datagrid.
-class Employee {
+class MilkPurchaseDet {
   /// Creates the employee class with required details.
-  Employee(this.id, this.name, this.designation, this.salary);
+  MilkPurchaseDet(this.Date, this.name, this.shift, this.qty);
 
   /// Id of an employee.
-  final int id;
+  final String Date;
 
   /// Name of an employee.
   final String name;
 
   /// Designation of an employee.
-  final String designation;
+  final String shift;
 
   /// Salary of an employee.
-  final int salary;
+  final double qty;
 }
 
 /// An object to set the employee collection data source to the datagrid. This
 /// is used to map the employee data to the datagrid widget.
-class EmployeeDataSource extends DataGridSource {
+class MilkPurchaseDataSource extends DataGridSource {
   /// Creates the employee data source class with required details.
-  EmployeeDataSource({required List<Employee> employeeData}) {
-    _employeeData = employeeData
+  MilkPurchaseDataSource({required List<MilkPurchaseDet> milkPurchaseData}) {
+    _milkPurchaseData = milkPurchaseData
         .map<DataGridRow>((e) => DataGridRow(cells: [
-      DataGridCell<int>(columnName: 'Date', value: e.id),
+      DataGridCell<String>(columnName: 'Date', value: e.Date),
       DataGridCell<String>(columnName: 'Name', value: e.name),
-      DataGridCell<String>(columnName: 'Shift', value: e.designation),
-      DataGridCell<int>(columnName: 'Quantity', value: e.salary),
+      DataGridCell<String>(columnName: 'Shift', value: e.shift),
+      DataGridCell<double>(columnName: 'Quantity', value: e.qty),
       // DataGridCell<int>(columnName: 'Fat', value: e.salary),
     ]))
         .toList();
   }
 
-  List<DataGridRow> _employeeData = [];
+  List<DataGridRow> _milkPurchaseData = [];
 
   @override
-  List<DataGridRow> get rows => _employeeData;
+  List<DataGridRow> get rows => _milkPurchaseData;
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {

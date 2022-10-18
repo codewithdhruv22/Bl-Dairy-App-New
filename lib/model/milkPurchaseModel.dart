@@ -28,13 +28,13 @@ class MilkPurchaseModel{
 
 
   Map<String , dynamic> toJson()=> {
-    "Date" : Date,
+    "Date" : Date.toDate(),
     "fat" : fat,
     "milkQty" : milkQty,
     "milkType" : milkType,
     "shift" : shift,
     "snfVal" : snfVal,
-    "SupplierNam" : SupplierName,
+    "SupplierName" : SupplierName,
 "totalAmnt" : totalAmnt,
 
   };

@@ -68,7 +68,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       },
                       decoration: const InputDecoration(
                         contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
                         labelText: 'Name',
                         border: OutlineInputBorder(),
@@ -90,7 +90,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
                         labelText: 'Mobile Number',
                         helperText: 'Without Country Code',
@@ -179,7 +179,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
                         labelText: 'Aadhar Number',
                         border: OutlineInputBorder(),
@@ -199,7 +199,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       },
                       decoration: const InputDecoration(
                         contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
                         labelText: 'Address',
                         border: OutlineInputBorder(),

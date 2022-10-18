@@ -1,13 +1,19 @@
 import 'package:bl_dairy_app/controller/book_order.dart';
+import 'package:bl_dairy_app/controller/milkPurchaseController.dart';
 import 'package:bl_dairy_app/controller/productionController.dart';
+import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:bl_dairy_app/model/productionModel.dart';
 import 'package:bl_dairy_app/view/widgets/main_chart.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../constants/Theme.dart';
 import '../../model/BookOrderModel.dart';
+import '../../model/milkPurchaseModel.dart';
 import '../widgets/Custom_TextFiled.dart';
 import '../widgets/SlideShower.dart';
 import 'detail_report.dart';
@@ -26,6 +32,11 @@ class Dashboard_Scren extends StatefulWidget {
 class _Dashboard_ScrenState extends State<Dashboard_Scren> {
   late List<Order> dashOrderList;
   late List<Production> dashPrdList;
+  //*************************************************************
+   List<MilkPurchaseModel> RecentPurchaseList = [];
+   List<Widget> RecentPurchaseListTiles = [];
+  //*************************************************************
+   double today_milkPrch_liter = 0;
   bool loading = true;
 
   GetOrders() async {
@@ -40,8 +51,44 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
     await ProductionController.fetchProduction().then((production) {
       setState(() {
         dashPrdList = production;
-        loading = false;
+
       });
+    });
+  }
+
+
+  GetMilkPurchaseByDate() async{
+    await MilkPurchaseController.allMilkPurchaseByDate(Timestamp.now()).then((result_list){
+      int i = 0;
+      setState(() {
+        RecentPurchaseList = result_list;
+        GetTodayMilkPurchaseLiter();
+         for (var element in RecentPurchaseList) {
+          RecentPurchaseListTiles.add(ListTile(title: Text(element.SupplierName), trailing: Text(element.milkQty.toStringAsFixed(2)),));
+          i+=1;
+          if(i==3){
+            break;
+          }
+        }
+
+
+
+        loading = false;
+
+      });
+
+
+
+    });
+  }
+
+  GetTodayMilkPurchaseLiter(){
+    RecentPurchaseList.forEach((milkPurchaseEntry) {
+      today_milkPrch_liter +=  milkPurchaseEntry.milkQty;
+    });
+
+    setState(() {
+
     });
   }
 
@@ -53,6 +100,8 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
     super.initState();
     GetOrders();
     ProductionPrinter();
+    GetMilkPurchaseByDate();
+
   }
 
   bool _customTileExpanded = false;
@@ -621,16 +670,16 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                             const Padding(
                               padding: EdgeInsets.fromLTRB(15, 0, 0, 5),
                               child: Text(
-                                "Toaday's Purchase",
+                                "Today's Purchase",
                                 style: TextStyle(
                                   fontSize: 15,
                                 ),
                               ),
                             ),
-                            const Padding(
+                             Padding(
                               padding: EdgeInsets.only(left: 15),
                               child: Text(
-                                "200 Liter",
+                                "${today_milkPrch_liter.toStringAsFixed(2)} Liter",
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold),
@@ -685,7 +734,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                               builder: (context) =>
                                               const DetailReportScreen()));
                                     },
-                                    label: const Text('Detailed Veiw'),
+                                    label: const Text('Detailed View'),
                                     icon: const Icon(
                                         FeatherIcons.maximize2),
                                   ),
@@ -695,14 +744,11 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                 ),
                               ],
                             ),
-                            const ExpansionTile(
+                             ExpansionTile(
                               tilePadding:
                               EdgeInsets.fromLTRB(15, 0, 15, 0),
                               title: Text('Recent Purchase'),
-                              children: <Widget>[
-                                ListTile(
-                                    title: Text('This is tile number 1')),
-                              ],
+                              children: RecentPurchaseListTiles,
                             ),
                           ],
                         ),
