@@ -152,7 +152,7 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                                   label: const Text('Reset'),
                                   style: ElevatedButton.styleFrom(
                                     padding:
-                                        const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                    const EdgeInsets.fromLTRB(0, 4, 0, 4),
                                     backgroundColor: MyColors.red,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
@@ -168,9 +168,9 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                                   onPressed: () {
                                     setState(() {
                                       WaResult = (((double.parse(WaFat.text) *
-                                                  double.parse(
-                                                      WaMilkQty.text)) /
-                                              double.parse(WaReqFat.text)) -
+                                          double.parse(
+                                              WaMilkQty.text)) /
+                                          double.parse(WaReqFat.text)) -
                                           (double.parse(WaMilkQty.text)));
                                     });
                                   },
@@ -282,7 +282,7 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                                 label: const Text('Reset'),
                                 style: ElevatedButton.styleFrom(
                                   padding:
-                                      const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                  const EdgeInsets.fromLTRB(0, 4, 0, 4),
                                   backgroundColor: MyColors.red,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
@@ -298,7 +298,7 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                                 onPressed: () {
                                   setState(() {
                                     CsResult = ((double.parse(CsMilkQty.text) *
-                                            double.parse(CsReqFat.text)) /
+                                        double.parse(CsReqFat.text)) /
                                         double.parse(CsFat.text));
                                   });
                                 },
@@ -590,7 +590,7 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                                   label: const Text('Reset'),
                                   style: ElevatedButton.styleFrom(
                                     padding:
-                                        const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                    const EdgeInsets.fromLTRB(0, 4, 0, 4),
                                     backgroundColor: MyColors.red,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
@@ -637,13 +637,13 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
 
                                     setState(() {
                                       AvResult = ((double.parse(AvFat1.text) *
-                                                  double.parse(AvQty1.text)) +
-                                              (double.parse(AvFat2.text) *
-                                                  double.parse(AvQty2.text)) +
-                                              (double.parse(AvFat3.text) *
-                                                  double.parse(AvQty3.text)) +
-                                              (double.parse(AvFat4.text) *
-                                                  double.parse(AvQty4.text))) /
+                                          double.parse(AvQty1.text)) +
+                                          (double.parse(AvFat2.text) *
+                                              double.parse(AvQty2.text)) +
+                                          (double.parse(AvFat3.text) *
+                                              double.parse(AvQty3.text)) +
+                                          (double.parse(AvFat4.text) *
+                                              double.parse(AvQty4.text))) /
                                           (double.parse(AvQty1.text) +
                                               double.parse(AvQty2.text) +
                                               double.parse(AvQty3.text) +
