@@ -1,3 +1,4 @@
+import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:bl_dairy_app/view/screens/AddMilkSupplier.dart';
 import 'package:bl_dairy_app/view/screens/addNewEmp.dart';
 import 'package:bl_dairy_app/view/screens/milkPurchase.dart';
@@ -46,7 +47,24 @@ class _HomeState extends State<Home> {
         ],
       ),
       appBar: AppBar(
+        backgroundColor: MyColors.primary,
         title: const Text("DAIRY APP"),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.calculate,
+              size: 30,
+            ),
+            tooltip: 'Calculator',
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const UtilitiesScreen()));
+            },
+          ),
+          const SizedBox(
+            width: 15,
+          )
+        ],
       ),
       drawer: Drawer(
         child: Container(
