@@ -81,21 +81,18 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
                   Row(
                     children: const [
                       Text(
                         'Book Order',
-                        style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
                       )
                     ],
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-
-
                   TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -276,23 +273,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                                 border: OutlineInputBorder(),
                                               ),
                                             ),
-                                            // TextFormField(
-                                            //   decoration: const InputDecoration(
-                                            //     contentPadding:
-                                            //         EdgeInsets.symmetric(
-                                            //             vertical: 0,
-                                            //             horizontal: 15),
-                                            //     labelStyle:
-                                            //         TextStyle(fontSize: 14),
-                                            //     labelText: 'Product',
-                                            //     border: OutlineInputBorder(),
-                                            //   ),
-                                            //   controller: bProductNameController,
-                                            //   onChanged: (value) {
-                                            //     BookOrderController.fetchItems(
-                                            //         value);
-                                            //   },
-                                            // ),
                                             const SizedBox(
                                               height: 20,
                                             ),
@@ -326,7 +306,8 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                                 ),
                                                 Expanded(
                                                   child: TextFormField(
-                                                    keyboardType: TextInputType.number,
+                                                    keyboardType:
+                                                        TextInputType.number,
                                                     decoration:
                                                         const InputDecoration(
                                                       contentPadding:
@@ -608,8 +589,6 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-
-
                             // Validate returns true if the form is valid, or false otherwise.
                             if (_formKey.currentState!.validate()) {
                               // If the form is valid, display a snackbar. In the real world,
@@ -620,16 +599,15 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                               );
                             }
                             BookOrderController.addOrder(Order(
-                              CustomerName: fullNameController.text,
-                              MobileNumber: mobileNumberController.text,
-                              Advance: advancePaymentController.text,
-                              Note: remarkController.text,
-                              OrderBookDate: Timestamp.now(),
-                              OrderDelivaryDate: Timestamp.fromDate(date),
-                              items: databaseOrderItem,
-                              ProductionDone: false,
-                              Delivered: false
-                            ));
+                                CustomerName: fullNameController.text,
+                                MobileNumber: mobileNumberController.text,
+                                Advance: advancePaymentController.text,
+                                Note: remarkController.text,
+                                OrderBookDate: Timestamp.now(),
+                                OrderDelivaryDate: Timestamp.fromDate(date),
+                                items: databaseOrderItem,
+                                ProductionDone: false,
+                                Delivered: false));
                             databaseOrderItem.clear();
                             OrderItemLocal.clear();
                             fullNameController.clear();
@@ -642,9 +620,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                             bAmountController.clear();
                             grandTotal = 0;
 
-setState(() {
-
-});
+                            setState(() {});
                           },
                           child: const Text("Book Order"),
                         ),

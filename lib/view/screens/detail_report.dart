@@ -29,7 +29,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Ditailed Veiw'),
+          title: const Text('Detailed View'),
           backgroundColor: MyColors.primary,
           elevation: 0,
           bottom: const TabBar(
@@ -137,13 +137,13 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
 }
 
 List<_SalesData> weekdata = [
-  _SalesData('Sunday', 3500),
-  _SalesData('Monday', 2800),
-  _SalesData('Tuesday', 3400),
-  _SalesData('Wednesday', 3200),
-  _SalesData('Thursday', 4000),
-  _SalesData('Frieday', 4000),
-  _SalesData('Saturday', 80),
+  _SalesData('Sun', 3500),
+  _SalesData('Mon', 2800),
+  _SalesData('Tues', 3400),
+  _SalesData('Wed', 3200),
+  _SalesData('Thu', 4000),
+  _SalesData('Fri', 4000),
+  _SalesData('Sat', 80),
 ];
 List<_SalesData> monthdata = [
   _SalesData('01', 35),
@@ -225,12 +225,12 @@ class EmployeeDataSource extends DataGridSource {
   EmployeeDataSource({required List<Employee> employeeData}) {
     _employeeData = employeeData
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<int>(columnName: 'Date', value: e.id),
-              DataGridCell<String>(columnName: 'Name', value: e.name),
-              DataGridCell<String>(columnName: 'Shift', value: e.designation),
-              DataGridCell<int>(columnName: 'Quantity', value: e.salary),
-              // DataGridCell<int>(columnName: 'Fat', value: e.salary),
-            ]))
+      DataGridCell<int>(columnName: 'Date', value: e.id),
+      DataGridCell<String>(columnName: 'Name', value: e.name),
+      DataGridCell<String>(columnName: 'Shift', value: e.designation),
+      DataGridCell<int>(columnName: 'Quantity', value: e.salary),
+      // DataGridCell<int>(columnName: 'Fat', value: e.salary),
+    ]))
         .toList();
   }
 
@@ -243,11 +243,11 @@ class EmployeeDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
-      return Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
-      );
-    }).toList());
+          return Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(8.0),
+            child: Text(e.value.toString()),
+          );
+        }).toList());
   }
 }

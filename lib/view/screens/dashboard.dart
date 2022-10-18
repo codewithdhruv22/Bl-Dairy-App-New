@@ -621,7 +621,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                   const Padding(
                                     padding: EdgeInsets.fromLTRB(15, 0, 0, 5),
                                     child: Text(
-                                      "Today's Purchase",
+                                      "Toaday's Purchase",
                                       style: TextStyle(
                                         fontSize: 15,
                                       ),
