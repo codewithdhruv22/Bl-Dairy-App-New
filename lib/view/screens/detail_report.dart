@@ -1,6 +1,4 @@
 import 'package:bl_dairy_app/constants/Theme.dart';
-import 'package:bl_dairy_app/controller/milkSupplierController.dart';
-import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -12,20 +10,6 @@ class DetailReportScreen extends StatefulWidget {
   State<DetailReportScreen> createState() => _DetailReportScreenState();
 }
 
-final _formKey = GlobalKey<FormState>();
-final List<MilkSupplierModel> searchList = [];
-const List<String> milktyplist = <String>['Cow', 'Buffalow'];
-const List<String> shiftlist = <String>['Morning', 'Evening'];
-String dropdownValue = milktyplist.first;
-String dropdownValue1 = shiftlist.first;
-
-TextEditingController suppNameEdCont = TextEditingController();
-TextEditingController shiftEdCont = TextEditingController();
-TextEditingController milkTypeEdCont = TextEditingController();
-TextEditingController fatEdCont = TextEditingController();
-TextEditingController snfEdCont = TextEditingController();
-TextEditingController qtyEdCont = TextEditingController();
-
 double totalAmnt = 0.0;
 double fatRate = 0.0;
 List<Employee> employees = <Employee>[];
@@ -36,15 +20,6 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
   void initState() {
     employees = getEmployeeData();
     employeeDataSource = EmployeeDataSource(employeeData: employees);
-    suppNameEdCont.addListener(() async {
-      final String value = suppNameEdCont.value.text;
-      searchList.clear();
-      searchList.addAll(await milkSupplierController.fetchOneLedger(value));
-
-      searchList.toSet().toList();
-
-      // YOUR CODE
-    });
     super.initState();
   }
 
@@ -54,6 +29,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          title: const Text('Ditailed Veiw'),
           backgroundColor: MyColors.primary,
           elevation: 0,
           bottom: const TabBar(
@@ -69,48 +45,58 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
         ),
         body: TabBarView(
           children: [
-            matter(),
-            matter(),
+            matter(data: weekdata),
+            matter(data: monthdata),
           ],
         ),
       ),
     );
   }
 
-  Widget matter() {
+  Widget matter({
+    required List<_SalesData> data,
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const SizedBox(
-          height: 20,
-        ),
         SfCartesianChart(
             enableMultiSelection: false,
             enableSideBySideSeriesPlacement: false,
-            backgroundColor: MyColors.white,
+            backgroundColor: MyColors.primary,
             plotAreaBorderColor: Colors.transparent,
-            primaryXAxis: CategoryAxis(),
+            primaryYAxis: NumericAxis(
+                isVisible: false,
+                majorGridLines: const MajorGridLines(width: 0)),
+            primaryXAxis: CategoryAxis(
+                majorGridLines: const MajorGridLines(width: 0),
+                labelStyle: const TextStyle(color: MyColors.white)),
             // Chart title
 
             // Enable tooltip
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <ChartSeries<_SalesData, String>>[
               ColumnSeries<_SalesData, String>(
-                  color: MyColors.primary,
+                  color: const Color.fromARGB(197, 252, 252, 252),
                   trackBorderWidth: 0,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(5),
                     topRight: Radius.circular(5),
                   ),
                   dataSource: data,
-                  xValueMapper: (_SalesData sales, _) => sales.year,
+                  xValueMapper: (_SalesData sales, _) => sales.day,
                   yValueMapper: (_SalesData sales, _) => sales.sales,
                   name: 'Sales',
                   // Enable data label
                   dataLabelSettings: const DataLabelSettings(isVisible: true))
             ]),
         SfDataGrid(
+          selectionMode: SelectionMode.single,
+          onCellTap: (details) {},
+          onSelectionChanged: (addedRows, removedRows) {
+            print(addedRows.length);
+            print(removedRows);
+          },
           source: employeeDataSource,
           columnWidthMode: ColumnWidthMode.fill,
           columns: <GridColumn>[
@@ -150,14 +136,46 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
   }
 }
 
-List<_SalesData> data = [
-  _SalesData('Sunday', 35),
-  _SalesData('Monday', 28),
-  _SalesData('Tuesday', 34),
-  _SalesData('Wednesday', 32),
-  _SalesData('Thursday', 40),
-  _SalesData('Frieday', 40),
+List<_SalesData> weekdata = [
+  _SalesData('Sunday', 3500),
+  _SalesData('Monday', 2800),
+  _SalesData('Tuesday', 3400),
+  _SalesData('Wednesday', 3200),
+  _SalesData('Thursday', 4000),
+  _SalesData('Frieday', 4000),
   _SalesData('Saturday', 80),
+];
+List<_SalesData> monthdata = [
+  _SalesData('01', 35),
+  _SalesData('02', 28),
+  _SalesData('03', 34),
+  _SalesData('04', 32),
+  _SalesData('05', 40),
+  _SalesData('06', 40),
+  _SalesData('07', 80),
+  _SalesData('08', 80),
+  _SalesData('09', 80),
+  _SalesData('10', 80),
+  _SalesData('11', 35),
+  _SalesData('12', 28),
+  _SalesData('13', 34),
+  _SalesData('14', 32),
+  _SalesData('15', 40),
+  _SalesData('16', 40),
+  _SalesData('17', 80),
+  _SalesData('18', 80),
+  _SalesData('19', 80),
+  _SalesData('20', 80),
+  _SalesData('21', 35),
+  _SalesData('22', 28),
+  _SalesData('23', 34),
+  _SalesData('24', 32),
+  _SalesData('25', 40),
+  _SalesData('26', 40),
+  _SalesData('27', 80),
+  _SalesData('28', 80),
+  _SalesData('29', 80),
+  _SalesData('30', 80),
 ];
 List<Employee> getEmployeeData() {
   return [
@@ -175,9 +193,9 @@ List<Employee> getEmployeeData() {
 }
 
 class _SalesData {
-  _SalesData(this.year, this.sales);
+  _SalesData(this.day, this.sales);
 
-  final String year;
+  final String day;
   final double sales;
 }
 
