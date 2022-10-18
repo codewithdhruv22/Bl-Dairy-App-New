@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/Theme.dart';
 
@@ -22,8 +21,8 @@ final _formKey = GlobalKey<FormState>();
 final List<MilkSupplierModel> searchList = [];
 const List<String> milktyplist = <String>['Cow', 'Buffalow'];
 const List<String> shiftlist = <String>['Morning', 'Evening'];
-String MilkTypeVal = milktyplist.first;
-String ShiftVal = shiftlist.first;
+String dropdownValue = milktyplist.first;
+String dropdownValue1 = shiftlist.first;
 
 TextEditingController suppNameEdCont = TextEditingController();
 TextEditingController shiftEdCont = TextEditingController();
@@ -34,7 +33,7 @@ TextEditingController qtyEdCont = TextEditingController();
 
 double totalAmnt = 0.0;
 double fatRate = 0.0;
-int suppMobNo = 0;
+
 class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
   @override
   void initState() {
@@ -92,9 +91,8 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                           print("FAT RATE IS HERE");
                           print(data!.Name);
                           print(data.FatRate);
-suppNameEdCont.text = data.Name;
+
                           fatRate += double.parse(data.FatRate.toString());
-                          suppMobNo = int.parse(data.Mobile);
                         });
                       },
                       dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -139,11 +137,11 @@ suppNameEdCont.text = data.Name;
                             onChanged: (String? value) {
                               // This is called when the user selects an item.
                               setState(() {
-                                ShiftVal = value!;
-
+                                dropdownValue1 = value!;
+                                shiftEdCont.text = value!;
                               });
                             },
-                            hint: const Text('Choose Shift'),
+                            hint: const Text('Milk Type'),
                             items: shiftlist
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -151,7 +149,7 @@ suppNameEdCont.text = data.Name;
                                 child: Text(value),
                               );
                             }).toList(),
-                            value: ShiftVal,
+                            value: dropdownValue1,
                             icon: const Icon(Icons.arrow_downward),
                             elevation: 16,
                             style: const TextStyle(color: Colors.deepPurple),
@@ -210,8 +208,8 @@ suppNameEdCont.text = data.Name;
                             onChanged: (String? value) {
                               // This is called when the user selects an item.
                               setState(() {
-                                MilkTypeVal = value!;
-
+                                dropdownValue = value!;
+                                milkTypeEdCont.text  = value;
                               });
                             },
                             hint: const Text('Milk Type'),
@@ -222,7 +220,7 @@ suppNameEdCont.text = data.Name;
                                 child: Text(value),
                               );
                             }).toList(),
-                            value: MilkTypeVal,
+                            value: dropdownValue,
                             icon: const Icon(Icons.arrow_downward),
                             elevation: 16,
                             style: const TextStyle(color: Colors.deepPurple),
@@ -336,35 +334,18 @@ suppNameEdCont.text = data.Name;
                             "TOTAL PRICE - ${double.parse((totalAmnt).toStringAsFixed(2))}")),
 
                     ElevatedButton(
-                        onPressed: () async{
+                        onPressed: () {
                           MilkPurchaseController.addMilkPurchase(
                               MilkPurchaseModel(
                             Date: Timestamp.now(),
                             fat: double.parse(fatEdCont.text),
-                            milkQty: double.parse(qtyEdCont.text),
-                            milkType: MilkTypeVal,
-                            shift: ShiftVal,
+                            milkQty: int.parse(qtyEdCont.text),
+                            milkType: milkTypeEdCont.text,
+                            shift: shiftEdCont.text,
                             snfVal: double.parse(snfEdCont.text),
                             SupplierName: suppNameEdCont.text,
                             totalAmnt: totalAmnt,
                           ));
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Milk Purchase Entry Successful')),
-                          );
-
-
-
-                          // whatsapp://send?phone=$contact&text=Hi, I need some help
-                             await launchUrl(Uri.parse("whatsapp://send?phone=+91${suppMobNo}&text=Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
-                                 "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
-                                 "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}"));
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-
-                            const SnackBar( behavior: SnackBarBehavior.floating, content: Text('Sending Whatsapp Message')),
-                          );
-
 
                           fatRate = 0;
                           fatEdCont.clear();
@@ -375,7 +356,9 @@ suppNameEdCont.text = data.Name;
                           suppNameEdCont.clear();
 totalAmnt = 0;
 
-
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Done')),
+                          );
                           setState(() {
 
                           });
