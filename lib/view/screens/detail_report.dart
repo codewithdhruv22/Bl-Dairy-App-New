@@ -138,7 +138,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
                 text: 'This Week',
               ),
               Tab(
-                text: 'Month',
+                text: 'This Month',
               ),
             ],
           ),
