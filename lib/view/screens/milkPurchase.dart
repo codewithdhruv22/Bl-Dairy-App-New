@@ -339,7 +339,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                               MilkPurchaseModel(
                             Date: Timestamp.now(),
                             fat: double.parse(fatEdCont.text),
-                            milkQty: int.parse(qtyEdCont.text),
+                            milkQty: double.parse(qtyEdCont.text),
                             milkType: milkTypeEdCont.text,
                             shift: shiftEdCont.text,
                             snfVal: double.parse(snfEdCont.text),
