@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/Theme.dart';
 
@@ -21,8 +22,8 @@ final _formKey = GlobalKey<FormState>();
 final List<MilkSupplierModel> searchList = [];
 const List<String> milktyplist = <String>['Cow', 'Buffalow'];
 const List<String> shiftlist = <String>['Morning', 'Evening'];
-String dropdownValue = milktyplist.first;
-String dropdownValue1 = shiftlist.first;
+String MilkTypeVal = milktyplist.first;
+String ShiftVal = shiftlist.first;
 
 TextEditingController suppNameEdCont = TextEditingController();
 TextEditingController shiftEdCont = TextEditingController();
@@ -33,7 +34,7 @@ TextEditingController qtyEdCont = TextEditingController();
 
 double totalAmnt = 0.0;
 double fatRate = 0.0;
-
+int suppMobNo = 0;
 class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
   @override
   void initState() {
@@ -91,8 +92,9 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                           print("FAT RATE IS HERE");
                           print(data!.Name);
                           print(data.FatRate);
-
+suppNameEdCont.text = data.Name;
                           fatRate += double.parse(data.FatRate.toString());
+                          suppMobNo = int.parse(data.Mobile);
                         });
                       },
                       dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -137,11 +139,11 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                             onChanged: (String? value) {
                               // This is called when the user selects an item.
                               setState(() {
-                                dropdownValue1 = value!;
-                                shiftEdCont.text = value!;
+                                ShiftVal = value!;
+
                               });
                             },
-                            hint: const Text('Milk Type'),
+                            hint: const Text('Choose Shift'),
                             items: shiftlist
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -149,7 +151,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                                 child: Text(value),
                               );
                             }).toList(),
-                            value: dropdownValue1,
+                            value: ShiftVal,
                             icon: const Icon(Icons.arrow_downward),
                             elevation: 16,
                             style: const TextStyle(color: Colors.deepPurple),
@@ -208,8 +210,8 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                             onChanged: (String? value) {
                               // This is called when the user selects an item.
                               setState(() {
-                                dropdownValue = value!;
-                                milkTypeEdCont.text  = value;
+                                MilkTypeVal = value!;
+
                               });
                             },
                             hint: const Text('Milk Type'),
@@ -220,7 +222,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                                 child: Text(value),
                               );
                             }).toList(),
-                            value: dropdownValue,
+                            value: MilkTypeVal,
                             icon: const Icon(Icons.arrow_downward),
                             elevation: 16,
                             style: const TextStyle(color: Colors.deepPurple),
@@ -334,18 +336,35 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                             "TOTAL PRICE - ${double.parse((totalAmnt).toStringAsFixed(2))}")),
 
                     ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async{
                           MilkPurchaseController.addMilkPurchase(
                               MilkPurchaseModel(
                             Date: Timestamp.now(),
                             fat: double.parse(fatEdCont.text),
-                            milkQty: int.parse(qtyEdCont.text),
-                            milkType: milkTypeEdCont.text,
-                            shift: shiftEdCont.text,
+                            milkQty: double.parse(qtyEdCont.text),
+                            milkType: MilkTypeVal,
+                            shift: ShiftVal,
                             snfVal: double.parse(snfEdCont.text),
                             SupplierName: suppNameEdCont.text,
                             totalAmnt: totalAmnt,
                           ));
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Milk Purchase Entry Successful')),
+                          );
+
+
+
+                          // whatsapp://send?phone=$contact&text=Hi, I need some help
+                             await launchUrl(Uri.parse("whatsapp://send?phone=+91${suppMobNo}&text=Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
+                                 "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
+                                 "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}"));
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+
+                            const SnackBar( behavior: SnackBarBehavior.floating, content: Text('Sending Whatsapp Message')),
+                          );
+
 
                           fatRate = 0;
                           fatEdCont.clear();
@@ -356,9 +375,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                           suppNameEdCont.clear();
 totalAmnt = 0;
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Done')),
-                          );
+
                           setState(() {
 
                           });
