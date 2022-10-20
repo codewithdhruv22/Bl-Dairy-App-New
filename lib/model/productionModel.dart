@@ -71,8 +71,8 @@ class Production{
 class RawMaterialModel{
 
   String Rm;
-  int RmQty;
-  int RmRate;
+  double RmQty;
+  double RmRate;
 
   RawMaterialModel(
   {

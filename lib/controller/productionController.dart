@@ -66,7 +66,20 @@ return all_Production;
 
     return result_items;
   }
-  
+
+
+  static Future<String> fetchRmPrice(String rmName) async{
+    double rmPrice = 0.0;
+    await FirebaseFirestore.instance.collection("ProductList").where("ProductCategory" , isEqualTo:"Raw Material" ).get().then((all_rm) {
+      all_rm.docs.forEach((Rm) {
+        if(Rm["ProductName"].toString().toLowerCase() == rmName.toLowerCase()){
+          rmPrice = Rm["Price"] ?? 0.0;
+        }
+      });
+    });
+
+    return rmPrice.toString();
+  }
   
   
 

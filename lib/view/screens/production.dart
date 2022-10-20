@@ -32,7 +32,9 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
 
   List<RawMaterialModel> rawMaterialNeeded = [];
   final searchList = [];
-  int grandTotal = 0;
+  final RmsearchList = [];
+  double grandTotal = 0;
+
   DateTime TodayDate = DateTime.now();
 
   var myFormat = DateFormat('d-MM-yyyy');
@@ -59,11 +61,31 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
       searchList.clear();
       searchList.addAll(await ProductionController.fetchFinishGoodsName(value));
       searchList.toSet().toList();
+
       setState(() {
+
         print(searchList);
       });
       // YOUR CODE
     });
+
+
+
+
+    RmController.addListener(() async {
+      String FetchedRmRate  = "0";
+      final String value = RmController.value.text;
+      RmsearchList.clear();
+      RmsearchList.addAll(await ProductionController.fetchRmName(value));
+      RmsearchList.toSet().toList();
+      FetchedRmRate  = await ProductionController.fetchRmPrice(value);
+      setState(() {
+        RmRateController.text = FetchedRmRate;
+        print(searchList);
+      });
+      // YOUR CODE
+    });
+
     super.initState();
   }
 
@@ -84,7 +106,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                     Text(
                       'Production',
                       style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -142,7 +164,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                   controller: PrdQuantityController,
                   decoration: const InputDecoration(
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                    EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                     labelStyle: TextStyle(fontSize: 14),
                     labelText: 'Quantity',
                     border: OutlineInputBorder(),
@@ -198,10 +220,13 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                           20, 15, 20, 0),
                                       child: Column(
                                         children: [
-                                          TextField(
+                                          TextFieldSearch(
+                                            initialList: RmsearchList,
+                                            itemsInView: 10,
+                                            label: 'Raw Material Name',
                                             controller: RmController,
                                             decoration: const InputDecoration(
-                                              labelText: 'Raw Material Name',
+                                              labelText: "Raw Material Name",
                                               border: OutlineInputBorder(),
                                             ),
                                           ),
@@ -228,35 +253,35 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             children: [
                                               Expanded(
                                                 child: TextField(
                                                   controller: RmQtyController,
                                                   keyboardType:
-                                                      TextInputType.number,
+                                                  TextInputType.number,
                                                   decoration:
-                                                      const InputDecoration(
+                                                  const InputDecoration(
                                                     contentPadding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 0,
-                                                            horizontal: 15),
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 15),
                                                     labelStyle:
-                                                        TextStyle(fontSize: 14),
+                                                    TextStyle(fontSize: 14),
                                                     labelText: 'Quantity',
                                                     border:
-                                                        OutlineInputBorder(),
+                                                    OutlineInputBorder(),
                                                   ),
                                                   onChanged: (value) {
                                                     setState(() {
                                                       RmAmntController
-                                                          .text = (int.parse(
-                                                                  RmQtyController
-                                                                      .text) *
-                                                              int.parse(
-                                                                  RmRateController
-                                                                      .text))
-                                                          .toString();
+                                                          .text = (double.parse(
+                                                          RmQtyController
+                                                              .text) *
+                                                          double.parse(
+                                                              RmRateController
+                                                                  .text))
+                                                          .toStringAsFixed(2);
                                                     });
                                                   },
                                                   // controller: bQuantityController,
@@ -271,27 +296,27 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                   onChanged: (value) {
                                                     setState(() {
                                                       RmAmntController
-                                                          .text = (int.parse(
-                                                                  RmQtyController
-                                                                      .text) *
-                                                              int.parse(
-                                                                  RmRateController
-                                                                      .text))
-                                                          .toString();
+                                                          .text = (double.parse(
+                                                          RmQtyController
+                                                              .text) *
+                                                          double.parse(
+                                                              RmRateController
+                                                                  .text))
+                                                          .toStringAsFixed(2);
                                                     });
                                                   },
                                                   keyboardType: TextInputType.number,
                                                   decoration:
-                                                      const InputDecoration(
+                                                  const InputDecoration(
                                                     contentPadding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 0,
-                                                            horizontal: 15),
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 15),
                                                     labelStyle:
-                                                        TextStyle(fontSize: 14),
+                                                    TextStyle(fontSize: 14),
                                                     labelText: 'Rate',
                                                     border:
-                                                        OutlineInputBorder(),
+                                                    OutlineInputBorder(),
                                                   ),
                                                   // onChanged: (value) {
                                                   //   setState(() {
@@ -316,16 +341,16 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                   controller: RmAmntController,
                                                   keyboardType: TextInputType.number,
                                                   decoration:
-                                                      const InputDecoration(
+                                                  const InputDecoration(
                                                     contentPadding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 0,
-                                                            horizontal: 15),
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 15),
                                                     labelStyle:
-                                                        TextStyle(fontSize: 14),
+                                                    TextStyle(fontSize: 14),
                                                     labelText: 'Amount',
                                                     border:
-                                                        OutlineInputBorder(),
+                                                    OutlineInputBorder(),
                                                   ),
                                                   // onChanged: (value) {
                                                   //   setState(() {
@@ -350,7 +375,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                           //
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             children: [
                                               Expanded(
                                                 child: SizedBox(
@@ -361,6 +386,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                       RmController.clear();
                                                       RmRateController.clear();
                                                       RmQtyController.clear();
+                                                      RmAmntController.clear();
                                                       Navigator.pop(context);
                                                     },
                                                     icon: const Icon(
@@ -373,12 +399,12 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                       padding: const EdgeInsets
                                                           .fromLTRB(0, 4, 0, 4),
                                                       backgroundColor:
-                                                          MyColors.red,
+                                                      MyColors.red,
                                                       shape:
-                                                          RoundedRectangleBorder(
+                                                      RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
+                                                        BorderRadius
+                                                            .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -393,26 +419,27 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                   width: size.width * 0.4,
                                                   child: ElevatedButton.icon(
                                                     onPressed: () {
-                                                      grandTotal += int.parse(
-                                                              RmQtyController
-                                                                  .text) *
-                                                          int.parse(
+                                                      grandTotal += double.parse(
+                                                          RmQtyController
+                                                              .text) *
+                                                          double.parse(
                                                               RmRateController
                                                                   .text);
                                                       rawMaterialNeeded.add(
                                                           RawMaterialModel(
                                                               Rm: RmController
                                                                   .text,
-                                                              RmQty: int.parse(
+                                                              RmQty: double.parse(
                                                                   RmQtyController
                                                                       .text),
-                                                              RmRate: int.parse(
+                                                              RmRate: double.parse(
                                                                   RmRateController
                                                                       .text)));
 
                                                       RmController.clear();
                                                       RmRateController.clear();
                                                       RmQtyController.clear();
+                                                      RmAmntController.clear();
                                                       setState(() {});
                                                       Navigator.pop(context);
                                                     },
@@ -424,12 +451,12 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       backgroundColor:
-                                                          MyColors.green,
+                                                      MyColors.green,
                                                       shape:
-                                                          RoundedRectangleBorder(
+                                                      RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
+                                                        BorderRadius
+                                                            .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -530,7 +557,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                       const Text('Grand Total'),
                       const Text('--'),
                       const Text('--'),
-                      Text(grandTotal.toString()),
+                      Text(grandTotal.toStringAsFixed(2)),
                     ],
                   ),
                 ),
