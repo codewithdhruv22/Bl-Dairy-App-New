@@ -43,7 +43,7 @@ class Production{
 
       rawMaterialFromSnap.add(
 
-          RawMaterialModel(Rm: rawMaterial["Rm"], RmQty: rawMaterial["RmQty"], RmRate: rawMaterial["RmRate"])
+          RawMaterialModel(Rm: rawMaterial["Rm"], RmQty: double.parse(rawMaterial["RmQty"].toString()), RmRate: double.parse(rawMaterial["RmRate"].toString()))
 
 
 
@@ -97,8 +97,8 @@ class RawMaterialModel{
     var snapshot = snap.data() as Map<String , dynamic>;
     return RawMaterialModel(
       Rm : snapshot["Rm"] ?? "NO DATA",
-      RmRate : snapshot["RmRate"] ?? "NO DATA",
-      RmQty : snapshot["RmQty"],
+      RmRate : snapshot["RmRate"] ?? 0.0,
+      RmQty : snapshot["RmQty"] ?? 0.0,
 
 
     );
