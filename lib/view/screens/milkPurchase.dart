@@ -7,15 +7,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/Theme.dart';
 
-class MilkPurchaseScreen extends StatefulWidget {
+class MilkPurchaseScreen extends ConsumerStatefulWidget {
   const MilkPurchaseScreen({Key? key}) : super(key: key);
 
   @override
-  State<MilkPurchaseScreen> createState() => _MilkPurchaseScreenState();
+  ConsumerState<MilkPurchaseScreen> createState() => _MilkPurchaseScreenState();
 }
 
 final _formKey = GlobalKey<FormState>();
@@ -32,10 +33,37 @@ TextEditingController fatEdCont = TextEditingController();
 TextEditingController snfEdCont = TextEditingController();
 TextEditingController qtyEdCont = TextEditingController();
 
+
+
+
+
+
+
+
 double totalAmnt = 0.0;
 double fatRate = 0.0;
 int suppMobNo = 0;
-class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
+class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
+
+
+
+  final _dateProvider = StateProvider<DateTime>((ref) {
+    return DateTime.now();
+  });
+  void _selectDate(WidgetRef ref) async {
+    final DateTime? newDate = await showDatePicker(
+      context: context,
+      initialDate: ref.watch(_dateProvider),
+      
+      lastDate: DateTime(2101),
+      helpText: 'Select a date', firstDate: DateTime(2018),
+    );
+    if (newDate != null) {
+      ref.read(_dateProvider.notifier).state = newDate;
+    }
+  }
+
+
   @override
   void initState() {
     suppNameEdCont.addListener(() async {
@@ -52,6 +80,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final date = ref.watch(_dateProvider);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -174,7 +203,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                           width: 12,
                         ),
                         InkWell(
-                          // onTap: () => _selectDate(ref),
+                          onTap: () => _selectDate(ref),
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.4,
                             child: Container(
@@ -185,9 +214,9 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                                 ),
                                 borderRadius: BorderRadius.circular(4),
                               ),
-                              child: const Center(
+                              child:  Center(
                                 child: Text(
-                                  "Today's Date",
+                                  "${date.day}-${date.month}-${date.year}",
                                   // "${date.day}-${date.month}-${date.year}",
                                   style: TextStyle(
                                     fontSize: 16,
@@ -349,7 +378,7 @@ class _MilkPurchaseScreenState extends State<MilkPurchaseScreen> {
                         onPressed: () async{
                           MilkPurchaseController.addMilkPurchase(
                               MilkPurchaseModel(
-                                Date: Timestamp.now(),
+                                Date: Timestamp.fromDate(date),
                                 fat: double.parse(fatEdCont.text),
                                 milkQty: double.parse(qtyEdCont.text),
                                 milkType: MilkTypeVal,

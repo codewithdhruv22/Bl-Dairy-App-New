@@ -1,14 +1,11 @@
 import 'package:bl_dairy_app/model/milkPurchaseModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:intl/intl.dart';
-
 class MilkPurchaseController{
 
 
   static addMilkPurchase(MilkPurchaseModel milkPurchaseModel) async{
     await FirebaseFirestore.instance.collection("NewMilkPurchase").add(
-      milkPurchaseModel.toJson()
+        milkPurchaseModel.toJson()
     ).then((_){
       print("MILK PURCHASED");
     });
@@ -30,20 +27,20 @@ class MilkPurchaseController{
   }
 
 
-static Future<List<MilkPurchaseModel>>allMilkPurchaseByDate(Timestamp timestamp) async{
+  static Future<List<MilkPurchaseModel>>allMilkPurchaseByDate(Timestamp timestamp) async{
     print(Timestamp.now().toDate());
-  List<MilkPurchaseModel> result_milkPurchase = [];
+    List<MilkPurchaseModel> result_milkPurchase = [];
     await FirebaseFirestore.instance.collection("NewMilkPurchase").orderBy("Date", descending: true).get().then((
         querSnapshots) {
       querSnapshots.docs.forEach((order) {
         print("DECISION");
-int day = MilkPurchaseModel.fromSnap(order).Date.toDate().day;
-int month = MilkPurchaseModel.fromSnap(order).Date.toDate().month;
-int year = MilkPurchaseModel.fromSnap(order).Date.toDate().year;
+        int day = MilkPurchaseModel.fromSnap(order).Date.toDate().day;
+        int month = MilkPurchaseModel.fromSnap(order).Date.toDate().month;
+        int year = MilkPurchaseModel.fromSnap(order).Date.toDate().year;
 
-int queryDay = timestamp.toDate().day;
-int queryMonth = timestamp.toDate().month;
-int queryYear = timestamp.toDate().year;
+        int queryDay = timestamp.toDate().day;
+        int queryMonth = timestamp.toDate().month;
+        int queryYear = timestamp.toDate().year;
 
         if(day == queryDay && month == queryMonth && year == queryYear){
           result_milkPurchase.add(MilkPurchaseModel.fromSnap(order));
@@ -54,7 +51,7 @@ int queryYear = timestamp.toDate().year;
     print("OPERATION SUCCESSFULl");
     print(result_milkPurchase);
     return result_milkPurchase;
-}
+  }
 
 
 
@@ -95,6 +92,36 @@ int queryYear = timestamp.toDate().year;
     return result_milkPurchase;
 
   }
+
+
+
+
+
+
+  static Future<List<MilkPurchaseModel>> allMilkPurchaseByThisMonth() async{
+
+    print("CALLING");
+    List<MilkPurchaseModel> result_milkPurchase = [];
+    await FirebaseFirestore.instance.collection("NewMilkPurchase").orderBy("Date" , descending: true).get().then((
+        querSnapshots) {
+     int currentMonth = DateTime.now().month;
+     int currentYear = DateTime.now().year;
+      for (var item in querSnapshots.docs) {
+        final purchaseDate = MilkPurchaseModel.fromSnap(item).Date.toDate();
+        if(purchaseDate.month == currentMonth && purchaseDate.year == currentYear){
+          result_milkPurchase.add(MilkPurchaseModel.fromSnap(item));
+        }
+
+
+
+      }
+    });
+
+    print(result_milkPurchase);
+    return result_milkPurchase;
+
+  }
+
 
 
   static Future<List<String>> fetchSearchMilkPurchase(String query) async {

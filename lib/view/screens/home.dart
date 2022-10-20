@@ -1,7 +1,9 @@
 import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:bl_dairy_app/view/screens/AddMilkSupplier.dart';
+import 'package:bl_dairy_app/view/screens/RmPruchase.dart';
 import 'package:bl_dairy_app/view/screens/addNewEmp.dart';
 import 'package:bl_dairy_app/view/screens/milkPurchase.dart';
+import 'package:bl_dairy_app/view/screens/payment.dart';
 import 'package:bl_dairy_app/view/screens/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -122,6 +124,24 @@ class _HomeState extends State<Home> {
                         builder: (context) => const UtilitiesScreen()));
                   },
                 ),
+                ListTile(
+                  title: const Text("Payment"),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const PaymentScreen()));
+                  },
+                ),
+
+
+                ListTile(
+                  title: const Text("Purchase Raw Material"),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const RmPurchaseScreen()));
+                  },
+                ),
+
+
               ],
             ),
           ),

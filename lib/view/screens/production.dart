@@ -544,7 +544,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                       ProductionController.addProduction(Production(
                           FinishGoods: PrdNameController.text,
                           FinishGoodsQty: int.parse(PrdQuantityController.text),
-                          ProductionDate: Timestamp.now(),
+                          ProductionDate: Timestamp.fromDate(date),
                           rawMaterialList: rawMaterialNeeded));
 
                       PrdNameController.clear();

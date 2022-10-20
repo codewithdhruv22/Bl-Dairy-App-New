@@ -1,7 +1,9 @@
 import 'package:bl_dairy_app/controller/book_order.dart';
 import 'package:bl_dairy_app/controller/milkPurchaseController.dart';
+import 'package:bl_dairy_app/controller/paymentController.dart';
 import 'package:bl_dairy_app/controller/productionController.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
+import 'package:bl_dairy_app/model/paymentModel.dart';
 import 'package:bl_dairy_app/model/productionModel.dart';
 import 'package:bl_dairy_app/view/widgets/main_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,11 +34,14 @@ class Dashboard_Scren extends StatefulWidget {
 class _Dashboard_ScrenState extends State<Dashboard_Scren> {
   late List<Order> dashOrderList;
   late List<Production> dashPrdList;
+  late List<PaymentModel> paymentList;
   //*************************************************************
    List<MilkPurchaseModel> RecentPurchaseList = [];
    List<Widget> RecentPurchaseListTiles = [];
   //*************************************************************
    double today_milkPrch_liter = 0;
+   double cowMilk = 0;
+   double buffaloMilk = 0;
   bool loading = true;
 
   GetOrders() async {
@@ -73,7 +78,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
 
 
 
-        loading = false;
+      
 
       });
 
@@ -85,10 +90,25 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
   GetTodayMilkPurchaseLiter(){
     RecentPurchaseList.forEach((milkPurchaseEntry) {
       today_milkPrch_liter +=  milkPurchaseEntry.milkQty;
+      if(milkPurchaseEntry.milkType == "Cow"){
+        cowMilk += milkPurchaseEntry.milkQty;
+      }else{
+        buffaloMilk += milkPurchaseEntry.milkQty;
+      };
     });
 
     setState(() {
 
+    });
+  }
+  
+  
+  GetPaymentDet() async{
+    await PaymentController.fetchAllPayments().then((allPayment) {
+      setState(() {
+        paymentList = allPayment;
+        loading = false;
+      });
     });
   }
 
@@ -101,6 +121,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
     GetOrders();
     ProductionPrinter();
     GetMilkPurchaseByDate();
+    GetPaymentDet();
 
   }
 
@@ -685,6 +706,14 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(left :15.0),
+                              child: Text("Cow Milk - ${cowMilk.toStringAsFixed(2)}"),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left :15.0),
+                              child: Text("Buffalo Milk - ${buffaloMilk.toStringAsFixed(2)}"),
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -759,6 +788,70 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                   const SizedBox(
                     height: 20,
                   ),
+
+
+                  Container(
+                    child: Material(
+                      elevation: 4,
+                      borderRadius:
+                      const BorderRadius.all(Radius.circular(12)),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(12))),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                  ExpansionTile(
+                    tilePadding:
+                    const EdgeInsets.fromLTRB(2, 0, 2, 0),
+                    title: const Text('Payment Details'),
+                    // trailing: Icon(
+                    //   _customTileExpanded
+                    //       ? FeatherIcons.chevronUp
+                    //       : FeatherIcons.chevronDown,
+                    // ),
+                    children: [
+                      SizedBox(
+                        height: 300,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: paymentList.length,
+                            itemBuilder: (context, index) {
+                              final payment =
+                              paymentList[index];
+
+                              return ListTile(
+                                title: Text(
+                                    payment.SupplierName),
+                                leading: const Text("->"),
+                                trailing: Text(
+                                    payment.PaidAmount.toStringAsFixed(2)),
+                              );
+                            }),
+                      ),
+                    ],
+                    onExpansionChanged: (bool expanded) {
+                      setState(
+                              () => _customTileExpanded = expanded);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+
+
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+
                   Container(
                     child: Material(
                       elevation: 4,

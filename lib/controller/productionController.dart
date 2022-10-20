@@ -27,10 +27,13 @@ return all_Production;
   static Future<List<String>> fetchFinishGoodsName(String query) async {
     print("CALLING");
     List<String> result_items = [];
-    await FirebaseFirestore.instance.collection("ProductList").where("ProductName" , isGreaterThanOrEqualTo: query).get().then((
+    await FirebaseFirestore.instance.collection("ProductList").get().then((
         querSnapshots) {
       querSnapshots.docs.forEach((item) {
-        result_items.add(item["ProductName"]);
+        if(item["ProductName"].toString().toLowerCase().contains(query.toLowerCase())){
+
+        result_items.add(item["ProductName"].toString().toLowerCase());
+        }
 
 
       });
@@ -38,5 +41,35 @@ return all_Production;
 
     return result_items;
   }
+
+
+
+
+  static Future<List<String>> fetchRmName(String query) async {
+    print("CALLING");
+    List<String> result_items = [];
+    await FirebaseFirestore.instance.collection("ProductList").get().then((
+        querSnapshots) {
+      querSnapshots.docs.forEach((item) {
+        if(item["ProductCategory"] == "Raw Material"){
+
+          if(item["ProductName"].toString().toLowerCase().contains(query.toLowerCase())){
+
+            result_items.add(item["ProductName"].toString().toLowerCase());
+          }
+        }
+ 
+
+
+      });
+    });
+
+    return result_items;
+  }
+  
+  
+  
+
+
 
 }
