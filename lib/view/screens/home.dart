@@ -131,8 +131,6 @@ class _HomeState extends State<Home> {
                         builder: (context) => const PaymentScreen()));
                   },
                 ),
-
-
                 ListTile(
                   title: const Text("Purchase Raw Material"),
                   onTap: () {
@@ -140,8 +138,6 @@ class _HomeState extends State<Home> {
                         builder: (context) => const RmPurchaseScreen()));
                   },
                 ),
-
-
               ],
             ),
           ),

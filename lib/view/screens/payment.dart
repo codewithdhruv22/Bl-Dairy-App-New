@@ -46,6 +46,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 },
                 dropdownDecoratorProps: const DropDownDecoratorProps(
                   dropdownSearchDecoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                    labelStyle: TextStyle(fontSize: 14),
                     labelText: "Select Supplier",
                     border: OutlineInputBorder(),
                   ),
