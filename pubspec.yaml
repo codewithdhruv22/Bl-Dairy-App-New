@@ -55,6 +55,9 @@ dependencies:
   rename: any
   share_plus: ^5.0.0
   syncfusion_flutter_datagrid: ^20.3.49
+  whatsapp_share2: ^2.0.2
+  image_picker: ^0.8.6
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:

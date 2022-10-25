@@ -6,11 +6,16 @@ import 'package:bl_dairy_app/view/screens/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:whatsapp_share2/whatsapp_share2.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../constants/Theme.dart';
+import 'package:get/get.dart';
 
 class MilkPurchaseScreen extends ConsumerStatefulWidget {
   const MilkPurchaseScreen({Key? key}) : super(key: key);
@@ -33,19 +38,12 @@ TextEditingController fatEdCont = TextEditingController();
 TextEditingController snfEdCont = TextEditingController();
 TextEditingController qtyEdCont = TextEditingController();
 
-
-
-
-
-
-
-
 double totalAmnt = 0.0;
 double fatRate = 0.0;
 int suppMobNo = 0;
+
 class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
-
-
+  File? _image;
 
   final _dateProvider = StateProvider<DateTime>((ref) {
     return DateTime.now();
@@ -54,15 +52,14 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
     final DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: ref.watch(_dateProvider),
-      
       lastDate: DateTime(2101),
-      helpText: 'Select a date', firstDate: DateTime(2018),
+      helpText: 'Select a date',
+      firstDate: DateTime(2018),
     );
     if (newDate != null) {
       ref.read(_dateProvider.notifier).state = newDate;
     }
   }
-
 
   @override
   void initState() {
@@ -76,6 +73,43 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
       // YOUR CODE
     });
     super.initState();
+  }
+
+  Future<void> isInstalled() async {
+    await WhatsappShare.isInstalled(package: Package.whatsapp).then((value) {
+      Get.snackbar("Whtsapp Installation Infor", value.toString());
+    });
+  }
+
+  Future<void> shareFile(String text, String phoneNo) async {
+    await getImage();
+    Directory? directory = await getExternalStorageDirectory();
+    print('${directory!.path} / ${_image!.path}');
+    await isInstalled();
+    await WhatsappShare.shareFile(
+      text: text,
+      phone: '91$phoneNo',
+      filePath: ["${_image!.path}"],
+    );
+  }
+
+  Future getImage() async {
+    try {
+      final ImagePicker _picker = ImagePicker();
+      XFile? _pickedFile =
+          (await _picker.pickImage(source: ImageSource.camera));
+
+      if (_pickedFile != null) {
+        // getting a directory path for saving
+        final directory = await getExternalStorageDirectory();
+
+        // copy the file to a new path
+        await _pickedFile.saveTo('${directory!.path}/image1.png');
+        _image = File('${directory.path}/image1.png');
+      }
+    } catch (er) {
+      print(er);
+    }
   }
 
   @override
@@ -128,7 +162,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                       },
                       dropdownDecoratorProps: const DropDownDecoratorProps(
                         dropdownSearchDecoration:
-                        InputDecoration(labelText: "Select Supplier"),
+                            InputDecoration(labelText: "Select Supplier"),
                       ),
                     ),
 
@@ -169,7 +203,6 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                               // This is called when the user selects an item.
                               setState(() {
                                 ShiftVal = value!;
-
                               });
                             },
                             hint: const Text('Choose Shift'),
@@ -214,7 +247,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                 ),
                                 borderRadius: BorderRadius.circular(4),
                               ),
-                              child:  Center(
+                              child: Center(
                                 child: Text(
                                   "${date.day}-${date.month}-${date.year}",
                                   // "${date.day}-${date.month}-${date.year}",
@@ -240,7 +273,6 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                               // This is called when the user selects an item.
                               setState(() {
                                 MilkTypeVal = value!;
-
                               });
                             },
                             hint: const Text('Milk Type'),
@@ -277,15 +309,12 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                           child: TextFormField(
                             keyboardType: TextInputType.number,
                             controller: fatEdCont,
-                            onChanged: (value){
-
+                            onChanged: (value) {
                               setState(() {
                                 totalAmnt = double.parse(fatEdCont.text) *
                                     fatRate *
                                     double.parse(qtyEdCont.text);
                               });
-
-
                             },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -369,41 +398,50 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                     const SizedBox(
                       height: 10,
                     ),
+
                     Align(
                         alignment: Alignment.topLeft,
                         child: Text(
                             "TOTAL PRICE - ${double.parse((totalAmnt).toStringAsFixed(2))}")),
 
                     ElevatedButton(
-                        onPressed: () async{
+                        onPressed: () async {
                           MilkPurchaseController.addMilkPurchase(
                               MilkPurchaseModel(
-                                Date: Timestamp.fromDate(date),
-                                fat: double.parse(fatEdCont.text),
-                                milkQty: double.parse(qtyEdCont.text),
-                                milkType: MilkTypeVal,
-                                shift: ShiftVal,
-                                snfVal: double.parse(snfEdCont.text),
-                                SupplierName: suppNameEdCont.text,
-                                totalAmnt: totalAmnt,
-                              ));
+                            Date: Timestamp.fromDate(date),
+                            fat: double.parse(fatEdCont.text),
+                            milkQty: double.parse(qtyEdCont.text),
+                            milkType: MilkTypeVal,
+                            shift: ShiftVal,
+                            snfVal: double.parse(snfEdCont.text),
+                            SupplierName: suppNameEdCont.text,
+                            totalAmnt: totalAmnt,
+                          ));
 
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Milk Purchase Entry Successful')),
+                            const SnackBar(
+                                content:
+                                    Text('Milk Purchase Entry Successful')),
                           );
-
-
 
                           // whatsapp://send?phone=$contact&text=Hi, I need some help
-                          await launchUrl(Uri.parse("whatsapp://send?phone=+91${suppMobNo}&text=Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
-                              "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
-                              "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}"));
+                          // await launchUrl(Uri.parse(
+                          //     "whatsapp://send?phone=+91${suppMobNo}&text=Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
+                          //     "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
+                          //     "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}"));
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-
-                            const SnackBar( behavior: SnackBarBehavior.floating, content: Text('Sending Whatsapp Message')),
+                          shareFile(
+                            "Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
+                            "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
+                            "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}",
+                            suppMobNo.toString(),
                           );
 
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: Text('Sending Whatsapp Message')),
+                          );
 
                           fatRate = 0;
                           fatEdCont.clear();
@@ -414,10 +452,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                           suppNameEdCont.clear();
                           totalAmnt = 0;
 
-
-                          setState(() {
-
-                          });
+                          setState(() {});
                         },
                         child: const Text("Complete"))
                   ],
