@@ -1,12 +1,13 @@
 import 'package:bl_dairy_app/controller/milkSupplierController.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
+import 'package:bl_dairy_app/view/screens/milkPurchase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 import '../../constants/Theme.dart';
 
 class AddMilkSupplierScreen extends StatefulWidget {
-  const AddMilkSupplierScreen({Key? key}) : super(key: key);
+  AddMilkSupplierScreen({Key? key}) : super(key: key);
 
   @override
   State<AddMilkSupplierScreen> createState() => _AddMilkSupplierScreenState();
@@ -14,17 +15,29 @@ class AddMilkSupplierScreen extends StatefulWidget {
 
 // variable added by ashvin
 final _formKey = GlobalKey<FormState>();
-const List<String> list = <String>['Cow', 'Buffalow'];
+List<String> list = <String>['Cow', 'Buffalow'];
 String dropdownValue = list.first;
+String RateType = "Fat Rate Based";
 
 TextEditingController NameEditingController = TextEditingController();
 TextEditingController MobNOEditingController = TextEditingController();
 TextEditingController MilkTypeEditingController = TextEditingController();
-TextEditingController FatRateEditingController = TextEditingController();
+TextEditingController RateEditingController = TextEditingController();
+TextEditingController SNFDedPriceEditingController = TextEditingController();
+TextEditingController FatDedPriceEditingController = TextEditingController();
 TextEditingController AdhrNoEditingController = TextEditingController();
 TextEditingController AdressEditingController = TextEditingController();
 
 class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
+  String? RateLabelText = "Basic Rate";
+
+  @override
+  void initState() {
+    super.initState();
+    SNFDedPriceEditingController.text = "0";
+    FatDedPriceEditingController.text = "0";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,19 +54,19 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         FeatherIcons.arrowLeft,
                         color: MyColors.black,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'Add Supplier',
                       style: TextStyle(fontSize: 15),
                     ),
                   ]),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -66,16 +79,16 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding:
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
                         labelText: 'Name',
                         border: OutlineInputBorder(),
                       ),
                       // controller: fullNameController,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     TextFormField(
@@ -88,9 +101,9 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       },
                       maxLength: 10,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding:
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
                         labelText: 'Mobile Number',
                         helperText: 'Without Country Code',
@@ -98,7 +111,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       ),
                       // controller: mobileNumberController,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     Row(
@@ -106,7 +119,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
                           child: DropdownButton<String>(
-                            hint: const Text('Milk Type'),
+                            hint: Text('Milk Type'),
                             items: list
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -115,9 +128,9 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                               );
                             }).toList(),
                             value: dropdownValue,
-                            icon: const Icon(Icons.arrow_downward),
+                            icon: Icon(Icons.arrow_downward),
                             elevation: 16,
-                            style: const TextStyle(color: Colors.deepPurple),
+                            style: TextStyle(color: Colors.deepPurple),
                             underline: Container(
                               height: 2,
                               color: Colors.deepPurpleAccent,
@@ -125,11 +138,21 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             onChanged: (String? value) {
                               // This is called when the user selects an item.
                               setState(() {
+                                print(value);
                                 dropdownValue = value!;
+                                if (value == "Buffalow") {
+                                
+                                    RateLabelText = "Fat Rate";
+                                  
+                                 
+                                }else{
+                                    RateLabelText = "Basic Rate";
+                                }
+
                                 MilkTypeEditingController.text = value;
                               });
                             },
-                            // decoration: const InputDecoration(
+                            // decoration:  InputDecoration(
                             //   contentPadding:
                             //       EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                             //   labelStyle: TextStyle(fontSize: 14),
@@ -139,12 +162,12 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             // controller: advancePaymentController,
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 10,
                         ),
                         Expanded(
                           child: TextFormField(
-                            controller: FatRateEditingController,
+                            controller: RateEditingController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Fill Rate';
@@ -152,11 +175,11 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                               return null;
                             },
                             keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 15),
                               labelStyle: TextStyle(fontSize: 14),
-                              labelText: 'Fat Rate',
+                              labelText: RateLabelText,
                               border: OutlineInputBorder(),
                             ),
                             // controller: advancePaymentController,
@@ -164,7 +187,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     TextFormField(
@@ -177,16 +200,16 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       },
                       maxLength: 12,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding:
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
                         labelText: 'Aadhar Number',
                         border: OutlineInputBorder(),
                       ),
                       // controller: mobileNumberController,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     TextFormField(
@@ -197,16 +220,64 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding:
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
                         labelText: 'Address',
                         border: OutlineInputBorder(),
                       ),
                       // controller: remarkController,
                     ),
-                    const SizedBox(
+                        SizedBox(
+                      height: 12,
+                    ),
+                    dropdownValue == "Cow"
+                        ? Column(
+                            children: [
+                              TextFormField(
+                                controller: SNFDedPriceEditingController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Fill Rate';
+                                  }
+                                  return null;
+                                },
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 0, horizontal: 15),
+                                  labelStyle: TextStyle(fontSize: 14),
+                                  labelText: "SNF Deduction",
+                                  border: OutlineInputBorder(),
+                                ),
+                                // controller: advancePaymentController,
+                              ),
+                                  SizedBox(
+                                height: 12,
+                              ),
+                              TextFormField(
+                                controller: FatDedPriceEditingController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Fill Rate';
+                                  }
+                                  return null;
+                                },
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 0, horizontal: 15),
+                                  labelStyle: TextStyle(fontSize: 14),
+                                  labelText: "Fat Deduction",
+                                  border: OutlineInputBorder(),
+                                ),
+                                // controller: advancePaymentController,
+                              )
+                            ],
+                          )
+                        : Container(),
+                    SizedBox(
                       height: 12,
                     ),
                     ElevatedButton(
@@ -215,15 +286,19 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             // If the form is valid, display a snackbar. In the real world,
                             // you'd often call a server or save the information in a database.
 
-                            milkSupplierController.addNewMilkSupplier(
-                                MilkSupplierModel(
-                                    FatRate: FatRateEditingController.text,
-                                    MilkType: MilkTypeEditingController.text,
-                                    Mobile: MobNOEditingController.text,
-                                    Name: NameEditingController.text,
-                                    Village: AdressEditingController.text));
+                            milkSupplierController
+                                .addNewMilkSupplier(MilkSupplierModel(
+                              Rate: RateEditingController.text,
+                              MilkType: MilkTypeEditingController.text,
+                              Mobile: MobNOEditingController.text,
+                              Name: NameEditingController.text,
+                              Village: AdressEditingController.text,
+                              isCowMilk: dropdownValue == "Cow" ? true : false,
+                              SNFDedPrice: SNFDedPriceEditingController.text,
+                              FatDedPrice: FatDedPriceEditingController.text,
+                            ));
 
-                            FatRateEditingController.clear();
+                            RateEditingController.clear();
                             MilkTypeEditingController.clear();
                             MobNOEditingController.clear();
                             NameEditingController.clear();
@@ -231,11 +306,11 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             AdhrNoEditingController.clear();
 
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Supplier Added')),
+                              SnackBar(content: Text('Supplier Added')),
                             );
                           }
                         },
-                        child: const Text("Add Ledger"))
+                        child: Text("Add Ledger"))
                   ],
                 ),
               ),

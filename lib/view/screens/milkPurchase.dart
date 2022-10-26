@@ -2,6 +2,7 @@ import 'package:bl_dairy_app/controller/milkPurchaseController.dart';
 import 'package:bl_dairy_app/controller/milkSupplierController.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:bl_dairy_app/model/milkPurchaseModel.dart';
+import 'package:bl_dairy_app/view/screens/AddMilkSupplier.dart';
 import 'package:bl_dairy_app/view/screens/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -39,8 +40,14 @@ TextEditingController snfEdCont = TextEditingController();
 TextEditingController qtyEdCont = TextEditingController();
 
 double totalAmnt = 0.0;
-double fatRate = 0.0;
+double Rate = 0.0;
+double SNFDedPrice = 0.0;
+double FatDedPrice = 0.0;
+
 int suppMobNo = 0;
+
+double fatThreshold = 3.5;
+double snfThreshold = 8.5;
 
 class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
   File? _image;
@@ -154,10 +161,47 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                         setState(() {
                           print("FAT RATE IS HERE");
                           print(data!.Name);
-                          print(data.FatRate);
+                          print(data.Rate);
+                          print(data.SNFDedPrice);
+                          print(data.FatDedPrice);
                           suppNameEdCont.text = data.Name;
-                          fatRate += double.parse(data.FatRate.toString());
+
+                          SNFDedPrice = double.parse(data.SNFDedPrice);
+                          FatDedPrice = double.parse(data.FatDedPrice);
+                          Rate = double.parse(data.Rate.toString());
                           suppMobNo = int.parse(data.Mobile);
+
+
+
+
+
+                          totalAmnt = MilkTypeVal == "Cow"
+                                    ? SNFDedPrice.toString() == "0.0"
+                                        ? Rate * double.parse(qtyEdCont.text)
+                                        : 
+                                        
+                                        
+                                        
+                                        
+                                     
+                                     
+                                       (Rate +
+                                          ((double.parse(snfEdCont.text) -
+                                                  snfThreshold) *
+                                              SNFDedPrice *
+                                              10) +
+                                          ((double.parse(fatEdCont.text) -
+                                                  fatThreshold) *
+                                              FatDedPrice *
+                                              10)) *
+                                      double.parse(qtyEdCont.text)
+                                    : double.parse(fatEdCont.text) *
+                                        Rate *
+                                        double.parse(qtyEdCont.text);
+
+
+
+                                        
                         });
                       },
                       dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -310,10 +354,28 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                             keyboardType: TextInputType.number,
                             controller: fatEdCont,
                             onChanged: (value) {
+                              print("SNF VALUE");
+                              print(SNFDedPrice);
+                              print(SNFDedPrice.toString() == "0");
                               setState(() {
-                                totalAmnt = double.parse(fatEdCont.text) *
-                                    fatRate *
-                                    double.parse(qtyEdCont.text);
+                                totalAmnt = MilkTypeVal == "Cow"
+                                    ? SNFDedPrice.toString() == "0.0"
+                                        ? Rate * double.parse(qtyEdCont.text)
+                                        : 
+                                     
+                                       (Rate +
+                                                ((double.parse(snfEdCont.text) -
+                                                        snfThreshold) *
+                                                    SNFDedPrice *
+                                                    10) +
+                                                ((double.parse(fatEdCont.text) -
+                                                        fatThreshold ) *
+                                                    FatDedPrice *
+                                                    10)) *
+                                            double.parse(qtyEdCont.text)
+                                    : double.parse(fatEdCont.text) *
+                                        Rate *
+                                        double.parse(qtyEdCont.text);
                               });
                             },
                             validator: (value) {
@@ -344,6 +406,31 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
                           child: TextFormField(
+                            onChanged: (value) {
+                              print(SNFDedPrice.toString() == "0");
+                              setState(() {
+                                totalAmnt = MilkTypeVal == "Cow"
+                                    ? SNFDedPrice.toString() == "0.0"
+                                        ? Rate * double.parse(qtyEdCont.text)
+                                        : 
+                                  
+                                    
+                                       (Rate +
+                                                ((double.parse(snfEdCont.text) -
+                                                        snfThreshold) *
+                                                    SNFDedPrice *
+                                                    10) +
+                                                ((double.parse(fatEdCont.text) -
+                                                        fatThreshold) *
+                                                    FatDedPrice *
+                                                    10)) *
+                                            double.parse(qtyEdCont.text)
+                                    : double.parse(fatEdCont.text) *
+                                        Rate *
+                                        double.parse(qtyEdCont.text);
+                              });
+                            },
+
                             keyboardType: TextInputType.number,
                             controller: snfEdCont,
                             validator: (value) {
@@ -370,10 +457,27 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                           child: TextFormField(
                             controller: qtyEdCont,
                             onChanged: (value) {
+                              print(SNFDedPrice.toString() == "0");
                               setState(() {
-                                totalAmnt = double.parse(fatEdCont.text) *
-                                    fatRate *
-                                    double.parse(qtyEdCont.text);
+                                totalAmnt = MilkTypeVal == "Cow"
+                                    ? SNFDedPrice.toString() == "0.0"
+                                        ? Rate * double.parse(qtyEdCont.text)
+                                        : 
+                                   
+                                     
+                                       (Rate +
+                                                ((double.parse(snfEdCont.text) -
+                                                        snfThreshold) *
+                                                    SNFDedPrice *
+                                                    10) +
+                                                ((double.parse(fatEdCont.text) -
+                                                        fatThreshold) *
+                                                    FatDedPrice *
+                                                    10)) *
+                                            double.parse(qtyEdCont.text)
+                                    : double.parse(fatEdCont.text) *
+                                        Rate *
+                                        double.parse(qtyEdCont.text);
                               });
                             },
                             keyboardType: TextInputType.number,
@@ -443,7 +547,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                 content: Text('Sending Whatsapp Message')),
                           );
 
-                          fatRate = 0;
+                          Rate = 0;
                           fatEdCont.clear();
                           qtyEdCont.clear();
                           milkTypeEdCont.clear();

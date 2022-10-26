@@ -6,26 +6,39 @@ class MilkSupplierModel{
   String Mobile;
   String Village;
   String MilkType;
-  String FatRate;
+  String Rate;
+  bool isCowMilk;
+  String SNFDedPrice;
+  String FatDedPrice;
+ 
 
 
   MilkSupplierModel(
   {
-    required this.FatRate,
+    required this.Rate,
     required this.MilkType,
     required this.Mobile,
     required this.Name,
-    required this.Village
+    required this.Village,
+    required this.isCowMilk,
+    required this.SNFDedPrice,
+    required this.FatDedPrice,
+
 }
       );
 
 
   Map<String , dynamic> toJson()=> {
-    "FatRate" : FatRate,
+    "Rate" : Rate,
     "MilkType": MilkType,
     "Mobile" : Mobile,
     "Name" : Name,
     "Village" : Village,
+    "isCowMilk" : isCowMilk,
+    "SNFDedPrice" : SNFDedPrice,
+    "FatDedPrice" : FatDedPrice,
+
+  
 
   };
 
@@ -37,11 +50,16 @@ class MilkSupplierModel{
   static MilkSupplierModel fromSnap(DocumentSnapshot snap){
     var snapshot = snap.data() as Map<String , dynamic>;
     return MilkSupplierModel(
-      FatRate : snapshot["FatRate"] ?? "NO DATA",
+      Rate : snapshot["Rate"] ?? "NO DATA",
       MilkType : snapshot["MilkType"] ?? "NO DATA",
       Mobile : snapshot["Mobile"] ?? "NO DATA",
       Name : snapshot["Name"] ?? "NO DATA",
       Village : snapshot["Village"] ?? "NO DATA",
+      SNFDedPrice : snapshot["SNFDedPrice"] ?? "0",
+      FatDedPrice : snapshot["FatDedPrice"] ?? "0",
+      isCowMilk : snapshot["Village"] == 1 ? true : false ,
+      
+
 
     );
   }

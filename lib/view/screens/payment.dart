@@ -40,7 +40,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   setState(() {
                     print("FAT RATE IS HERE");
                     print(data!.Name);
-                    print(data.FatRate);
+                    print(data.Rate);
                     suppNameEdCont.text = data.Name;
                   });
                 },

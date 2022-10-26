@@ -29,7 +29,7 @@ class _JournalScreenState extends State<JournalScreen> {
               setState(() {
 whoPaidSuppName  = data!.Name;
                 print(data.Name);
-                print(data.FatRate);
+                print(data.Rate);
 
               });
             },
@@ -49,7 +49,7 @@ whoPaidSuppName  = data!.Name;
               setState(() {
                  toPaidSuppName = data!.Name;
                 print(data.Name);
-                print(data.FatRate);
+                print(data.Rate);
 
               });
             },
