@@ -51,7 +51,7 @@ double snfThreshold = 8.5;
 
 class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
   File? _image;
-
+  String chooseImgFrom = 'Camera';
   final _dateProvider = StateProvider<DateTime>((ref) {
     return DateTime.now();
   });
@@ -88,8 +88,8 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
     });
   }
 
-  Future<void> shareFile(String text, String phoneNo) async {
-    await getImage();
+  Future<void> shareFile(String text, String phoneNo, String imgSource) async {
+    await getImage(imgSource);
     Directory? directory = await getExternalStorageDirectory();
     print('${directory!.path} / ${_image!.path}');
     await isInstalled();
@@ -100,11 +100,12 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
     );
   }
 
-  Future getImage() async {
+  Future getImage(String imgSrc) async {
     try {
       final ImagePicker _picker = ImagePicker();
-      XFile? _pickedFile =
-          (await _picker.pickImage(source: ImageSource.camera));
+      XFile? _pickedFile = (await _picker.pickImage(
+          source:
+              imgSrc == "Camera" ? ImageSource.camera : ImageSource.gallery));
 
       if (_pickedFile != null) {
         // getting a directory path for saving
@@ -171,21 +172,10 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                           Rate = double.parse(data.Rate.toString());
                           suppMobNo = int.parse(data.Mobile);
 
-
-
-
-
                           totalAmnt = MilkTypeVal == "Cow"
-                                    ? SNFDedPrice.toString() == "0.0"
-                                        ? Rate * double.parse(qtyEdCont.text)
-                                        : 
-                                        
-                                        
-                                        
-                                        
-                                     
-                                     
-                                       (Rate +
+                              ? SNFDedPrice.toString() == "0.0"
+                                  ? Rate * double.parse(qtyEdCont.text)
+                                  : (Rate +
                                           ((double.parse(snfEdCont.text) -
                                                   snfThreshold) *
                                               SNFDedPrice *
@@ -195,13 +185,9 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                               FatDedPrice *
                                               10)) *
                                       double.parse(qtyEdCont.text)
-                                    : double.parse(fatEdCont.text) *
-                                        Rate *
-                                        double.parse(qtyEdCont.text);
-
-
-
-                                        
+                              : double.parse(fatEdCont.text) *
+                                  Rate *
+                                  double.parse(qtyEdCont.text);
                         });
                       },
                       dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -361,15 +347,13 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                 totalAmnt = MilkTypeVal == "Cow"
                                     ? SNFDedPrice.toString() == "0.0"
                                         ? Rate * double.parse(qtyEdCont.text)
-                                        : 
-                                     
-                                       (Rate +
+                                        : (Rate +
                                                 ((double.parse(snfEdCont.text) -
                                                         snfThreshold) *
                                                     SNFDedPrice *
                                                     10) +
                                                 ((double.parse(fatEdCont.text) -
-                                                        fatThreshold ) *
+                                                        fatThreshold) *
                                                     FatDedPrice *
                                                     10)) *
                                             double.parse(qtyEdCont.text)
@@ -412,10 +396,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                 totalAmnt = MilkTypeVal == "Cow"
                                     ? SNFDedPrice.toString() == "0.0"
                                         ? Rate * double.parse(qtyEdCont.text)
-                                        : 
-                                  
-                                    
-                                       (Rate +
+                                        : (Rate +
                                                 ((double.parse(snfEdCont.text) -
                                                         snfThreshold) *
                                                     SNFDedPrice *
@@ -462,10 +443,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                 totalAmnt = MilkTypeVal == "Cow"
                                     ? SNFDedPrice.toString() == "0.0"
                                         ? Rate * double.parse(qtyEdCont.text)
-                                        : 
-                                   
-                                     
-                                       (Rate +
+                                        : (Rate +
                                                 ((double.parse(snfEdCont.text) -
                                                         snfThreshold) *
                                                     SNFDedPrice *
@@ -534,12 +512,48 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                           //     "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
                           //     "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}"));
 
-                          shareFile(
-                            "Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
-                            "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
-                            "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}",
-                            suppMobNo.toString(),
+                          await showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text("Upload Image Of Fat Machine"),
+                              content: const Text("Choose Image From :- "),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      chooseImgFrom = 'Camera';
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    
+                                    padding: const EdgeInsets.all(14),
+                                    child: const Text("Camera"),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      chooseImgFrom = 'Gallery';
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    
+                                    padding: const EdgeInsets.all(14),
+                                    child: const Text("Gallery"),
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
+
+                          shareFile(
+                              "Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
+                              "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
+                              "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}",
+                              suppMobNo.toString(),
+                              chooseImgFrom);
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
