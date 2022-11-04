@@ -1,4 +1,5 @@
 import 'package:bl_dairy_app/model/RmModel.dart';
+import 'package:bl_dairy_app/model/productionModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RmController{
@@ -12,12 +13,9 @@ class RmController{
         // print(Rm["ProductCategory"]);
         if(Rm["ProductCategory"] == "Raw Material") {
           print(" I AM HERE");
-          print(RmModel
-              .fromSnap(Rm)
-              .RmName
-              .toLowerCase() );
-          print(rmModel.RmName.toLowerCase());
-          if (Rm["ProductName"] == rmModel.RmName.toLowerCase()) {
+          print(Rm["ProductName"]);
+
+          if (Rm["ProductName"].toString().toLowerCase() == rmModel.RmName.toLowerCase()) {
             print("PRODUCT FOUND");
             print(Rm.id);
             await FirebaseFirestore.instance.collection("ProductList").doc(
