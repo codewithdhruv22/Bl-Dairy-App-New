@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Production{
   String FinishGoods;
-  int FinishGoodsQty;
+  double FinishGoodsQty;
   Timestamp ProductionDate;
   List<RawMaterialModel> rawMaterialList;
 
@@ -25,7 +25,7 @@ class Production{
 
     return {
       "FinishGoods" : FinishGoods,
-      "FinishGoodsQty": FinishGoodsQty as int,
+      "FinishGoodsQty": FinishGoodsQty as double,
       "ProductionDate" : ProductionDate,
       "RmList" : DataBaseRawMaterial
 
@@ -53,7 +53,7 @@ class Production{
     return Production(
 
       FinishGoods : snapshot["FinishGoods"] ?? "NO DATA",
-      FinishGoodsQty : int.parse(snapshot["FinishGoodsQty"].toString()) ,
+      FinishGoodsQty : double.parse(snapshot["FinishGoodsQty"].toString()) ,
       ProductionDate : snapshot["ProductionDate"],
 
 

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class milkSupplierController{
 
   static addNewMilkSupplier(MilkSupplierModel milkSupplierModel) async{
-await FirebaseFirestore.instance.collection("NewMilkSupplier").add(milkSupplierModel.toJson());
+await FirebaseFirestore.instance.collection("NewMilkSupplier2").add(milkSupplierModel.toJson());
 print("NEW MILK SUPPLIER ADDED SUCCESSFULLY");
   }
 
@@ -12,7 +12,7 @@ print("NEW MILK SUPPLIER ADDED SUCCESSFULLY");
 
  static Future<List<MilkSupplierModel>> fetchAllLedger() async{
     List<MilkSupplierModel> all_ms = [];
-    await FirebaseFirestore.instance.collection("NewMilkSupplier").get().then((querySnapshots){
+    await FirebaseFirestore.instance.collection("NewMilkSupplier2").get().then((querySnapshots){
       querySnapshots.docs.forEach((order) {
         all_ms.add(MilkSupplierModel.fromSnap(order));
       });
@@ -27,7 +27,7 @@ print("NEW MILK SUPPLIER ADDED SUCCESSFULLY");
   static Future<List<MilkSupplierModel>> fetchOneLedger(String ledgerQuery) async{
 
     List<MilkSupplierModel> result_ms = [];
-    await FirebaseFirestore.instance.collection("NewMilkSupplier").where("Name" ,isGreaterThanOrEqualTo: ledgerQuery).get().then((querySnapshots){
+    await FirebaseFirestore.instance.collection("NewMilkSupplier2").where("Name" ,isGreaterThanOrEqualTo: ledgerQuery).get().then((querySnapshots){
       querySnapshots.docs.forEach((order) {
         result_ms.add(MilkSupplierModel.fromSnap(order));
       });

@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:bl_dairy_app/model/milkPurchaseModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -19,18 +23,11 @@ class DetailReportScreen extends StatefulWidget {
 double totalAmnt = 0.0;
 double fatRate = 0.0;
 
-
 List<MilkPurchaseDet> employees = <MilkPurchaseDet>[];
 late MilkPurchaseDataSource milkPurchaseDataSourceWEEK;
 late MilkPurchaseDataSource milkPurchaseDataSourceMONTH;
 
-
-
-
-
-
 class _DetailReportScreenState extends State<DetailReportScreen> {
-
   var myFormat = DateFormat('d-MM-yyyy');
   late List<MilkPurchaseModel> weekList;
   late List<MilkPurchaseModel> monthList;
@@ -42,7 +39,6 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
   double thuQty = 0;
   double friQty = 0;
   double satQty = 0;
-
 
   double day1 = 0;
   double day2 = 0;
@@ -79,7 +75,6 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
   List<_MilPurchaseData> weekdata = [];
   List<_MilPurchaseData> monthdata = [];
 
-
   List<MilkPurchaseDet> WeekDataSource = [];
   List<MilkPurchaseDet> MonthDataSource = [];
   //   return [
@@ -96,34 +91,113 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
   //   ];
   // }
 
+  Generate_csv(bool isWeekData) async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Exporting Please Wait...'),
+      ),
+    );
 
-  GetWeekData() async{
-    await MilkPurchaseController.allMilkPurchaseByThisWeek().then((result_list){
+    List<List<dynamic>> itemRow = [
+      [
+        "S.No.",
+        "Date",
+        "Milk Type",
+        "Qunatity",
+        "Shift",
+        "Fat",
+        "SNF",
+        "Total Ammount"
+      ],
+    ];
+
+    isWeekData
+        ? await MilkPurchaseController.allMilkPurchaseByThisWeek()
+            .then((resultList) {
+            int i = 0;
+            for (var element in resultList) {
+              itemRow.add([
+                i,
+                myFormat.format(element.Date.toDate()),
+                element.SupplierName,
+                element.milkType,
+                element.milkQty,
+                element.shift,
+                element.fat,
+                element.snfVal,
+                element.totalAmnt
+              ]);
+            }
+          })
+        : await MilkPurchaseController.allMilkPurchaseByThisMonth()
+            .then((resultList) {
+            int i = 0;
+            for (var element in resultList) {
+              itemRow.add([
+                i,
+                myFormat.format(element.Date.toDate()),
+                element.SupplierName,
+                element.milkType,
+                element.milkQty,
+                element.shift,
+                element.fat,
+                element.snfVal,
+                element.totalAmnt
+              ]);
+            }
+          });
+
+    String csvData = const ListToCsvConverter().convert(itemRow);
+    DateTime date = DateTime.now();
+    String formattedDate = DateFormat("MM-dd-yyyy-HH-mm-ss").format(date);
+    print(isWeekData);
+    Directory generalDownloadDir = Directory("storage/emulated/0/Download");
+    final File file = isWeekData
+        ? await (File(
+                "${generalDownloadDir.path}/week_report_$formattedDate.csv")
+            .create())
+        : await (File(
+                "${generalDownloadDir.path}/month_report_$formattedDate.csv")
+            .create());
+
+    await file.writeAsString(csvData);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('week_report_$formattedDate.csv Exported'),
+        action: SnackBarAction(
+            label: "Open",
+            onPressed: () {
+              OpenFile.open("${generalDownloadDir.path}/");
+            }),
+      ),
+    );
+  }
+
+  GetWeekData() async {
+    await MilkPurchaseController.allMilkPurchaseByThisWeek().then((resultList) {
       setState(() {
-        weekList = result_list;
-        result_list.forEach((MilkPurchased) {
+        weekList = resultList;
+        resultList.forEach((MilkPurchased) {
           int weekDayNum = MilkPurchased.Date.toDate().weekday;
-          if(weekDayNum == 1){
+          if (weekDayNum == 1) {
             monQty += MilkPurchased.milkQty;
-          }else if(weekDayNum == 2){
+          } else if (weekDayNum == 2) {
             tueQty += MilkPurchased.milkQty;
-          }else if(weekDayNum == 3){
+          } else if (weekDayNum == 3) {
             wedQty += MilkPurchased.milkQty;
-          }else if(weekDayNum == 4){
+          } else if (weekDayNum == 4) {
             thuQty += MilkPurchased.milkQty;
-          }else if(weekDayNum == 5){
+          } else if (weekDayNum == 5) {
             friQty += MilkPurchased.milkQty;
-          }else if(weekDayNum == 6){
+          } else if (weekDayNum == 6) {
             satQty += MilkPurchased.milkQty;
-          }else{
+          } else {
             sunQty += MilkPurchased.milkQty;
           }
         });
 
-
-
         weekdata = [
-
           _MilPurchaseData('Mon', monQty),
           _MilPurchaseData('Tues', tueQty),
           _MilPurchaseData('Wed', wedQty),
@@ -133,181 +207,148 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
           _MilPurchaseData('Sun', sunQty),
         ];
 
-        result_list.forEach((element) {
-          WeekDataSource.add(MilkPurchaseDet( myFormat.format(element.Date.toDate()), element.SupplierName, element.shift, element.milkQty));
+        resultList.forEach((element) {
+          WeekDataSource.add(MilkPurchaseDet(
+              myFormat.format(element.Date.toDate()),
+              element.SupplierName,
+              element.shift,
+              element.milkQty));
         });
 
-
-
-        milkPurchaseDataSourceWEEK = MilkPurchaseDataSource( milkPurchaseData: WeekDataSource);
-
-
-
+        milkPurchaseDataSourceWEEK =
+            MilkPurchaseDataSource(milkPurchaseData: WeekDataSource);
       });
     });
-
-
   }
 
+  GetMonthData() async {
+    print("GEETING");
+    await MilkPurchaseController.allMilkPurchaseByThisMonth()
+        .then((resultList) {
+      setState(() {
+        monthList = resultList;
+        resultList.forEach((MilkPurchased) {
+          int DateNum = MilkPurchased.Date.toDate().day;
 
-GetMonthData() async{
-    await MilkPurchaseController.allMilkPurchaseByThisMonth().then((result_list) {
-setState(() {
-  monthList = result_list;
-  result_list.forEach((MilkPurchased) {
-    int DateNum = MilkPurchased.Date.toDate().day;
+          if (DateNum == 1) {
+            day1 += MilkPurchased.milkQty;
+          } else if (DateNum == 2) {
+            day2 += MilkPurchased.milkQty;
+          } else if (DateNum == 3) {
+            day3 += MilkPurchased.milkQty;
+          } else if (DateNum == 4) {
+            day4 += MilkPurchased.milkQty;
+          } else if (DateNum == 5) {
+            day5 += MilkPurchased.milkQty;
+          } else if (DateNum == 6) {
+            day6 += MilkPurchased.milkQty;
+          } else if (DateNum == 7) {
+            day7 += MilkPurchased.milkQty;
+          } else if (DateNum == 8) {
+            day8 += MilkPurchased.milkQty;
+          } else if (DateNum == 9) {
+            day9 += MilkPurchased.milkQty;
+          } else if (DateNum == 10) {
+            day10 += MilkPurchased.milkQty;
+          } else if (DateNum == 11) {
+            day11 += MilkPurchased.milkQty;
+          } else if (DateNum == 12) {
+            day12 += MilkPurchased.milkQty;
+          } else if (DateNum == 13) {
+            day13 += MilkPurchased.milkQty;
+          } else if (DateNum == 14) {
+            day14 += MilkPurchased.milkQty;
+          } else if (DateNum == 15) {
+            day15 += MilkPurchased.milkQty;
+          } else if (DateNum == 16) {
+            day16 += MilkPurchased.milkQty;
+          } else if (DateNum == 17) {
+            day17 += MilkPurchased.milkQty;
+          } else if (DateNum == 18) {
+            day18 += MilkPurchased.milkQty;
+          } else if (DateNum == 19) {
+            day19 += MilkPurchased.milkQty;
+          } else if (DateNum == 20) {
+            day20 += MilkPurchased.milkQty;
+          } else if (DateNum == 21) {
+            day21 += MilkPurchased.milkQty;
+          } else if (DateNum == 22) {
+            day22 += MilkPurchased.milkQty;
+          } else if (DateNum == 23) {
+            day23 += MilkPurchased.milkQty;
+          } else if (DateNum == 24) {
+            day24 += MilkPurchased.milkQty;
+          } else if (DateNum == 25) {
+            day25 += MilkPurchased.milkQty;
+          } else if (DateNum == 26) {
+            day26 += MilkPurchased.milkQty;
+          } else if (DateNum == 27) {
+            day27 += MilkPurchased.milkQty;
+          } else if (DateNum == 28) {
+            day28 += MilkPurchased.milkQty;
+          } else if (DateNum == 29) {
+            day29 += MilkPurchased.milkQty;
+          } else if (DateNum == 30) {
+            day30 += MilkPurchased.milkQty;
+          } else {
+            day31 += MilkPurchased.milkQty;
+          }
+        });
 
+        monthdata = [
+          _MilPurchaseData('1', day1),
+          _MilPurchaseData('2', day2),
+          _MilPurchaseData('3', day3),
+          _MilPurchaseData('4', day4),
+          _MilPurchaseData('5', day5),
+          _MilPurchaseData('6', day6),
+          _MilPurchaseData('7', day7),
+          _MilPurchaseData('8', day8),
+          _MilPurchaseData('9', day9),
+          _MilPurchaseData('10', day10),
+          _MilPurchaseData('11', day11),
+          _MilPurchaseData('12', day12),
+          _MilPurchaseData('13', day13),
+          _MilPurchaseData('14', day14),
+          _MilPurchaseData('15', day15),
+          _MilPurchaseData('16', day16),
+          _MilPurchaseData('17', day17),
+          _MilPurchaseData('18', day18),
+          _MilPurchaseData('19', day19),
+          _MilPurchaseData('20', day20),
+          _MilPurchaseData('21', day21),
+          _MilPurchaseData('22', day22),
+          _MilPurchaseData('23', day23),
+          _MilPurchaseData('24', day24),
+          _MilPurchaseData('25', day25),
+          _MilPurchaseData('26', day26),
+          _MilPurchaseData('27', day27),
+          _MilPurchaseData('28', day28),
+          _MilPurchaseData('29', day29),
+          _MilPurchaseData('30', day30),
+          _MilPurchaseData('31', day31),
+        ];
 
-    if(DateNum == 1){
-      day1 += MilkPurchased.milkQty;
-    }else if(DateNum == 2){
-      day2 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 3){
-      day3 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 4){
-      day4 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 5){
-      day5 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 6){
-      day6 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 7){
-      day7 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 8){
-      day8 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 9){
-      day9 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 10){
-      day10 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 11){
-      day11 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 12){
-      day12 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 13){
-      day13 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 14){
-      day14 += MilkPurchased.milkQty;
-    }else if(DateNum == 15){
-      day15 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 16){
-      day16 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 17){
-      day17 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 18){
-      day18 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 19){
-      day19 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 20){
-      day20 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 21){
-      day21 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 22){
-      day22 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 23){
-      day23 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 24){
-      day24 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 25){
-      day25 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 26){
-      day26 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 27){
-      day27 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 28){
-      day28 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 29){
-      day29 += MilkPurchased.milkQty;
-    }
-    else if(DateNum == 30){
-      day30 += MilkPurchased.milkQty;
-    }else{
-      day31 +=  MilkPurchased.milkQty;
-    }
-  });
+        resultList.forEach((element) {
+          MonthDataSource.add(MilkPurchaseDet(
+              myFormat.format(element.Date.toDate()),
+              element.SupplierName,
+              element.shift,
+              element.milkQty));
+        });
 
-
-
-
-  monthdata = [
-    _MilPurchaseData('1', day1),
-    _MilPurchaseData('2', day2),
-    _MilPurchaseData('3', day3),
-    _MilPurchaseData('4', day4),
-    _MilPurchaseData('5', day5),
-    _MilPurchaseData('6', day6),
-    _MilPurchaseData('7', day7),
-    _MilPurchaseData('8', day8),
-    _MilPurchaseData('9', day9),
-    _MilPurchaseData('10', day10),
-    _MilPurchaseData('11', day11),
-    _MilPurchaseData('12', day12),
-    _MilPurchaseData('13', day13),
-    _MilPurchaseData('14', day14),
-    _MilPurchaseData('15', day15),
-    _MilPurchaseData('16', day16),
-    _MilPurchaseData('17', day17),
-    _MilPurchaseData('18', day18),
-    _MilPurchaseData('19', day19),
-    _MilPurchaseData('20', day20),
-    _MilPurchaseData('21', day21),
-    _MilPurchaseData('22', day22),
-    _MilPurchaseData('23', day23),
-    _MilPurchaseData('24', day24),
-    _MilPurchaseData('25', day25),
-    _MilPurchaseData('26', day26),
-    _MilPurchaseData('27', day27),
-    _MilPurchaseData('28', day28),
-    _MilPurchaseData('29', day29),
-    _MilPurchaseData('30', day30),
-    _MilPurchaseData('31', day31),
-  ];
-
-
-  result_list.forEach((element) {
-    MonthDataSource.add(MilkPurchaseDet( myFormat.format(element.Date.toDate()), element.SupplierName, element.shift, element.milkQty));
-  });
-
-
-  milkPurchaseDataSourceMONTH = MilkPurchaseDataSource( milkPurchaseData: MonthDataSource);
-});
+        milkPurchaseDataSourceMONTH =
+            MilkPurchaseDataSource(milkPurchaseData: MonthDataSource);
+      });
     });
-}
-
-
+  }
 
   @override
   void initState() {
-
     GetWeekData();
     GetMonthData();
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -331,18 +372,24 @@ setState(() {
         ),
         body: TabBarView(
           children: [
-            matter(data: weekdata , dataSource: milkPurchaseDataSourceWEEK),
-            matter(data: monthdata , dataSource: milkPurchaseDataSourceMONTH),
+            matter(
+                data: weekdata,
+                dataSource: milkPurchaseDataSourceWEEK,
+                isWeekData: true),
+            matter(
+                data: monthdata,
+                dataSource: milkPurchaseDataSourceMONTH,
+                isWeekData: false),
           ],
         ),
       ),
     );
   }
 
-  Widget matter({
-    required List<_MilPurchaseData> data,
-    required MilkPurchaseDataSource dataSource,
-  }) {
+  Widget matter(
+      {required List<_MilPurchaseData> data,
+      required MilkPurchaseDataSource dataSource,
+      required bool isWeekData}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -377,6 +424,11 @@ setState(() {
                   // Enable data label
                   dataLabelSettings: const DataLabelSettings(isVisible: true))
             ]),
+        TextButton(
+            onPressed: () {
+              Generate_csv(isWeekData);
+            },
+            child: const Text("EXPORT TO CSV")),
         SfDataGrid(
           selectionMode: SelectionMode.single,
           onCellTap: (details) {},
@@ -423,7 +475,6 @@ setState(() {
   }
 }
 
-
 List<_MilPurchaseData> monthdata = [
   _MilPurchaseData('01', 35),
   _MilPurchaseData('02', 28),
@@ -456,7 +507,6 @@ List<_MilPurchaseData> monthdata = [
   _MilPurchaseData('29', 80),
   _MilPurchaseData('30', 80),
 ];
-
 
 class _MilPurchaseData {
   _MilPurchaseData(this.day, this.sales);
@@ -491,12 +541,12 @@ class MilkPurchaseDataSource extends DataGridSource {
   MilkPurchaseDataSource({required List<MilkPurchaseDet> milkPurchaseData}) {
     _milkPurchaseData = milkPurchaseData
         .map<DataGridRow>((e) => DataGridRow(cells: [
-      DataGridCell<String>(columnName: 'Date', value: e.Date),
-      DataGridCell<String>(columnName: 'Name', value: e.name),
-      DataGridCell<String>(columnName: 'Shift', value: e.shift),
-      DataGridCell<double>(columnName: 'Quantity', value: e.qty),
-      // DataGridCell<int>(columnName: 'Fat', value: e.salary),
-    ]))
+              DataGridCell<String>(columnName: 'Date', value: e.Date),
+              DataGridCell<String>(columnName: 'Name', value: e.name),
+              DataGridCell<String>(columnName: 'Shift', value: e.shift),
+              DataGridCell<double>(columnName: 'Quantity', value: e.qty),
+              // DataGridCell<int>(columnName: 'Fat', value: e.salary),
+            ]))
         .toList();
   }
 
@@ -509,11 +559,11 @@ class MilkPurchaseDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
-          return Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(8.0),
-            child: Text(e.value.toString()),
-          );
-        }).toList());
+      return Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(8.0),
+        child: Text(e.value.toString()),
+      );
+    }).toList());
   }
 }

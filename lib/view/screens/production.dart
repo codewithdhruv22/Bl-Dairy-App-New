@@ -541,9 +541,9 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(item.Rm),
-                            Text(item.RmQty.toString()),
-                            Text(item.RmRate.toString()),
-                            Text((item.RmRate * item.RmQty).toString())
+                            Text(item.RmQty.toStringAsFixed(2)),
+                            Text(item.RmRate.toStringAsFixed(2)),
+                            Text((item.RmRate * item.RmQty).toStringAsFixed(2))
                           ],
                         ),
                       );
@@ -569,7 +569,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
 
                       ProductionController.addProduction(Production(
                           FinishGoods: PrdNameController.text,
-                          FinishGoodsQty: int.parse(PrdQuantityController.text),
+                          FinishGoodsQty: double.parse(PrdQuantityController.text),
                           ProductionDate: Timestamp.fromDate(date),
                           rawMaterialList: rawMaterialNeeded));
 

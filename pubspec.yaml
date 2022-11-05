@@ -53,11 +53,15 @@ dependencies:
   dropdown_search: ^5.0.3
   get: any
   rename: any
-  share_plus: ^5.0.0
+
   syncfusion_flutter_datagrid: ^20.3.49
   whatsapp_share2: ^2.0.2
   image_picker: ^0.8.6
   path_provider: ^2.0.11
+  syncfusion_flutter_xlsio: ^20.3.52-beta
+  syncfusion_flutter_datagrid_export: ^20.3.52-beta
+  csv: ^5.0.1
+  open_file: ^3.2.1
 
 dev_dependencies:
   flutter_test:
