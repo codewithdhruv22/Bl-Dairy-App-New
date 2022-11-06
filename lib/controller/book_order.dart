@@ -27,12 +27,11 @@ class BookOrderController {
     });
   }
 
-  static Future<List<String>> fetchItems(String query) async {
+  static Future<List<String>> fetchItems() async {
     print("CALLING");
     List<String> result_items = [];
     await FirebaseFirestore.instance
         .collection("ProductList")
-        .where("ProductName", isGreaterThanOrEqualTo: query)
         .get()
         .then((querSnapshots) {
       querSnapshots.docs.forEach((item) {

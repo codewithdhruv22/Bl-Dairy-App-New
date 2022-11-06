@@ -429,46 +429,48 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
               Generate_csv(isWeekData);
             },
             child: const Text("EXPORT TO CSV")),
-        SfDataGrid(
-          selectionMode: SelectionMode.single,
-          onCellTap: (details) {},
-          onSelectionChanged: (addedRows, removedRows) {
-            print(addedRows.length);
-            print(removedRows);
-          },
-          source: dataSource,
-          columnWidthMode: ColumnWidthMode.fill,
-          columns: <GridColumn>[
-            GridColumn(
-                columnName: 'Date',
-                label: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Date',
-                    ))),
-            GridColumn(
-                columnName: 'name',
-                label: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.center,
-                    child: const Text('Name'))),
-            GridColumn(
-                columnName: 'Shift',
-                label: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Shift',
-                      overflow: TextOverflow.ellipsis,
-                    ))),
-            GridColumn(
-                columnName: 'Quantity',
-                label: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.center,
-                    child: const Text('Quantity'))),
-          ],
+        Expanded(
+          child: SfDataGrid(
+            selectionMode: SelectionMode.single,
+            onCellTap: (details) {},
+            onSelectionChanged: (addedRows, removedRows) {
+              print(addedRows.length);
+              print(removedRows);
+            },
+            source: dataSource,
+            columnWidthMode: ColumnWidthMode.fill,
+            columns: <GridColumn>[
+              GridColumn(
+                  columnName: 'Date',
+                  label: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Date',
+                      ))),
+              GridColumn(
+                  columnName: 'name',
+                  label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text('Name'))),
+              GridColumn(
+                  columnName: 'Shift',
+                  label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Shift',
+                        overflow: TextOverflow.ellipsis,
+                      ))),
+              GridColumn(
+                  columnName: 'Quantity',
+                  label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text('Quantity'))),
+            ],
+          ),
         ),
       ],
     );

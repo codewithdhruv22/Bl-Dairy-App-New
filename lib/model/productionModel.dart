@@ -5,13 +5,15 @@ class Production{
   double FinishGoodsQty;
   Timestamp ProductionDate;
   List<RawMaterialModel> rawMaterialList;
+  double costPerKG;
 
 
  Production({
     required this.FinishGoods,
    required this.FinishGoodsQty,
    required this.ProductionDate,
-    required this.rawMaterialList
+    required this.rawMaterialList,
+    required this.costPerKG,
 });
 
 
@@ -27,7 +29,8 @@ class Production{
       "FinishGoods" : FinishGoods,
       "FinishGoodsQty": FinishGoodsQty as double,
       "ProductionDate" : ProductionDate,
-      "RmList" : DataBaseRawMaterial
+      "RmList" : DataBaseRawMaterial,
+      "costPerKG" : costPerKG
 
     };
 
@@ -53,11 +56,10 @@ class Production{
     return Production(
 
       FinishGoods : snapshot["FinishGoods"] ?? "NO DATA",
-      FinishGoodsQty : double.parse(snapshot["FinishGoodsQty"].toString()) ,
+      FinishGoodsQty : double.parse(snapshot["FinishGoodsQty"].toString()),
       ProductionDate : snapshot["ProductionDate"],
-
-
       rawMaterialList: rawMaterialFromSnap,
+      costPerKG : snapshot["costPerKG"] ?? 0.0,
 
 
     );

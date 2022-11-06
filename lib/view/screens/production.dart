@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:textfield_search/textfield_search.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../constants/Theme.dart';
+import 'package:searchfield/searchfield.dart';
 
 class ProductionScreen extends ConsumerStatefulWidget {
   const ProductionScreen({Key? key}) : super(key: key);
@@ -30,9 +31,11 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
   TextEditingController RmAmntController = TextEditingController();
 
   List<RawMaterialModel> rawMaterialNeeded = [];
-  final searchList = [];
-  final RmsearchList = [];
+  var searchList = [];
+  var RmsearchList = [];
   double grandTotal = 0;
+  double qtyTotal = 0;
+  double costPerKG = 0;
 
   DateTime TodayDate = DateTime.now();
 
@@ -53,37 +56,35 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
     }
   }
 
+  GetPrdName() async {
+    searchList.clear();
+    searchList = await ProductionController.fetchFinishGoodsName();
+    setState(() {
+      print(searchList);
+    });
+  }
+
+  GetRmName() async {
+    RmsearchList.clear();
+    RmsearchList = await ProductionController.fetchAllRmName();
+
+    setState(() {
+      print(RmsearchList);
+    });
+  }
+
+  UpdateRmPrice(RmName) async {
+    String FetchedRmRate = "0";
+    FetchedRmRate = await ProductionController.fetchRmPrice(RmName);
+    setState(() {
+      RmRateController.text = FetchedRmRate;
+    });
+  }
+
   @override
   void initState() {
-    PrdNameController.addListener(() async {
-      final String value = PrdNameController.value.text;
-      searchList.clear();
-      searchList.addAll(await ProductionController.fetchFinishGoodsName(value));
-      searchList.toSet().toList();
-
-      setState(() {
-
-        print(searchList);
-      });
-      // YOUR CODE
-    });
-
-
-
-
-    RmController.addListener(() async {
-      String FetchedRmRate  = "0";
-      final String value = RmController.value.text;
-      RmsearchList.clear();
-      RmsearchList.addAll(await ProductionController.fetchRmName(value));
-      RmsearchList.toSet().toList();
-      FetchedRmRate  = await ProductionController.fetchRmPrice(value);
-      setState(() {
-        RmRateController.text = FetchedRmRate;
-        print(searchList);
-      });
-      // YOUR CODE
-    });
+    GetPrdName();
+    GetRmName();
 
     super.initState();
   }
@@ -105,7 +106,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                     Text(
                       'Production',
                       style:
-                      TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -115,16 +116,64 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                 Row(
                   children: [
                     Flexible(
-                      child: TextFieldSearch(
-                        initialList: searchList,
-                        itemsInView: 10,
-                        label: 'Product Name',
-                        controller: PrdNameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Product Name',
-                          border: OutlineInputBorder(),
+                        child:
+
+                            // TextFieldSearch(
+                            //   initialList: searchList,
+                            //   itemsInView: 10,
+                            //   label: 'Product Name',
+                            //   controller: PrdNameController,
+                            //   decoration: const InputDecoration(
+                            //     labelText: 'Product Name',
+                            //     border: OutlineInputBorder(),
+                            //   ),
+                            // ),
+
+                            SearchField(
+                      controller: PrdNameController,
+
+                      suggestions: searchList
+                          .map((e) => SearchFieldListItem(e))
+                          .toList(),
+
+                      // searchList.map((e) {
+                      //   print(e);
+                      //   return SearchFieldListItem(e);
+                      // }).toList(),
+
+                      suggestionState: Suggestion.hidden,
+                      textInputAction: TextInputAction.next,
+                      hint: 'Enter Product Name',
+                      hasOverlay: false,
+                      searchStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black.withOpacity(0.8),
+                      ),
+                      validator: (x) {
+                        if (!searchList.contains(x) || x!.isEmpty) {
+                          return 'Please Enter a valid State';
+                        }
+                        return null;
+                      },
+                      searchInputDecoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black.withOpacity(0.8),
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
                         ),
                       ),
+                      maxSuggestionsInViewPort: 6,
+                      itemHeight: 50,
+                      onSuggestionTap: (x) {
+                        print(x);
+                      },
+                    )
+                    
+                    
+                    
                     ),
                     const SizedBox(
                       width: 12,
@@ -158,12 +207,11 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                   height: 20,
                 ),
                 TextField(
-
                   keyboardType: TextInputType.number,
                   controller: PrdQuantityController,
                   decoration: const InputDecoration(
                     contentPadding:
-                    EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                     labelStyle: TextStyle(fontSize: 14),
                     labelText: 'Quantity',
                     border: OutlineInputBorder(),
@@ -219,16 +267,70 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                           20, 15, 20, 0),
                                       child: Column(
                                         children: [
-                                          TextFieldSearch(
-                                            initialList: RmsearchList,
-                                            itemsInView: 10,
-                                            label: 'Raw Material Name',
+                                          SearchField(
                                             controller: RmController,
-                                            decoration: const InputDecoration(
-                                              labelText: "Raw Material Name",
-                                              border: OutlineInputBorder(),
+
+                                            suggestions: RmsearchList.map((e) =>
+                                                    SearchFieldListItem(e))
+                                                .toList(),
+
+                                            // searchList.map((e) {
+                                            //   print(e);
+                                            //   return SearchFieldListItem(e);
+                                            // }).toList(),
+
+                                            suggestionState: Suggestion.hidden,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            hint: 'Raw Material Name',
+                                            hasOverlay: false,
+                                            searchStyle: TextStyle(
+                                              fontSize: 18,
+                                              color:
+                                                  Colors.black.withOpacity(0.8),
                                             ),
+                                            validator: (x) {
+                                              if (!RmsearchList.contains(x) ||
+                                                  x!.isEmpty) {
+                                                return 'Please Enter a valid State';
+                                              }
+                                              return null;
+                                            },
+                                            searchInputDecoration:
+                                                InputDecoration(
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.black
+                                                      .withOpacity(0.8),
+                                                ),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                            maxSuggestionsInViewPort: 6,
+                                            itemHeight: 50,
+                                            onSuggestionTap: (TappedName) {
+                                              print(
+                                                  "TAPPED NAME TAPPED NAME TAPPED NAME");
+                                              print(TappedName.searchKey);
+                                              UpdateRmPrice(
+                                                  TappedName.searchKey);
+                                            },
                                           ),
+
+                                          // TextFieldSearch(
+                                          //   initialList: RmsearchList,
+                                          //   itemsInView: 10,
+                                          //   label: 'Raw Material Name',
+                                          //   controller: RmController,
+                                          //   decoration: const InputDecoration(
+                                          //     labelText: "Raw Material Name",
+                                          //     border: OutlineInputBorder(),
+                                          //   ),
+                                          // ),
+
                                           // TextField(
                                           //   controller: RmController,
                                           //   decoration: const InputDecoration(
@@ -247,39 +349,39 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                           //   //       value);
                                           //   // },
                                           // ),
-                                          const SizedBox(
+                                          SizedBox(
                                             height: 20,
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Expanded(
                                                 child: TextField(
                                                   controller: RmQtyController,
                                                   keyboardType:
-                                                  TextInputType.number,
+                                                      TextInputType.number,
                                                   decoration:
-                                                  const InputDecoration(
+                                                      const InputDecoration(
                                                     contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 0,
-                                                        horizontal: 15),
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 15),
                                                     labelStyle:
-                                                    TextStyle(fontSize: 14),
+                                                        TextStyle(fontSize: 14),
                                                     labelText: 'Quantity',
                                                     border:
-                                                    OutlineInputBorder(),
+                                                        OutlineInputBorder(),
                                                   ),
                                                   onChanged: (value) {
                                                     setState(() {
                                                       RmAmntController
                                                           .text = (double.parse(
-                                                          RmQtyController
-                                                              .text) *
-                                                          double.parse(
-                                                              RmRateController
-                                                                  .text))
+                                                                  RmQtyController
+                                                                      .text) *
+                                                              double.parse(
+                                                                  RmRateController
+                                                                      .text))
                                                           .toStringAsFixed(2);
                                                     });
                                                   },
@@ -296,26 +398,27 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                     setState(() {
                                                       RmAmntController
                                                           .text = (double.parse(
-                                                          RmQtyController
-                                                              .text) *
-                                                          double.parse(
-                                                              RmRateController
-                                                                  .text))
+                                                                  RmQtyController
+                                                                      .text) *
+                                                              double.parse(
+                                                                  RmRateController
+                                                                      .text))
                                                           .toStringAsFixed(2);
                                                     });
                                                   },
-                                                  keyboardType: TextInputType.number,
+                                                  keyboardType:
+                                                      TextInputType.number,
                                                   decoration:
-                                                  const InputDecoration(
+                                                      const InputDecoration(
                                                     contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 0,
-                                                        horizontal: 15),
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 15),
                                                     labelStyle:
-                                                    TextStyle(fontSize: 14),
+                                                        TextStyle(fontSize: 14),
                                                     labelText: 'Rate',
                                                     border:
-                                                    OutlineInputBorder(),
+                                                        OutlineInputBorder(),
                                                   ),
                                                   // onChanged: (value) {
                                                   //   setState(() {
@@ -338,18 +441,19 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                               Expanded(
                                                 child: TextField(
                                                   controller: RmAmntController,
-                                                  keyboardType: TextInputType.number,
+                                                  keyboardType:
+                                                      TextInputType.number,
                                                   decoration:
-                                                  const InputDecoration(
+                                                      const InputDecoration(
                                                     contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 0,
-                                                        horizontal: 15),
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 15),
                                                     labelStyle:
-                                                    TextStyle(fontSize: 14),
+                                                        TextStyle(fontSize: 14),
                                                     labelText: 'Amount',
                                                     border:
-                                                    OutlineInputBorder(),
+                                                        OutlineInputBorder(),
                                                   ),
                                                   // onChanged: (value) {
                                                   //   setState(() {
@@ -374,7 +478,7 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                           //
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Expanded(
                                                 child: SizedBox(
@@ -398,12 +502,12 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                       padding: const EdgeInsets
                                                           .fromLTRB(0, 4, 0, 4),
                                                       backgroundColor:
-                                                      MyColors.red,
+                                                          MyColors.red,
                                                       shape:
-                                                      RoundedRectangleBorder(
+                                                          RoundedRectangleBorder(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -418,12 +522,18 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                   width: size.width * 0.4,
                                                   child: ElevatedButton.icon(
                                                     onPressed: () {
+                                                      qtyTotal += double.parse(
+                                                          RmQtyController.text);
+
                                                       grandTotal += double.parse(
-                                                          RmQtyController
-                                                              .text) *
+                                                              RmQtyController
+                                                                  .text) *
                                                           double.parse(
                                                               RmRateController
                                                                   .text);
+
+                                                      costPerKG =
+                                                          grandTotal / qtyTotal;
                                                       rawMaterialNeeded.add(
                                                           RawMaterialModel(
                                                               Rm: RmController
@@ -450,12 +560,12 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       backgroundColor:
-                                                      MyColors.green,
+                                                          MyColors.green,
                                                       shape:
-                                                      RoundedRectangleBorder(
+                                                          RoundedRectangleBorder(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -553,15 +663,20 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Grand Total'),
-                      const Text('--'),
-                      const Text('--'),
-                      Text(grandTotal.toStringAsFixed(2)),
+                      Text('Grand Total'),
+                      Text("${qtyTotal.toStringAsFixed(2)}"),
+                      Text('--'),
+                      Text(
+                        "${grandTotal.toStringAsFixed(2)}\n(${(grandTotal / qtyTotal).toStringAsFixed(2)}/Kg)",
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                   ),
                 ),
                 ElevatedButton(
                     onPressed: () {
+                      print("COST PER KG");
+                      print(costPerKG);
                       const snackBar = SnackBar(
                         content: Text('Product Added to production'),
                       );
@@ -569,8 +684,10 @@ class _ProductionScreenState extends ConsumerState<ProductionScreen> {
 
                       ProductionController.addProduction(Production(
                           FinishGoods: PrdNameController.text,
-                          FinishGoodsQty: double.parse(PrdQuantityController.text),
+                          FinishGoodsQty:
+                              double.parse(PrdQuantityController.text),
                           ProductionDate: Timestamp.fromDate(date),
+                          costPerKG: costPerKG,
                           rawMaterialList: rawMaterialNeeded));
 
                       PrdNameController.clear();

@@ -1,12 +1,13 @@
 import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:bl_dairy_app/controller/book_order.dart';
+import 'package:bl_dairy_app/controller/productionController.dart';
 import 'package:bl_dairy_app/model/BookOrderModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:textfield_search/textfield_search.dart';
+import 'package:searchfield/searchfield.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class BookOrderScreen extends ConsumerStatefulWidget {
@@ -25,7 +26,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
   TextEditingController bQuantityController = TextEditingController();
   TextEditingController bRateController = TextEditingController();
   TextEditingController bAmountController = TextEditingController();
-  final searchList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+  var searchList = [];
 
   DateTime TodayDate = DateTime.now();
 
@@ -63,6 +64,29 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
   List<OrderItem> databaseOrderItem = [];
   int grandTotal = 0;
   final _formKey = GlobalKey<FormState>();
+
+
+   GetPrdName() async {
+    searchList.clear();
+    searchList = await BookOrderController.fetchItems();
+    setState(() {
+      print(searchList);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    GetPrdName();
+  }
+
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -217,18 +241,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                               TextEditingController bProductNameController =
                                   TextEditingController();
 
-                              bProductNameController.addListener(() async {
-                                final String value =
-                                    bProductNameController.value.text;
-                                searchList.clear();
-                                searchList.addAll(
-                                    await BookOrderController.fetchItems(
-                                        value));
-                                setState(() {
-                                  print(searchList);
-                                });
-                                // YOUR CODE
-                              });
+                          
                               VxBottomSheet.bottomSheetView(
                                 context,
                                 elevation: 20,
@@ -262,17 +275,90 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                             20, 15, 20, 0),
                                         child: Column(
                                           children: [
-                                            TextFieldSearch(
-                                              itemsInView: 10,
-                                              initialList: searchList,
-                                              label: 'Product Name',
-                                              controller:
-                                                  bProductNameController,
-                                              decoration: const InputDecoration(
-                                                labelText: 'Product Name',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                            ),
+
+
+
+
+
+  SearchField(
+                      controller: bProductNameController,
+
+                      suggestions: searchList
+                          .map((e) => SearchFieldListItem(e))
+                          .toList(),
+
+                      // searchList.map((e) {
+                      //   print(e);
+                      //   return SearchFieldListItem(e);
+                      // }).toList(),
+
+                      suggestionState: Suggestion.hidden,
+                      textInputAction: TextInputAction.next,
+                      hint: 'Enter Product Name',
+                      hasOverlay: false,
+                      searchStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black.withOpacity(0.8),
+                      ),
+                      validator: (x) {
+                        if (!searchList.contains(x) || x!.isEmpty) {
+                          return 'Please Enter a valid State';
+                        }
+                        return null;
+                      },
+                      searchInputDecoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black.withOpacity(0.8),
+                          ),
+                        ),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                      ),
+                      maxSuggestionsInViewPort: 6,
+                      itemHeight: 50,
+                      onSuggestionTap: (x) {
+                        print(x);
+                      },
+                    ),
+
+
+
+
+                                            // TextFieldSearch(
+                                            //   itemsInView: 10,
+                                            //   initialList: searchList,
+                                            //   label: 'Product Name',
+                                            //   controller:
+                                            //       bProductNameController,
+                                            //   decoration: const InputDecoration(
+                                            //     labelText: 'Product Name',
+                                            //     border: OutlineInputBorder(),
+                                            //   ),
+                                            // ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                             const SizedBox(
                                               height: 20,
                                             ),

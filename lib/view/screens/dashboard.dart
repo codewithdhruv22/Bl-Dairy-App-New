@@ -43,6 +43,8 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
   double cowMilk = 0;
   double buffaloMilk = 0;
   bool loading = true;
+  double TotalQty = 0;
+  double TotalAmount = 0;
 
   GetOrders() async {
     await BookOrderController.fetchOrder().then((allOrders) {
@@ -67,10 +69,10 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
 
   GetMilkPurchaseByDate() async {
     await MilkPurchaseController.allMilkPurchaseByDate(Timestamp.now())
-        .then((result_list) {
+        .then((resultList) {
       int i = 0;
       setState(() {
-        RecentPurchaseList = result_list;
+        RecentPurchaseList = resultList;
         GetTodayMilkPurchaseLiter();
         for (var element in RecentPurchaseList) {
           RecentPurchaseListTiles.add(ListTile(
@@ -87,15 +89,14 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
   }
 
   GetTodayMilkPurchaseLiter() {
-    RecentPurchaseList.forEach((milkPurchaseEntry) {
+    for (var milkPurchaseEntry in RecentPurchaseList) {
       today_milkPrch_liter += milkPurchaseEntry.milkQty;
       if (milkPurchaseEntry.milkType == "Cow") {
         cowMilk += milkPurchaseEntry.milkQty;
       } else {
         buffaloMilk += milkPurchaseEntry.milkQty;
       }
-      ;
-    });
+    }
 
     setState(() {});
   }
@@ -595,6 +596,8 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                         ],
                                                                       ),
                                                                       const Divider(),
+                                                                      Text(
+                                                                          "Cost Per KG  - ${PrdItem.costPerKG.toStringAsFixed(2)}"),
                                                                       Row(
                                                                         mainAxisAlignment:
                                                                             MainAxisAlignment.spaceBetween,
@@ -631,6 +634,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                               itemCount: PrdItem.rawMaterialList.length,
                                                                               itemBuilder: (context, index) {
                                                                                 final rmItem = PrdItem.rawMaterialList[index];
+
                                                                                 return Row(
                                                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                   children: [
@@ -694,10 +698,10 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 15),
+                                    padding: const EdgeInsets.only(left: 15),
                                     child: Text(
                                       "${today_milkPrch_liter.toStringAsFixed(2)} Liter",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -773,8 +777,8 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                   ),
                                   ExpansionTile(
                                     tilePadding:
-                                        EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                    title: Text('Recent Purchase'),
+                                        const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                    title: const Text('Recent Purchase'),
                                     children: RecentPurchaseListTiles,
                                   ),
                                 ],

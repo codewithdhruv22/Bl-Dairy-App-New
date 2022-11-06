@@ -24,19 +24,18 @@ return all_Production;
 
 
 
-  static Future<List<String>> fetchFinishGoodsName(String query) async {
+  static Future<List<String>> fetchFinishGoodsName() async {
     print("CALLING");
     List<String> result_items = [];
     await FirebaseFirestore.instance.collection("ProductList").get().then((
         querSnapshots) {
       querSnapshots.docs.forEach((item) {
-        if(item["ProductName"].toString().toLowerCase().contains(query.toLowerCase())){
-
+       
         result_items.add(item["ProductName"].toString().toLowerCase());
-        }
 
 
       });
+
     });
 
     return result_items;
@@ -66,6 +65,36 @@ return all_Production;
 
     return result_items;
   }
+
+
+
+
+
+
+
+
+
+
+
+static Future<List<String>> fetchAllRmName() async {
+    print("CALLING");
+    List<String> result_items = [];
+    await FirebaseFirestore.instance
+        .collection("ProductList")
+        .get()
+        .then((querSnapshots) {
+      querSnapshots.docs.forEach((item) {
+        if (item["ProductCategory"] == "Raw Material") {
+        result_items.add(item["ProductName"].toString().toLowerCase());
+        }
+      });
+    });
+
+    return result_items;
+  }
+
+
+  
 
 
   static Future<String> fetchRmPrice(String rmName) async{

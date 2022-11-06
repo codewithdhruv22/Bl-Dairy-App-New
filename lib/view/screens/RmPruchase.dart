@@ -3,6 +3,7 @@ import 'package:bl_dairy_app/controller/productionController.dart';
 import 'package:bl_dairy_app/model/RmModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:searchfield/searchfield.dart';
 import 'package:textfield_search/textfield_search.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -22,22 +23,22 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
   TextEditingController RmNameController = TextEditingController();
   TextEditingController PricingController = TextEditingController();
   TextEditingController QtyController = TextEditingController();
-  List<RmModel> RmList  = [];
-  final searchList = [];
+  List<RmModel> RmList = [];
+  var searchList = [];
   double grandTotal = 0;
+
+  GetRmName() async {
+    searchList.clear();
+    searchList = await ProductionController.fetchAllRmName();
+
+    setState(() {
+      print(searchList);
+    });
+  }
 
   @override
   void initState() {
-    RmNameController.addListener(() async {
-      final String value = RmNameController.value.text;
-      searchList.clear();
-      searchList.addAll(await ProductionController.fetchRmName(value));
-      searchList.toSet().toList();
-      setState(() {
-        print(searchList);
-      });
-      // YOUR CODE
-    });
+    GetRmName();
     super.initState();
   }
 
@@ -50,17 +51,9 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
           padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
           child: Column(
             children: [
-
               const SizedBox(
                 height: 15,
               ),
-
-
-
-
-
-
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -96,21 +89,88 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
                                 height: 5,
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    20, 15, 20, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 15, 20, 0),
                                 child: Column(
                                   children: [
-                                    TextFieldSearch(
-                                      controller : RmNameController,
-                                      initialList: searchList,
-                                      itemsInView: 10,
-                                      label: 'Raw Material Name',
 
-                                      decoration: const InputDecoration(
-                                        labelText: "Raw Material Name",
-                                        border: OutlineInputBorder(),
-                                      ),
-                                    ),
+
+
+
+
+
+                                          SearchField(
+                                            controller: RmNameController,
+
+                                            suggestions: searchList.map((e) =>
+                                                    SearchFieldListItem(e))
+                                                .toList(),
+
+                                            // searchList.map((e) {
+                                            //   print(e);
+                                            //   return SearchFieldListItem(e);
+                                            // }).toList(),
+
+                                            suggestionState: Suggestion.hidden,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            hint: 'Raw Material Name',
+                                            hasOverlay: false,
+                                            searchStyle: TextStyle(
+                                              fontSize: 18,
+                                              color:
+                                                  Colors.black.withOpacity(0.8),
+                                            ),
+                                            validator: (x) {
+                                              if (!searchList.contains(x) ||
+                                                  x!.isEmpty) {
+                                                return 'Please Enter a valid State';
+                                              }
+                                              return null;
+                                            },
+                                            searchInputDecoration:
+                                                InputDecoration(
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.black
+                                                      .withOpacity(0.8),
+                                                ),
+                                              ),
+                                              border: const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                            maxSuggestionsInViewPort: 6,
+                                            itemHeight: 50,
+                                            onSuggestionTap: (TappedName) {
+                                              print(
+                                                  "TAPPED NAME TAPPED NAME TAPPED NAME");
+                                              print(TappedName.searchKey);
+                                          
+                                            },
+                                          ),
+
+
+
+
+                                    // TextFieldSearch(
+                                    //   controller: RmNameController,
+                                    //   initialList: searchList,
+                                    //   itemsInView: 10,
+                                    //   label: 'Raw Material Name',
+                                    //   decoration: const InputDecoration(
+                                    //     labelText: "Raw Material Name",
+                                    //     border: OutlineInputBorder(),
+                                    //   ),
+                                    // ),
+
+
+
+
+
+
+                                    
                                     // TextField(
                                     //   controller: RmController,
                                     //   decoration: const InputDecoration(
@@ -134,29 +194,24 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
                                           child: TextField(
-controller: QtyController,
-                                            keyboardType:
-                                            TextInputType.number,
-                                            decoration:
-                                            const InputDecoration(
+                                            controller: QtyController,
+                                            keyboardType: TextInputType.number,
+                                            decoration: const InputDecoration(
                                               contentPadding:
-                                              EdgeInsets.symmetric(
-                                                  vertical: 0,
-                                                  horizontal: 15),
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 0,
+                                                      horizontal: 15),
                                               labelStyle:
-                                              TextStyle(fontSize: 14),
+                                                  TextStyle(fontSize: 14),
                                               labelText: 'Quantity',
-                                              border:
-                                              OutlineInputBorder(),
+                                              border: OutlineInputBorder(),
                                             ),
                                             onChanged: (value) {
-                                              setState(() {
-
-                                              });
+                                              setState(() {});
                                             },
                                             // controller: bQuantityController,
                                           ),
@@ -166,20 +221,18 @@ controller: QtyController,
                                         ),
                                         Expanded(
                                           child: TextField(
-controller: PricingController,
+                                            controller: PricingController,
 
                                             keyboardType: TextInputType.number,
-                                            decoration:
-                                            const InputDecoration(
+                                            decoration: const InputDecoration(
                                               contentPadding:
-                                              EdgeInsets.symmetric(
-                                                  vertical: 0,
-                                                  horizontal: 15),
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 0,
+                                                      horizontal: 15),
                                               labelStyle:
-                                              TextStyle(fontSize: 14),
+                                                  TextStyle(fontSize: 14),
                                               labelText: 'Rate',
-                                              border:
-                                              OutlineInputBorder(),
+                                              border: OutlineInputBorder(),
                                             ),
                                             // onChanged: (value) {
                                             //   setState(() {
@@ -199,7 +252,6 @@ controller: PricingController,
                                         const SizedBox(
                                           width: 8,
                                         ),
-
                                       ],
                                     ),
                                     const SizedBox(
@@ -208,7 +260,7 @@ controller: PricingController,
                                     //
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
                                           child: SizedBox(
@@ -226,17 +278,14 @@ controller: PricingController,
                                                 size: 18,
                                               ),
                                               label: const Text('Delete'),
-                                              style: ElevatedButton
-                                                  .styleFrom(
-                                                padding: const EdgeInsets
-                                                    .fromLTRB(0, 4, 0, 4),
-                                                backgroundColor:
-                                                MyColors.red,
-                                                shape:
-                                                RoundedRectangleBorder(
+                                              style: ElevatedButton.styleFrom(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 4, 0, 4),
+                                                backgroundColor: MyColors.red,
+                                                shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                  BorderRadius
-                                                      .circular(5),
+                                                      BorderRadius.circular(5),
                                                 ),
                                               ),
                                             ),
@@ -251,10 +300,22 @@ controller: PricingController,
                                             width: size.width * 0.4,
                                             child: ElevatedButton.icon(
                                               onPressed: () {
-
                                                 setState(() {
-                                                  RmList.add(RmModel(RmName: RmNameController.text, RmPrice:double.parse(PricingController.text), RmQty: double.parse(QtyController.text), purchaseTime: Timestamp.now()));
-                                                  grandTotal += double.parse(PricingController.text)*double.parse(QtyController.text);
+                                                  RmList.add(RmModel(
+                                                      RmName:
+                                                          RmNameController.text,
+                                                      RmPrice: double.parse(
+                                                          PricingController
+                                                              .text),
+                                                      RmQty: double.parse(
+                                                          QtyController.text),
+                                                      purchaseTime:
+                                                          Timestamp.now()));
+                                                  grandTotal += double.parse(
+                                                          PricingController
+                                                              .text) *
+                                                      double.parse(
+                                                          QtyController.text);
                                                 });
                                                 RmNameController.clear();
                                                 PricingController.clear();
@@ -267,15 +328,11 @@ controller: PricingController,
                                                 size: 18,
                                               ),
                                               label: const Text('Add'),
-                                              style: ElevatedButton
-                                                  .styleFrom(
-                                                backgroundColor:
-                                                MyColors.green,
-                                                shape:
-                                                RoundedRectangleBorder(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: MyColors.green,
+                                                shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                  BorderRadius
-                                                      .circular(5),
+                                                      BorderRadius.circular(5),
                                                 ),
                                               ),
                                             ),
@@ -300,9 +357,6 @@ controller: PricingController,
                   )
                 ],
               ),
-
-
-
               ListView.separated(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -343,29 +397,25 @@ controller: PricingController,
               ),
               ElevatedButton(
                   onPressed: () async {
-                    RmList.forEach((Rm) async{
+                    for (var Rm in RmList)  {
                       await RmController.PurhcaseRm(RmModel(
-                          RmName: Rm.RmName,
-                          RmPrice: Rm.RmPrice,
-                          RmQty: Rm.RmQty,
-                          purchaseTime: Rm.purchaseTime))
+                              RmName: Rm.RmName,
+                              RmPrice: Rm.RmPrice,
+                              RmQty: Rm.RmQty,
+                              purchaseTime: Rm.purchaseTime))
                           .then((_) {
                         print("ADDED");
                       });
-
-                    });
+                    }
                     setState(() {
-                    RmList.clear();
-                    grandTotal = 0;
-
+                      RmList.clear();
+                      grandTotal = 0;
                     });
 
                     Get.snackbar("Raw Material Purchase Successful",
                         "Price Updated and Entry Added To Database");
-
                   },
                   child: const Text("Purhcase Raw Material")),
-
             ],
           ),
         ));
