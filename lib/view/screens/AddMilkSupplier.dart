@@ -1,13 +1,11 @@
 import 'package:bl_dairy_app/controller/milkSupplierController.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
-import 'package:bl_dairy_app/view/screens/milkPurchase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-
 import '../../constants/Theme.dart';
 
 class AddMilkSupplierScreen extends StatefulWidget {
-  const AddMilkSupplierScreen({Key? key}) : super(key: key);
+  AddMilkSupplierScreen({Key? key}) : super(key: key);
 
   @override
   State<AddMilkSupplierScreen> createState() => _AddMilkSupplierScreenState();
@@ -54,19 +52,19 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         FeatherIcons.arrowLeft,
                         color: MyColors.black,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'Add Supplier',
                       style: TextStyle(fontSize: 15),
                     ),
                   ]),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -79,7 +77,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
@@ -88,7 +86,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       ),
                       // controller: fullNameController,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     TextFormField(
@@ -101,7 +99,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       },
                       maxLength: 10,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
@@ -111,7 +109,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       ),
                       // controller: mobileNumberController,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     Row(
@@ -119,7 +117,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
                           child: DropdownButton<String>(
-                            hint: const Text('Milk Type'),
+                            hint: Text('Milk Type'),
                             items: list
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
@@ -128,9 +126,9 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                               );
                             }).toList(),
                             value: dropdownValue,
-                            icon: const Icon(Icons.arrow_downward),
+                            icon: Icon(Icons.arrow_downward),
                             elevation: 16,
-                            style: const TextStyle(color: Colors.deepPurple),
+                            style: TextStyle(color: Colors.deepPurple),
                             underline: Container(
                               height: 2,
                               color: Colors.deepPurpleAccent,
@@ -141,25 +139,29 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                                 print(value);
                                 dropdownValue = value!;
                                 if (value == "Buffalow") {
-                                  RateLabelText = "Fat Rate";
-                                } else {
-                                  RateLabelText = "Basic Rate";
+                                
+                                    RateLabelText = "Fat Rate";
+                                  
+                                 
+                                }else{
+                                    RateLabelText = "Basic Rate";
                                 }
 
-                                MilkTypeEditingController.text = value;
-                              });
-                            },
-                            // decoration:  InputDecoration(
-                            //   contentPadding:
-                            //       EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                            //   labelStyle: TextStyle(fontSize: 14),
-                            //   labelText: 'Milk Type',
-                            //   border: OutlineInputBorder(),
-                            // ),
-                            // controller: advancePaymentController,
+                                  MilkTypeEditingController.text = value;
+                                });
+                              },
+                              // decoration:  InputDecoration(
+                              //   contentPadding:
+                              //       EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                              //   labelStyle: TextStyle(fontSize: 14),
+                              //   labelText: 'Milk Type',
+                              //   border: OutlineInputBorder(),
+                              // ),
+                              // controller: advancePaymentController,
+                            ),
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 10,
                         ),
                         Expanded(
@@ -173,18 +175,18 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             },
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
+                              contentPadding: EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 15),
-                              labelStyle: const TextStyle(fontSize: 14),
+                              labelStyle: TextStyle(fontSize: 14),
                               labelText: RateLabelText,
-                              border: const OutlineInputBorder(),
+                              border: OutlineInputBorder(),
                             ),
                             // controller: advancePaymentController,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     TextFormField(
@@ -197,7 +199,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       },
                       maxLength: 12,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
@@ -206,7 +208,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       ),
                       // controller: mobileNumberController,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     TextFormField(
@@ -217,7 +219,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
@@ -226,7 +228,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       ),
                       // controller: remarkController,
                     ),
-                    const SizedBox(
+                        SizedBox(
                       height: 12,
                     ),
                     dropdownValue == "Cow"
@@ -241,7 +243,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 15),
                                   labelStyle: TextStyle(fontSize: 14),
@@ -250,7 +252,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                                 ),
                                 // controller: advancePaymentController,
                               ),
-                              const SizedBox(
+                                  SizedBox(
                                 height: 12,
                               ),
                               TextFormField(
@@ -262,7 +264,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 15),
                                   labelStyle: TextStyle(fontSize: 14),
@@ -274,7 +276,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             ],
                           )
                         : Container(),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     ElevatedButton(
@@ -306,11 +308,11 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             setState(() {});
 
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Supplier Added')),
+                              SnackBar(content: Text('Supplier Added')),
                             );
                           }
                         },
-                        child: const Text("Add Ledger"))
+                        child: Text("Add Ledger"))
                   ],
                 ),
               ),
