@@ -683,7 +683,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                                 const SnackBar(
                                     content: Text('Order Placed Successfully')),
                               );
-                            }
+                        
                             BookOrderController.addOrder(Order(
                                 CustomerName: fullNameController.text,
                                 MobileNumber: mobileNumberController.text,
@@ -707,6 +707,7 @@ class _BookOrderScreenState extends ConsumerState<BookOrderScreen> {
                             grandTotal = 0;
 
                             setState(() {});
+                          }
                           },
                           child: const Text("Book Order"),
                         ),

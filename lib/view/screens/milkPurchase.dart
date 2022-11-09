@@ -84,7 +84,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
 
   Future<void> isInstalled() async {
     await WhatsappShare.isInstalled(package: Package.whatsapp).then((value) {
-      Get.snackbar("Whtsapp Installation Infor", value.toString());
+      Get.snackbar("Whatsapp Not Found", "Please install Whatsapp First.");
     });
   }
 
@@ -155,6 +155,12 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                 child: Column(
                   children: [
                     DropdownSearch<MilkSupplierModel>(
+                        validator: (value) {
+                        if (value == null || value.toString().isEmpty) {
+                          return 'Select A Supplier';
+                        }
+                        return null;
+                      },
                       asyncItems: (String filter) =>
                           milkSupplierController.fetchOneLedger(filter),
                       itemAsString: (MilkSupplierModel u) => u.Name,
@@ -488,6 +494,12 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
 
                     ElevatedButton(
                         onPressed: () async {
+
+
+                          
+                          if (_formKey.currentState!.validate()) {
+
+
                           MilkPurchaseController.addMilkPurchase(
                               MilkPurchaseModel(
                             Date: Timestamp.fromDate(date),
@@ -571,6 +583,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                           totalAmnt = 0;
 
                           setState(() {});
+                        }
                         },
                         child: const Text("Complete"))
                   ],

@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../constants/Theme.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-
 import '../../model/productionModel.dart';
 
 class RmPurchaseScreen extends StatefulWidget {
@@ -93,66 +92,53 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
                                     const EdgeInsets.fromLTRB(20, 15, 20, 0),
                                 child: Column(
                                   children: [
+                                    SearchField(
+                                      controller: RmNameController,
 
+                                      suggestions: searchList
+                                          .map((e) => SearchFieldListItem(e))
+                                          .toList(),
 
+                                      // searchList.map((e) {
+                                      //   print(e);
+                                      //   return SearchFieldListItem(e);
+                                      // }).toList(),
 
-
-
-
-                                          SearchField(
-                                            controller: RmNameController,
-
-                                            suggestions: searchList.map((e) =>
-                                                    SearchFieldListItem(e))
-                                                .toList(),
-
-                                            // searchList.map((e) {
-                                            //   print(e);
-                                            //   return SearchFieldListItem(e);
-                                            // }).toList(),
-
-                                            suggestionState: Suggestion.hidden,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            hint: 'Raw Material Name',
-                                            hasOverlay: false,
-                                            searchStyle: TextStyle(
-                                              fontSize: 18,
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
-                                            ),
-                                            validator: (x) {
-                                              if (!searchList.contains(x) ||
-                                                  x!.isEmpty) {
-                                                return 'Please Enter a valid State';
-                                              }
-                                              return null;
-                                            },
-                                            searchInputDecoration:
-                                                InputDecoration(
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Colors.black
-                                                      .withOpacity(0.8),
-                                                ),
-                                              ),
-                                              border: const OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.red),
-                                              ),
-                                            ),
-                                            maxSuggestionsInViewPort: 6,
-                                            itemHeight: 50,
-                                            onSuggestionTap: (TappedName) {
-                                              print(
-                                                  "TAPPED NAME TAPPED NAME TAPPED NAME");
-                                              print(TappedName.searchKey);
-                                          
-                                            },
+                                      suggestionState: Suggestion.hidden,
+                                      textInputAction: TextInputAction.next,
+                                      hint: 'Raw Material Name',
+                                      hasOverlay: false,
+                                      searchStyle: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black.withOpacity(0.8),
+                                      ),
+                                      validator: (x) {
+                                        if (!searchList.contains(x) ||
+                                            x!.isEmpty) {
+                                          return 'Please Enter a valid State';
+                                        }
+                                        return null;
+                                      },
+                                      searchInputDecoration: InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color:
+                                                Colors.black.withOpacity(0.8),
                                           ),
-
-
-
+                                        ),
+                                        border: const OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.red),
+                                        ),
+                                      ),
+                                      maxSuggestionsInViewPort: 6,
+                                      itemHeight: 50,
+                                      onSuggestionTap: (TappedName) {
+                                        print(
+                                            "TAPPED NAME TAPPED NAME TAPPED NAME");
+                                        print(TappedName.searchKey);
+                                      },
+                                    ),
 
                                     // TextFieldSearch(
                                     //   controller: RmNameController,
@@ -165,12 +151,6 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
                                     //   ),
                                     // ),
 
-
-
-
-
-
-                                    
                                     // TextField(
                                     //   controller: RmController,
                                     //   decoration: const InputDecoration(
@@ -397,7 +377,11 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    for (var Rm in RmList)  {
+                    if (RmList.isEmpty) {
+                      Get.snackbar("Purchase Failed",
+                          "Please Add Some Raw Material First");
+                    } else {
+                    for (var Rm in RmList) {
                       await RmController.PurhcaseRm(RmModel(
                               RmName: Rm.RmName,
                               RmPrice: Rm.RmPrice,
@@ -414,6 +398,7 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
 
                     Get.snackbar("Raw Material Purchase Successful",
                         "Price Updated and Entry Added To Database");
+                  }
                   },
                   child: const Text("Purhcase Raw Material")),
             ],

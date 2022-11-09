@@ -16,6 +16,7 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   TextEditingController amountController = TextEditingController();
   TextEditingController suppNameEdCont = TextEditingController();
+  TextEditingController noteController = TextEditingController();
 
   final List<MilkSupplierModel> searchList = [];
 
@@ -73,6 +74,32 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 controller: amountController,
               ),
+
+
+
+
+
+               const SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Add a note';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                  labelStyle: TextStyle(fontSize: 14),
+                  labelText: 'Add Note',
+                  border: OutlineInputBorder(),
+                ),
+                controller: noteController,
+              ),
+
+              
               const SizedBox(
                 height: 15,
               ),
@@ -80,7 +107,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   onPressed: () async {
                     await PaymentController.addPayment(PaymentModel(
                             SupplierName: suppNameEdCont.text,
-                            PaidAmount: double.parse(amountController.text)))
+                            PaidAmount: double.parse(amountController.text) , 
+                            
+                            Note  : noteController.text))
                         .then((_) {
                       Get.snackbar("ENTRY ADDED SUCCESSFULLY",
                           "YOUR PAYMENT IS SUCCESSFULLY ADDED TO DATABASE");

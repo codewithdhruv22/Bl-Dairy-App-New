@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:bl_dairy_app/model/milkPurchaseModel.dart';
@@ -10,8 +9,9 @@ import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import '../../controller/milkPurchaseController.dart';
+
+
 
 class DetailReportScreen extends StatefulWidget {
   const DetailReportScreen({Key? key}) : super(key: key);
@@ -77,19 +77,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
 
   List<MilkPurchaseDet> WeekDataSource = [];
   List<MilkPurchaseDet> MonthDataSource = [];
-  //   return [
-  //     MilkPurchaseDet("10001", 'James', 'Project Lead', 20000),
-  //     MilkPurchaseDet("10002", 'Kathryn', 'Manager', 30000),
-  //     MilkPurchaseDet("10003", 'Lara', 'Developer', 15000),
-  //     MilkPurchaseDet("10004", 'Michael', 'Designer', 15000),
-  //     MilkPurchaseDet("10005", 'Martin', 'Developer', 15000),
-  //     MilkPurchaseDet("10006", 'Newberry', 'Developer', 15000),
-  //     MilkPurchaseDet("10007", 'Balnc', 'Developer', 15000),
-  //     MilkPurchaseDet("10008", 'Perry', 'Developer', 15000),
-  //     MilkPurchaseDet("10009", 'Gable', 'Developer', 15000),
-  //     MilkPurchaseDet("10010", 'Grimes', 'Developer', 15000)
-  //   ];
-  // }
+  
 
   Generate_csv(bool isWeekData) async {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -164,7 +152,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('week_report_$formattedDate.csv Exported'),
+        content: Text(isWeekData ? 'week_report_$formattedDate.csv Exported' : 'month_report_$formattedDate.csv Exported' ),
         action: SnackBarAction(
             label: "Open",
             onPressed: () {
