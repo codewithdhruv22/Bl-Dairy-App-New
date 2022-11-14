@@ -5,7 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import '../../constants/Theme.dart';
 
 class AddMilkSupplierScreen extends StatefulWidget {
-  AddMilkSupplierScreen({Key? key}) : super(key: key);
+  const AddMilkSupplierScreen({Key? key}) : super(key: key);
 
   @override
   State<AddMilkSupplierScreen> createState() => _AddMilkSupplierScreenState();
@@ -52,19 +52,19 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         FeatherIcons.arrowLeft,
                         color: MyColors.black,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Add Supplier',
                       style: TextStyle(fontSize: 15),
                     ),
                   ]),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -77,7 +77,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
@@ -86,7 +86,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       ),
                       // controller: fullNameController,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     TextFormField(
@@ -99,7 +99,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       },
                       maxLength: 10,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
@@ -109,43 +109,50 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       ),
                       // controller: mobileNumberController,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Row(
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
-                          child: DropdownButton<String>(
-                            hint: Text('Milk Type'),
-                            items: list
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            value: dropdownValue,
-                            icon: Icon(Icons.arrow_downward),
-                            elevation: 16,
-                            style: TextStyle(color: Colors.deepPurple),
-                            underline: Container(
-                              height: 2,
-                              color: Colors.deepPurpleAccent,
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(13, 0, 10, 0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromARGB(181, 136, 136, 136),
+                              ),
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                print(value);
-                                dropdownValue = value!;
-                                if (value == "Buffalow") {
-                                
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              underline: Container(),
+                              borderRadius: BorderRadius.circular(10),
+                              hint: const Text('Milk Type'),
+                              items: list.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              value: dropdownValue,
+                              icon: const Icon(Icons.arrow_downward),
+                              elevation: 16,
+                              style: const TextStyle(
+                                color: MyColors.black,
+                                fontSize: 17,
+                              ),
+                              onChanged: (String? value) {
+                                // This is called when the user selects an item.
+                                setState(() {
+                                  print(value);
+                                  dropdownValue = value!;
+                                  if (value == "Buffalow") {
                                     RateLabelText = "Fat Rate";
-                                  
-                                 
-                                }else{
+                                  } else {
                                     RateLabelText = "Basic Rate";
-                                }
+                                  }
 
                                   MilkTypeEditingController.text = value;
                                 });
@@ -161,7 +168,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Expanded(
@@ -175,18 +182,18 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             },
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 15),
-                              labelStyle: TextStyle(fontSize: 14),
+                              labelStyle: const TextStyle(fontSize: 14),
                               labelText: RateLabelText,
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                             ),
                             // controller: advancePaymentController,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     TextFormField(
@@ -199,7 +206,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       },
                       maxLength: 12,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
@@ -208,7 +215,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       ),
                       // controller: mobileNumberController,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     TextFormField(
@@ -219,7 +226,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                         labelStyle: TextStyle(fontSize: 14),
@@ -228,7 +235,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                       ),
                       // controller: remarkController,
                     ),
-                        SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     dropdownValue == "Cow"
@@ -243,7 +250,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 15),
                                   labelStyle: TextStyle(fontSize: 14),
@@ -252,7 +259,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                                 ),
                                 // controller: advancePaymentController,
                               ),
-                                  SizedBox(
+                              const SizedBox(
                                 height: 12,
                               ),
                               TextFormField(
@@ -264,7 +271,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                                   return null;
                                 },
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 15),
                                   labelStyle: TextStyle(fontSize: 14),
@@ -276,7 +283,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             ],
                           )
                         : Container(),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     ElevatedButton(
@@ -288,7 +295,7 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             milkSupplierController
                                 .addNewMilkSupplier(MilkSupplierModel(
                               Rate: RateEditingController.text,
-                              MilkType: dropdownValue,
+                              MilkType: MilkTypeEditingController.text,
                               Mobile: MobNOEditingController.text,
                               Name: NameEditingController.text,
                               Village: AdressEditingController.text,
@@ -303,16 +310,13 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
                             NameEditingController.clear();
                             AdressEditingController.clear();
                             AdhrNoEditingController.clear();
-                            SNFDedPriceEditingController.text = "0";
-                            FatDedPriceEditingController.text = "0";
-                            setState(() {});
 
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Supplier Added')),
+                              const SnackBar(content: Text('Supplier Added')),
                             );
                           }
                         },
-                        child: Text("Add Ledger"))
+                        child: const Text("Add Ledger"))
                   ],
                 ),
               ),
