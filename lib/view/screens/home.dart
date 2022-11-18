@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(FeatherIcons.alertOctagon, size: 18), label: 'Report'),
           BottomNavigationBarItem(
-              icon: Icon(FeatherIcons.plus, size: 18), label: 'Add'),
+              icon: Icon(FeatherIcons.userPlus, size: 18), label: 'Attendence'),
           BottomNavigationBarItem(
               icon: Icon(FeatherIcons.shoppingCart, size: 18),
               label: 'Book Order'),
@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
                   title: const Text("ADD SUPPLIER"),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>  AddMilkSupplierScreen()));
+                        builder: (context) => const AddMilkSupplierScreen()));
                   },
                 ),
                 const SizedBox(
