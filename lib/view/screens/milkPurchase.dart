@@ -2,12 +2,9 @@ import 'package:bl_dairy_app/controller/milkPurchaseController.dart';
 import 'package:bl_dairy_app/controller/milkSupplierController.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:bl_dairy_app/model/milkPurchaseModel.dart';
-import 'package:bl_dairy_app/view/screens/AddMilkSupplier.dart';
-import 'package:bl_dairy_app/view/screens/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -96,23 +93,23 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
     await WhatsappShare.shareFile(
       text: text,
       phone: '91$phoneNo',
-      filePath: ["${_image!.path}"],
+      filePath: [(_image!.path)],
     );
   }
 
   Future getImage(String imgSrc) async {
     try {
-      final ImagePicker _picker = ImagePicker();
-      XFile? _pickedFile = (await _picker.pickImage(
+      final ImagePicker picker = ImagePicker();
+      XFile? pickedFile = (await picker.pickImage(
           source:
               imgSrc == "Camera" ? ImageSource.camera : ImageSource.gallery));
 
-      if (_pickedFile != null) {
+      if (pickedFile != null) {
         // getting a directory path for saving
         final directory = await getExternalStorageDirectory();
 
         // copy the file to a new path
-        await _pickedFile.saveTo('${directory!.path}/image1.png');
+        await pickedFile.saveTo('${directory!.path}/image1.png');
         _image = File('${directory.path}/image1.png');
       }
     } catch (er) {
@@ -155,7 +152,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                 child: Column(
                   children: [
                     DropdownSearch<MilkSupplierModel>(
-                        validator: (value) {
+                      validator: (value) {
                         if (value == null || value.toString().isEmpty) {
                           return 'Select A Supplier';
                         }
@@ -197,84 +194,61 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                         });
                       },
                       dropdownDecoratorProps: const DropDownDecoratorProps(
-                        dropdownSearchDecoration:
-                            InputDecoration(labelText: "Select Supplier"),
+                        dropdownSearchDecoration: InputDecoration(
+                            border: OutlineInputBorder(gapPadding: 4.0),
+                            labelText: "  Select Supplier",
+                            contentPadding: EdgeInsets.all(0)),
                       ),
                     ),
-
-//                 SearchField(
-//                   suggestionState: Suggestion.expand,
-//                   textInputAction: TextInputAction.next,
-// controller: suppNameEdCont,
-// suggestions: searchList.map((e) => SearchFieldListItem(e.Name)).toList(),
-//                   suggestionAction: SuggestionAction.unfocus,
-//                   onSuggestionTap: (value){
-//
-//                   },
-//                 ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    // TextFieldSearch(
-                    //
-                    //   controller : suppNameEdCont,
-                    //   initialList: searchList,
-                    //   itemsInView: 10,
-                    //   label: 'Supplier Name',
-                    //   decoration: const InputDecoration(
-                    //     labelText: 'Supplier Name',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
                     const SizedBox(
                       height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: DropdownButton<String>(
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                ShiftVal = value!;
-                              });
-                            },
-                            hint: const Text('Choose Shift'),
-                            items: shiftlist
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            value: ShiftVal,
-                            icon: const Icon(Icons.arrow_downward),
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.deepPurple),
-                            underline: Container(
-                              height: 2,
-                              color: Colors.deepPurpleAccent,
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(13, 0, 10, 0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromARGB(181, 136, 136, 136),
+                              ),
+                              borderRadius: BorderRadius.circular(5),
                             ),
-
-                            // decoration: const InputDecoration(
-                            //   contentPadding:
-                            //       EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                            //   labelStyle: TextStyle(fontSize: 14),
-                            //   labelText: 'Milk Type',
-                            //   border: OutlineInputBorder(),
-                            // ),
-                            // controller: advancePaymentController,
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              underline: Container(),
+                              borderRadius: BorderRadius.circular(10),
+                              onChanged: (String? value) {
+                                // This is called when the user selects an item.
+                                setState(() {
+                                  ShiftVal = value!;
+                                });
+                              },
+                              hint: const Text('Choose Shift '),
+                              items: shiftlist.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              value: ShiftVal,
+                              icon: const Icon(Icons.arrow_downward),
+                              elevation: 16,
+                              style: const TextStyle(
+                                color: MyColors.black,
+                                fontSize: 17,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(
-                          width: 12,
+                          width: 10,
                         ),
-                        InkWell(
-                          onTap: () => _selectDate(ref),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => _selectDate(ref),
                             child: Container(
                               height: 49,
                               decoration: BoxDecoration(
@@ -287,7 +261,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                 child: Text(
                                   "${date.day}-${date.month}-${date.year}",
                                   // "${date.day}-${date.month}-${date.year}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                   ),
                                 ),
@@ -302,40 +276,40 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                     ),
                     Row(
                       children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          child: DropdownButton<String>(
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                MilkTypeVal = value!;
-                              });
-                            },
-                            hint: const Text('Milk Type'),
-                            items: milktyplist
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            value: MilkTypeVal,
-                            icon: const Icon(Icons.arrow_downward),
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.deepPurple),
-                            underline: Container(
-                              height: 2,
-                              color: Colors.deepPurpleAccent,
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(13, 0, 10, 0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromARGB(181, 136, 136, 136),
+                              ),
+                              borderRadius: BorderRadius.circular(5),
                             ),
-
-                            // decoration: const InputDecoration(
-                            //   contentPadding:
-                            //       EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                            //   labelStyle: TextStyle(fontSize: 14),
-                            //   labelText: 'Milk Type',
-                            //   border: OutlineInputBorder(),
-                            // ),
-                            // controller: advancePaymentController,
+                            child: DropdownButton<String>(
+                              onChanged: (String? value) {
+                                // This is called when the user selects an item.
+                                setState(() {
+                                  MilkTypeVal = value!;
+                                });
+                              },
+                              hint: const Text('Milk Type'),
+                              items: milktyplist.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              value: MilkTypeVal,
+                              isExpanded: true,
+                              icon: const Icon(Icons.arrow_downward),
+                              elevation: 16,
+                              underline: Container(),
+                              style: const TextStyle(
+                                color: MyColors.black,
+                                fontSize: 17,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -386,15 +360,13 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                         ),
                       ],
                     ),
-
                     const SizedBox(
                       height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.4,
+                        Expanded(
                           child: TextFormField(
                             onChanged: (value) {
                               print(SNFDedPrice.toString() == "0");
@@ -439,8 +411,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                         const SizedBox(
                           width: 12,
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.45,
+                        Expanded(
                           child: TextFormField(
                             controller: qtyEdCont,
                             onChanged: (value) {
@@ -486,104 +457,96 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-
                     Align(
                         alignment: Alignment.topLeft,
                         child: Text(
                             "TOTAL PRICE - ${double.parse((totalAmnt).toStringAsFixed(2))}")),
-
                     ElevatedButton(
                         onPressed: () async {
-
-
-                          
                           if (_formKey.currentState!.validate()) {
+                            MilkPurchaseController.addMilkPurchase(
+                                MilkPurchaseModel(
+                              Date: Timestamp.fromDate(date),
+                              fat: double.parse(fatEdCont.text),
+                              milkQty: double.parse(qtyEdCont.text),
+                              milkType: MilkTypeVal,
+                              shift: ShiftVal,
+                              snfVal: double.parse(snfEdCont.text),
+                              SupplierName: suppNameEdCont.text,
+                              totalAmnt: totalAmnt,
+                            ));
 
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('Milk Purchase Entry Successful')),
+                            );
 
-                          MilkPurchaseController.addMilkPurchase(
-                              MilkPurchaseModel(
-                            Date: Timestamp.fromDate(date),
-                            fat: double.parse(fatEdCont.text),
-                            milkQty: double.parse(qtyEdCont.text),
-                            milkType: MilkTypeVal,
-                            shift: ShiftVal,
-                            snfVal: double.parse(snfEdCont.text),
-                            SupplierName: suppNameEdCont.text,
-                            totalAmnt: totalAmnt,
-                          ));
+                            // whatsapp://send?phone=$contact&text=Hi, I need some help
+                            // await launchUrl(Uri.parse(
+                            //     "whatsapp://send?phone=+91${suppMobNo}&text=Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
+                            //     "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
+                            //     "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}"));
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content:
-                                    Text('Milk Purchase Entry Successful')),
-                          );
-
-                          // whatsapp://send?phone=$contact&text=Hi, I need some help
-                          // await launchUrl(Uri.parse(
-                          //     "whatsapp://send?phone=+91${suppMobNo}&text=Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
-                          //     "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
-                          //     "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}"));
-
-                          await showDialog(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: const Text("Upload Image Of Fat Machine"),
-                              content: const Text("Choose Image From :- "),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      chooseImgFrom = 'Camera';
-                                    });
-                                    Navigator.pop(context);
-                                  },
-                                  child: Container(
-                                    
-                                    padding: const EdgeInsets.all(14),
-                                    child: const Text("Camera"),
+                            await showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title:
+                                    const Text("Upload Image Of Fat Machine"),
+                                content: const Text("Choose Image From :- "),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        chooseImgFrom = 'Camera';
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(14),
+                                      child: const Text("Camera"),
+                                    ),
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      chooseImgFrom = 'Gallery';
-                                    });
-                                    Navigator.pop(context);
-                                  },
-                                  child: Container(
-                                    
-                                    padding: const EdgeInsets.all(14),
-                                    child: const Text("Gallery"),
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        chooseImgFrom = 'Gallery';
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(14),
+                                      child: const Text("Gallery"),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
+                                ],
+                              ),
+                            );
 
-                          shareFile(
-                              "Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - ${ShiftVal}"
-                              "\nMilk Type - ${MilkTypeVal}\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
-                              "\nSNF Value - ${snfEdCont.text}\nTotal Amount - ${totalAmnt}",
-                              suppMobNo.toString(),
-                              chooseImgFrom);
+                            shareFile(
+                                "Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - $ShiftVal"
+                                "\nMilk Type - $MilkTypeVal\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
+                                "\nSNF Value - ${snfEdCont.text}\nTotal Amount - $totalAmnt",
+                                suppMobNo.toString(),
+                                chooseImgFrom);
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                content: Text('Sending Whatsapp Message')),
-                          );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text('Sending Whatsapp Message')),
+                            );
 
-                          Rate = 0;
-                          fatEdCont.clear();
-                          qtyEdCont.clear();
-                          milkTypeEdCont.clear();
-                          shiftEdCont.clear();
-                          snfEdCont.clear();
-                          suppNameEdCont.clear();
-                          totalAmnt = 0;
+                            Rate = 0;
+                            fatEdCont.clear();
+                            qtyEdCont.clear();
+                            milkTypeEdCont.clear();
+                            shiftEdCont.clear();
+                            snfEdCont.clear();
+                            suppNameEdCont.clear();
+                            totalAmnt = 0;
 
-                          setState(() {});
-                        }
+                            setState(() {});
+                          }
                         },
                         child: const Text("Complete"))
                   ],
