@@ -6,6 +6,8 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../constants/Theme.dart';
+
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
 
@@ -28,7 +30,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text('Payments'),
+          backgroundColor: MyColors.primary,
+        ),
         body: Padding(
           padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
           child: Column(
@@ -74,12 +79,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 controller: amountController,
               ),
-
-
-
-
-
-               const SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               TextFormField(
@@ -98,8 +98,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 controller: noteController,
               ),
-
-              
               const SizedBox(
                 height: 15,
               ),
@@ -107,9 +105,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   onPressed: () async {
                     await PaymentController.addPayment(PaymentModel(
                             SupplierName: suppNameEdCont.text,
-                            PaidAmount: double.parse(amountController.text) , 
-                            
-                            Note  : noteController.text))
+                            PaidAmount: double.parse(amountController.text),
+                            Note: noteController.text))
                         .then((_) {
                       Get.snackbar("ENTRY ADDED SUCCESSFULLY",
                           "YOUR PAYMENT IS SUCCESSFULLY ADDED TO DATABASE");

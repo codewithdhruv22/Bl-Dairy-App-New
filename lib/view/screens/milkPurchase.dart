@@ -5,7 +5,6 @@ import 'package:bl_dairy_app/model/milkPurchaseModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'dart:io';
@@ -121,30 +120,13 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
   Widget build(BuildContext context) {
     final date = ref.watch(_dateProvider);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Milk Purchase'),
+        backgroundColor: MyColors.primary,
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            Material(
-              elevation: 4,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        FeatherIcons.arrowLeft,
-                        color: MyColors.black,
-                      ),
-                    ),
-                    const Text(
-                      'Milk Purchase',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ]),
-            ),
             Form(
               key: _formKey,
               child: Padding(

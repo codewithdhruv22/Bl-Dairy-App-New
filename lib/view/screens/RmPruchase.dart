@@ -4,12 +4,10 @@ import 'package:bl_dairy_app/model/RmModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
-import 'package:textfield_search/textfield_search.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../constants/Theme.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import '../../model/productionModel.dart';
 
 class RmPurchaseScreen extends StatefulWidget {
   const RmPurchaseScreen({Key? key}) : super(key: key);
@@ -45,7 +43,10 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text('Raw material Purchase'),
+          backgroundColor: MyColors.primary,
+        ),
         body: Padding(
           padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
           child: Column(
@@ -381,24 +382,24 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
                       Get.snackbar("Purchase Failed",
                           "Please Add Some Raw Material First");
                     } else {
-                    for (var Rm in RmList) {
-                      await RmController.PurhcaseRm(RmModel(
-                              RmName: Rm.RmName,
-                              RmPrice: Rm.RmPrice,
-                              RmQty: Rm.RmQty,
-                              purchaseTime: Rm.purchaseTime))
-                          .then((_) {
-                        print("ADDED");
+                      for (var Rm in RmList) {
+                        await RmController.PurhcaseRm(RmModel(
+                                RmName: Rm.RmName,
+                                RmPrice: Rm.RmPrice,
+                                RmQty: Rm.RmQty,
+                                purchaseTime: Rm.purchaseTime))
+                            .then((_) {
+                          print("ADDED");
+                        });
+                      }
+                      setState(() {
+                        RmList.clear();
+                        grandTotal = 0;
                       });
-                    }
-                    setState(() {
-                      RmList.clear();
-                      grandTotal = 0;
-                    });
 
-                    Get.snackbar("Raw Material Purchase Successful",
-                        "Price Updated and Entry Added To Database");
-                  }
+                      Get.snackbar("Raw Material Purchase Successful",
+                          "Price Updated and Entry Added To Database");
+                    }
                   },
                   child: const Text("Purhcase Raw Material")),
             ],

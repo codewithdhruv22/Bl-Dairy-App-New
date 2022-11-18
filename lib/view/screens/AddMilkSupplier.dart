@@ -1,7 +1,6 @@
 import 'package:bl_dairy_app/controller/milkSupplierController.dart';
 import 'package:bl_dairy_app/model/ledgerModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import '../../constants/Theme.dart';
 
 class AddMilkSupplierScreen extends StatefulWidget {
@@ -39,30 +38,13 @@ class _AddMilkSupplierScreenState extends State<AddMilkSupplierScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Supplier'),
+        backgroundColor: MyColors.primary,
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            Material(
-              elevation: 4,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        FeatherIcons.arrowLeft,
-                        color: MyColors.black,
-                      ),
-                    ),
-                    const Text(
-                      'Add Supplier',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ]),
-            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: Form(
