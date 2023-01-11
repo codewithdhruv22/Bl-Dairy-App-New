@@ -1,4 +1,6 @@
 import 'package:bl_dairy_app/constants/Theme.dart';
+import 'package:bl_dairy_app/view/blshop/CustomerShop.dart';
+import 'package:bl_dairy_app/view/blshop/shopMain.dart';
 import 'package:bl_dairy_app/view/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,6 @@ class MyApp extends StatelessWidget {
           fontFamily: GoogleFonts.poppins().fontFamily,
           primaryColor: MyColors.primary,
         ),
-        home: const Home());
+        home:  ShopMain(initialIndex: 0,));
   }
 }

@@ -25,7 +25,7 @@ final _formKey = GlobalKey<FormState>();
 final List<MilkSupplierModel> searchList = [];
 const List<String> milktyplist = <String>['Cow', 'Buffalow'];
 const List<String> shiftlist = <String>['Morning', 'Evening'];
-String MilkTypeVal = milktyplist.first;
+String MilkTypeVal = "Cow";
 String ShiftVal = shiftlist.first;
 
 TextEditingController suppNameEdCont = TextEditingController();
@@ -36,6 +36,7 @@ TextEditingController snfEdCont = TextEditingController();
 TextEditingController qtyEdCont = TextEditingController();
 
 double totalAmnt = 0.0;
+double RateAmnt = 0.0;
 double Rate = 0.0;
 double SNFDedPrice = 0.0;
 double FatDedPrice = 0.0;
@@ -145,12 +146,14 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                       itemAsString: (MilkSupplierModel u) => u.Name,
                       onChanged: (MilkSupplierModel? data) {
                         setState(() {
-                          print("FAT RATE IS HERE");
+                          print("MILK TYPE RATE IS HERE");
                           print(data!.Name);
                           print(data.Rate);
                           print(data.SNFDedPrice);
                           print(data.FatDedPrice);
+                          print(data.MilkType);
                           suppNameEdCont.text = data.Name;
+                          MilkTypeVal = data.MilkType;
 
                           SNFDedPrice = double.parse(data.SNFDedPrice);
                           FatDedPrice = double.parse(data.FatDedPrice);
@@ -173,6 +176,9 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                               : double.parse(fatEdCont.text) *
                                   Rate *
                                   double.parse(qtyEdCont.text);
+
+                          RateAmnt = double.parse((totalAmnt.toString())) /
+                              double.parse(qtyEdCont.text);
                         });
                       },
                       dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -322,6 +328,10 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                     : double.parse(fatEdCont.text) *
                                         Rate *
                                         double.parse(qtyEdCont.text);
+
+                                RateAmnt =
+                                    double.parse((totalAmnt.toString())) /
+                                        double.parse(qtyEdCont.text);
                               });
                             },
                             validator: (value) {
@@ -369,6 +379,10 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                     : double.parse(fatEdCont.text) *
                                         Rate *
                                         double.parse(qtyEdCont.text);
+
+                                RateAmnt =
+                                    double.parse((totalAmnt.toString())) /
+                                        double.parse(qtyEdCont.text);
                               });
                             },
 
@@ -415,6 +429,10 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                                     : double.parse(fatEdCont.text) *
                                         Rate *
                                         double.parse(qtyEdCont.text);
+
+                                RateAmnt =
+                                    double.parse((totalAmnt.toString())) /
+                                        double.parse(qtyEdCont.text);
                               });
                             },
                             keyboardType: TextInputType.number,
@@ -442,7 +460,11 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                     Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                            "TOTAL PRICE - ${double.parse((totalAmnt).toStringAsFixed(2))}")),
+                            "TOTAL PRICE - Rs. ${double.parse((totalAmnt).toStringAsFixed(2))}")),
+                    Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                            "Rate/Liter- Rs. ${RateAmnt.toStringAsFixed(2)}")),
                     ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
@@ -508,7 +530,7 @@ class _MilkPurchaseScreenState extends ConsumerState<MilkPurchaseScreen> {
                             shareFile(
                                 "Bill of Milk Purchase\nName- ${suppNameEdCont.text}\nShift - $ShiftVal"
                                 "\nMilk Type - $MilkTypeVal\nMilk Qty - ${double.parse(qtyEdCont.text)}\nFat - ${fatEdCont.text}"
-                                "\nSNF Value - ${snfEdCont.text}\nTotal Amount - $totalAmnt",
+                                "\nSNF Value - ${snfEdCont.text}",
                                 suppMobNo.toString(),
                                 chooseImgFrom);
 

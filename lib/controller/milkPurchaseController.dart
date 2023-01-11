@@ -57,6 +57,13 @@ class MilkPurchaseController {
 
   static Future<List<MilkPurchaseModel>> allMilkPurchaseByThisWeek() async {
     print("CALLING");
+
+    var date = DateTime.now();
+    var oneWeekPreviousDate = new DateTime(date.year, date.month, date.day - 7);
+
+    print("ONE WEEK PREVIOUS DATE");
+    print(oneWeekPreviousDate);
+
     List<MilkPurchaseModel> result_milkPurchase = [];
     await FirebaseFirestore.instance
         .collection("NewMilkPurchase2")
@@ -65,22 +72,49 @@ class MilkPurchaseController {
         .then((querSnapshots) {
       int j = 8;
       for (var item in querSnapshots.docs) {
-        print("HELLO JI");
-        print(MilkPurchaseModel.fromSnap(item).Date.toDate().weekday);
-        print(j);
-        print(MilkPurchaseModel.fromSnap(item).Date.toDate().weekday > j);
-        if (MilkPurchaseModel.fromSnap(item).Date.toDate().weekday <= j) {
-          print("WEEKDAY PRINTING");
-          // print(Timestamp.now().toDate().weekday);
+        print(
+            "***************************************************************************");
 
-          print(MilkPurchaseModel.fromSnap(item).Date.toDate().weekday);
-          // if()
+        if (MilkPurchaseModel.fromSnap(item)
+                .Date
+                .compareTo(Timestamp.fromDate(oneWeekPreviousDate)) >
+          
+            0) {
+
+
+              print(
+              "////////////////////////////////////////////////////////////////");
+
+
+
+          print(" I AM NEW LOGINC");
+          print(MilkPurchaseModel.fromSnap(item).SupplierName);
           result_milkPurchase.add(MilkPurchaseModel.fromSnap(item));
-        } else {
-          break;
+          print(
+              "////////////////////////////////////////////////////////////////");
         }
 
-        j = MilkPurchaseModel.fromSnap(item).Date.toDate().weekday;
+        // print("HELLO JI");
+        // print(MilkPurchaseModel.fromSnap(item).Date.toDate().weekday);
+        // print(j);
+
+        // print(MilkPurchaseModel.fromSnap(item).Date.toDate().weekday > j);
+        // if (MilkPurchaseModel.fromSnap(item).Date.toDate().weekday <= j) {
+        //   print("WEEKDAY PRINTING");
+        //   // print(Timestamp.now().toDate().weekday);
+
+        //   print(MilkPurchaseModel.fromSnap(item).Date.toDate().weekday);
+        //   print(MilkPurchaseModel.fromSnap(item).SupplierName);
+        //   // if()
+        //   result_milkPurchase.add(MilkPurchaseModel.fromSnap(item));
+        // } else {
+        //   break;
+        // }
+
+        // j = MilkPurchaseModel.fromSnap(item).Date.toDate().weekday;
+
+        // print(
+        //     "***************************************************************************");
       }
     });
 

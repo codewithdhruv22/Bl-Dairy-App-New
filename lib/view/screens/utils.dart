@@ -1,5 +1,9 @@
+import 'package:bl_dairy_app/controller/book_order.dart';
+import 'package:bl_dairy_app/model/BookOrderModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:searchfield/searchfield.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../constants/Theme.dart';
 
@@ -21,14 +25,11 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
   TextEditingController CsMilkQty = TextEditingController();
   TextEditingController CsFat = TextEditingController();
 
-  TextEditingController AvQty1 = TextEditingController();
-  TextEditingController AvQty2 = TextEditingController();
-  TextEditingController AvQty3 = TextEditingController();
-  TextEditingController AvQty4 = TextEditingController();
-  TextEditingController AvFat1 = TextEditingController();
-  TextEditingController AvFat2 = TextEditingController();
-  TextEditingController AvFat3 = TextEditingController();
-  TextEditingController AvFat4 = TextEditingController();
+  TextEditingController bQuantityController = TextEditingController();
+  TextEditingController bFatController = TextEditingController();
+
+  List<double> QuantityList = [];
+  List<double> FatList = [];
 
   double WaResult = 0.0;
   double CsResult = 0.0;
@@ -36,6 +37,7 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return SafeArea(
         child: DefaultTabController(
             length: 3,
@@ -152,7 +154,7 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                                   label: const Text('Reset'),
                                   style: ElevatedButton.styleFrom(
                                     padding:
-                                    const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                        const EdgeInsets.fromLTRB(0, 4, 0, 4),
                                     backgroundColor: MyColors.red,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
@@ -168,9 +170,9 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                                   onPressed: () {
                                     setState(() {
                                       WaResult = (((double.parse(WaFat.text) *
-                                          double.parse(
-                                              WaMilkQty.text)) /
-                                          double.parse(WaReqFat.text)) -
+                                                  double.parse(
+                                                      WaMilkQty.text)) /
+                                              double.parse(WaReqFat.text)) -
                                           (double.parse(WaMilkQty.text)));
                                     });
                                   },
@@ -238,7 +240,7 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                         ),
                         TextFormField(
                           keyboardType: TextInputType.number,
-
+    
                           controller: CsFat,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -282,7 +284,7 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                                 label: const Text('Reset'),
                                 style: ElevatedButton.styleFrom(
                                   padding:
-                                  const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                      const EdgeInsets.fromLTRB(0, 4, 0, 4),
                                   backgroundColor: MyColors.red,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
@@ -297,9 +299,10 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                               child: ElevatedButton.icon(
                                 onPressed: () {
                                   setState(() {
-                                    CsResult = ((double.parse(CsMilkQty.text) *
-                                        double.parse(CsReqFat.text)) /
-                                        double.parse(CsFat.text));
+                                    CsResult =
+                                        ((double.parse(CsMilkQty.text) *
+                                                double.parse(CsReqFat.text)) /
+                                            double.parse(CsFat.text));
                                   });
                                 },
                                 icon: const Icon(
@@ -322,355 +325,351 @@ class _UtilitiesScreenState extends State<UtilitiesScreen> {
                     SingleChildScrollView(
                       child: Column(
                         children: [
-                          // row with text feild
-                          const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text('First Sample')),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: AvQty1,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Fill This';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 15),
-                                    labelStyle: TextStyle(fontSize: 14),
-                                    labelText: 'Quantity',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  // controller: advancePaymentController,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: AvFat1,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Fill This';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 15),
-                                    labelStyle: TextStyle(fontSize: 14),
-                                    labelText: 'Fat',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  // controller: advancePaymentController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          // row with text feild end
-                          // row with text feild
-                          const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text('Second Sample')),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: AvQty2,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Fill This';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 15),
-                                    labelStyle: TextStyle(fontSize: 14),
-                                    labelText: 'Quantity',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  // controller: advancePaymentController,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: AvFat2,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Fill This';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 15),
-                                    labelStyle: TextStyle(fontSize: 14),
-                                    labelText: 'Fat',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  // controller: advancePaymentController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          // row with text feild end
-                          // row with text feild
-                          const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text('Third Sample')),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: AvQty3,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Fill This';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 15),
-                                    labelStyle: TextStyle(fontSize: 14),
-                                    labelText: 'Quantity',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  // controller: advancePaymentController,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: AvFat3,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Fill This';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 15),
-                                    labelStyle: TextStyle(fontSize: 14),
-                                    labelText: 'Fat',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  // controller: advancePaymentController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          // row with text feild end
-                          // row with text feild
-                          const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text('Fourth Sample')),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: AvQty4,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Fill This';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 15),
-                                    labelStyle: TextStyle(fontSize: 14),
-                                    labelText: 'Quantity',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  // controller: advancePaymentController,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: AvFat4,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Fill This';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 15),
-                                    labelStyle: TextStyle(fontSize: 14),
-                                    labelText: 'Fat',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  // controller: advancePaymentController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-
                           Text(
-                              "Average Fat is : ${AvResult.toStringAsFixed(2)}"),
+                              "Average Fat is - ${AvResult.toStringAsFixed(2)}"),
+    
+                          Material(
+                            elevation: 3,
+                            borderRadius: BorderRadius.circular(5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding:
+                                  const EdgeInsets.fromLTRB(10, 2, 10, 2),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text('Enter Sample Data'),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      VxBottomSheet.bottomSheetView(
+                                        context,
+                                        elevation: 20,
+                                        isDismissible: true,
+                                        backgroundColor: Colors.white,
+                                        isSafeAreaFromBottom: true,
+                                        child: SizedBox(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Material(
+                                                elevation: 2,
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon: const Icon(
+                                                      FeatherIcons.x,
+                                                      color: MyColors
+                                                          .defaultColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        20, 15, 20, 0),
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+    
+                                                    Text(
+                                                      "Enter ${(FatList.length + 1)} Sample Details",
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight
+                                                                  .bold),
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child:
+                                                              TextFormField(
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          0,
+                                                                      horizontal:
+                                                                          15),
+                                                              labelStyle:
+                                                                  TextStyle(
+                                                                      fontSize:
+                                                                          14),
+                                                              labelText:
+                                                                  'Quantity',
+                                                              border:
+                                                                  OutlineInputBorder(),
+                                                            ),
+                                                            controller:
+                                                                bQuantityController,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        Expanded(
+                                                          child:
+                                                              TextFormField(
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          0,
+                                                                      horizontal:
+                                                                          15),
+                                                              labelStyle:
+                                                                  TextStyle(
+                                                                      fontSize:
+                                                                          14),
+                                                              labelText:
+                                                                  'Fat',
+                                                              border:
+                                                                  OutlineInputBorder(),
+                                                            ),
+                                                            controller:
+                                                                bFatController,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    //
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            height:
+                                                                size.height *
+                                                                    0.06,
+                                                            width:
+                                                                size.width *
+                                                                    0.4,
+                                                            child:
+                                                                ElevatedButton
+                                                                    .icon(
+                                                              onPressed: () {
+                                                                bQuantityController
+                                                                    .clear();
+                                                                bFatController
+                                                                    .clear();
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              icon:
+                                                                  const Icon(
+                                                                FeatherIcons
+                                                                    .trash2,
+                                                                size: 18,
+                                                              ),
+                                                              label: const Text(
+                                                                  'Delete'),
+                                                              style: ElevatedButton
+                                                                  .styleFrom(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .fromLTRB(
+                                                                        0,
+                                                                        4,
+                                                                        0,
+                                                                        4),
+                                                                backgroundColor:
+                                                                    MyColors
+                                                                        .red,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(5),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        Expanded(
+                                                          child: SizedBox(
+                                                            height:
+                                                                size.height *
+                                                                    0.06,
+                                                            width:
+                                                                size.width *
+                                                                    0.4,
+                                                            child:
+                                                                ElevatedButton
+                                                                    .icon(
+                                                              onPressed: () {
+                                                                QuantityList.add(
+                                                                    double.parse(
+                                                                        bQuantityController
+                                                                            .text));
+    
+                                                                FatList.add(double.parse(
+                                                                    bFatController
+                                                                        .text));
+    
+                                                                bQuantityController
+                                                                    .clear();
+                                                                bFatController
+                                                                    .clear();
+    
+                                                                double
+                                                                    numerator =
+                                                                    0;
+                                                                for (var i =
+                                                                        0;
+                                                                    i <
+                                                                        QuantityList
+                                                                            .length;
+                                                                    i++) {
+                                                                  numerator += QuantityList[
+                                                                          i] *
+                                                                      FatList[
+                                                                          i];
+                                                                }
+    
+                                                                double den =
+                                                                    QuantityList.reduce(
+                                                                        (a, b) =>
+                                                                            a +
+                                                                            b);
+    
+                                                                setState(() {
+                                                                  AvResult =
+                                                                      numerator /
+                                                                          den;
+    
+                                                                  print(
+                                                                      "AV RESULT IS HERE");
+                                                                  print(
+                                                                      AvResult);
+                                                                  print(
+                                                                      QuantityList);
+                                                                  print(
+                                                                      FatList);
+                                                                });
+    
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              icon:
+                                                                  const Icon(
+                                                                FeatherIcons
+                                                                    .plus,
+                                                                size: 18,
+                                                              ),
+                                                              label: const Text(
+                                                                  'Calculate'),
+                                                              style: ElevatedButton
+                                                                  .styleFrom(
+                                                                backgroundColor:
+                                                                    MyColors
+                                                                        .green,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(5),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: MyColors.green,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                    ),
+                                    child: const Text('   Add +   '),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+    
+                          const SizedBox(
+                            height: 20,
+                          ),
+    
+                          ElevatedButton(
+                            onPressed: () {
+                              QuantityList.clear();
+                              FatList.clear();
+    
+                              setState(() {
+                                AvResult = 0.0;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: MyColors.red,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
+                            child: const Text('  Reset Results '),
+                          ),
                           const SizedBox(
                             height: 20,
                           ),
                           // row with text feild end
-                          // row with button
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    AvQty1.clear();
-                                    AvQty2.clear();
-                                    AvQty3.clear();
-                                    AvQty4.clear();
-                                    AvFat1.clear();
-                                    AvFat2.clear();
-                                    AvFat3.clear();
-                                    AvFat4.clear();
-                                    setState(() {
-                                      AvResult = 0.0;
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    FeatherIcons.refreshCcw,
-                                    size: 18,
-                                  ),
-                                  label: const Text('Reset'),
-                                  style: ElevatedButton.styleFrom(
-                                    padding:
-                                    const EdgeInsets.fromLTRB(0, 4, 0, 4),
-                                    backgroundColor: MyColors.red,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    if (AvFat1.text.isEmpty) {
-                                      AvFat1.text = "0";
-                                    }
-
-                                    if (AvFat2.text.isEmpty) {
-                                      AvFat2.text = "0";
-                                    }
-                                    if (AvFat3.text.isEmpty) {
-                                      AvFat3.text = "0";
-                                    }
-
-                                    if (AvFat4.text.isEmpty) {
-                                      AvFat4.text = "0";
-                                    }
-
-                                    if (AvQty1.text.isEmpty) {
-                                      AvQty1.text = "0";
-                                    }
-
-                                    if (AvQty2.text.isEmpty) {
-                                      AvQty2.text = "0";
-                                    }
-
-                                    if (AvQty3.text.isEmpty) {
-                                      AvQty3.text = "0";
-                                    }
-
-                                    if (AvQty4.text.isEmpty) {
-                                      AvQty4.text = "0";
-                                    }
-
-                                    setState(() {
-                                      AvResult = ((double.parse(AvFat1.text) *
-                                          double.parse(AvQty1.text)) +
-                                          (double.parse(AvFat2.text) *
-                                              double.parse(AvQty2.text)) +
-                                          (double.parse(AvFat3.text) *
-                                              double.parse(AvQty3.text)) +
-                                          (double.parse(AvFat4.text) *
-                                              double.parse(AvQty4.text))) /
-                                          (double.parse(AvQty1.text) +
-                                              double.parse(AvQty2.text) +
-                                              double.parse(AvQty3.text) +
-                                              double.parse(AvQty4.text));
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    FeatherIcons.plus,
-                                    size: 18,
-                                  ),
-                                  label: const Text('Calculate'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: MyColors.green,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     )
                   ],
                 ),
               ),
-            )));
+            )
+            )
+            );
   }
 }

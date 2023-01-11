@@ -88,8 +88,8 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
 
     List<List<dynamic>> itemRow = [
       [
-        "S.No.",
         "Date",
+        "Supplier Name",
         "Milk Type",
         "Qunatity",
         "Shift",
@@ -102,10 +102,10 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
     isWeekData
         ? await MilkPurchaseController.allMilkPurchaseByThisWeek()
             .then((resultList) {
-            int i = 0;
+          
             for (var element in resultList) {
               itemRow.add([
-                i,
+              
                 myFormat.format(element.Date.toDate()),
                 element.SupplierName,
                 element.milkType,
@@ -119,10 +119,9 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
           })
         : await MilkPurchaseController.allMilkPurchaseByThisMonth()
             .then((resultList) {
-            int i = 0;
+  
             for (var element in resultList) {
               itemRow.add([
-                i,
                 myFormat.format(element.Date.toDate()),
                 element.SupplierName,
                 element.milkType,

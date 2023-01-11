@@ -1,6 +1,7 @@
 import 'package:bl_dairy_app/controller/RmController.dart';
 import 'package:bl_dairy_app/controller/productionController.dart';
 import 'package:bl_dairy_app/model/RmModel.dart';
+import 'package:bl_dairy_app/view/screens/AddRmItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
@@ -43,6 +44,13 @@ class _RmPurchaseScreenState extends State<RmPurchaseScreen> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+        floatingActionButton: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AddNewRm()));
+          },
+          child: Text("Add New Item"),
+        ),
         appBar: AppBar(
           title: const Text('Raw material Purchase'),
           backgroundColor: MyColors.primary,

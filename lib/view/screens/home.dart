@@ -1,5 +1,6 @@
 import 'package:bl_dairy_app/constants/Theme.dart';
 import 'package:bl_dairy_app/view/screens/AddMilkSupplier.dart';
+import 'package:bl_dairy_app/view/screens/AddRmItem.dart';
 import 'package:bl_dairy_app/view/screens/RmPruchase.dart';
 import 'package:bl_dairy_app/view/screens/addNewEmp.dart';
 import 'package:bl_dairy_app/view/screens/milkPurchase.dart';
@@ -136,6 +137,14 @@ class _HomeState extends State<Home> {
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const RmPurchaseScreen()));
+                  },
+                ),
+
+                 ListTile(
+                  title: const Text("Add new raw material"),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>  AddNewRm()));
                   },
                 ),
               ],

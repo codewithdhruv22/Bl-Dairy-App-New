@@ -49,6 +49,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
     await BookOrderController.fetchOrder().then((allOrders) {
       setState(() {
         dashOrderList = allOrders!;
+        loading = false;
       });
 
       print("DASHBOARD ORDER LIST");
@@ -104,7 +105,6 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
     await PaymentController.fetchAllPayments().then((allPayment) {
       setState(() {
         paymentList = allPayment;
-        loading = false;
       });
     });
   }
@@ -119,6 +119,8 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
     ProductionPrinter();
     GetMilkPurchaseByDate();
     GetPaymentDet();
+
+   
   }
 
   bool _customTileExpanded = false;
@@ -392,27 +394,25 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                                                             mainAxisAlignment:
                                                                                 MainAxisAlignment.spaceBetween,
                                                                             children: [
-                                                                              InkWell(
-                                                                                onTap: () {
+                                                                              Expanded(
+                                                                                  child: ElevatedButton(
+                                                                                child: Text("Production"),
+                                                                                onPressed: () {
                                                                                   setState(() {
                                                                                     ProductionStatus = !ProductionStatus;
                                                                                   });
                                                                                   Get.snackbar("Production Status Change", 'STATUS : ${ProductionStatus ? "DONE" : "NOT DONE"}', snackPosition: SnackPosition.BOTTOM);
 
                                                                                   BookOrderController.ChangeProductionStatus(order.id, ProductionStatus);
-
-                                                                                  // print(ProductionStatus ? 'Order Produced' : 'Order Not Produced');
                                                                                 },
-                                                                                child: const Text('Click To Change Production Status }'),
+                                                                              )),
+                                                                              SizedBox(
+                                                                                width: 10,
                                                                               ),
-                                                                            ],
-                                                                          ),
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
-                                                                            children: [
-                                                                              InkWell(
-                                                                                onTap: () {
+                                                                              Expanded(
+                                                                                  child: ElevatedButton(
+                                                                                child: Text("Delivery"),
+                                                                                onPressed: () {
                                                                                   setState(() {
                                                                                     DeliveryStatus = !DeliveryStatus;
                                                                                   });
@@ -420,8 +420,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
 
                                                                                   BookOrderController.ChangeDeliveryStatus(order.id, DeliveryStatus);
                                                                                 },
-                                                                                child: const Text('Click To Change Delivery Status'),
-                                                                              ),
+                                                                              )),
                                                                             ],
                                                                           ),
                                                                         ],
@@ -699,7 +698,7 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 15),
                                     child: Text(
-                                      "${today_milkPrch_liter.toStringAsFixed(2)} Liter",
+                                      "${today_milkPrch_liter.toStringAsFixed(2)} Litr",
                                       style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
@@ -778,7 +777,9 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                                     tilePadding:
                                         const EdgeInsets.fromLTRB(15, 0, 15, 0),
                                     title: const Text('Recent Purchase'),
-                                    children: RecentPurchaseListTiles,
+                                    children: RecentPurchaseListTiles.length > 0
+                                        ? RecentPurchaseListTiles
+                                        : [Text("No Purchases!")],
                                   ),
                                 ],
                               ),
@@ -849,90 +850,90 @@ class _Dashboard_ScrenState extends State<Dashboard_Scren> {
                           height: 20,
                         ),
 
-                        Container(
-                          child: Material(
-                            elevation: 4,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12)),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12))),
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      "Daily Profit",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      "Sample Text Sample Text Sample Text",
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(height: 300, child: ActvityChart())
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          child: Material(
-                            elevation: 4,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12)),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12))),
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      "Monthly Profit",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      "Sample Text Sample Text Sample Text",
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(height: 300, child: ActvityChart())
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        // Container(
+                        //   child: Material(
+                        //     elevation: 4,
+                        //     borderRadius:
+                        //         const BorderRadius.all(Radius.circular(12)),
+                        //     child: Container(
+                        //       decoration: const BoxDecoration(
+                        //           borderRadius:
+                        //               BorderRadius.all(Radius.circular(12))),
+                        //       margin: const EdgeInsets.symmetric(
+                        //           horizontal: 12, vertical: 20),
+                        //       child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: const [
+                        //           Padding(
+                        //             padding: EdgeInsets.only(left: 15),
+                        //             child: Text(
+                        //               "Daily Profit",
+                        //               style: TextStyle(
+                        //                   fontSize: 18,
+                        //                   fontWeight: FontWeight.bold),
+                        //             ),
+                        //           ),
+                        //           Padding(
+                        //             padding: EdgeInsets.only(left: 15),
+                        //             child: Text(
+                        //               "Sample Text Sample Text Sample Text",
+                        //               style: TextStyle(fontSize: 14),
+                        //             ),
+                        //           ),
+                        //           SizedBox(
+                        //             height: 10,
+                        //           ),
+                        //           SizedBox(height: 300, child: ActvityChart())
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // // ),
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
+                        // Container(
+                        //   child: Material(
+                        //     elevation: 4,
+                        //     borderRadius:
+                        //         const BorderRadius.all(Radius.circular(12)),
+                        //     child: Container(
+                        //       decoration: const BoxDecoration(
+                        //           borderRadius:
+                        //               BorderRadius.all(Radius.circular(12))),
+                        //       margin: const EdgeInsets.symmetric(
+                        //           horizontal: 12, vertical: 20),
+                        //       child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: const [
+                        //           Padding(
+                        //             padding: EdgeInsets.only(left: 15),
+                        //             child: Text(
+                        //               "Monthly Profit",
+                        //               style: TextStyle(
+                        //                   fontSize: 18,
+                        //                   fontWeight: FontWeight.bold),
+                        //             ),
+                        //           ),
+                        //           Padding(
+                        //             padding: EdgeInsets.only(left: 15),
+                        //             child: Text(
+                        //               "Sample Text Sample Text Sample Text",
+                        //               style: TextStyle(fontSize: 14),
+                        //             ),
+                        //           ),
+                        //           SizedBox(
+                        //             height: 10,
+                        //           ),
+                        //           SizedBox(height: 300, child: ActvityChart())
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
                         Container(
                           child: Material(
                             elevation: 4,
